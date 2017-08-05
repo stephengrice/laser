@@ -4,7 +4,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_dash"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_menu_manage"
             android:title="Dash" />
         <item
             android:id="@+id/nav_budget"
@@ -16,7 +16,7 @@
             android:title="My Transactions" />
         <item
             android:id="@+id/nav_goals"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_menu_camera"
             android:title="Goals" />
         <item
             android:id="@+id/nav_add"
