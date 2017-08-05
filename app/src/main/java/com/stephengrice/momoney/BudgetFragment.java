@@ -3,8 +3,6 @@ package com.stephengrice.momoney;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,12 +12,12 @@ import android.view.ViewGroup;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link DashFragment.OnFragmentInteractionListener} interface
+ * {@link BudgetFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link DashFragment#newInstance} factory method to
+ * Use the {@link BudgetFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DashFragment extends Fragment {
+public class BudgetFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -31,7 +29,7 @@ public class DashFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public DashFragment() {
+    public BudgetFragment() {
         // Required empty public constructor
     }
 
@@ -41,11 +39,11 @@ public class DashFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment DashFragment.
+     * @return A new instance of fragment BudgetFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static DashFragment newInstance(String param1, String param2) {
-        DashFragment fragment = new DashFragment();
+    public static BudgetFragment newInstance(String param1, String param2) {
+        BudgetFragment fragment = new BudgetFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -62,24 +60,11 @@ public class DashFragment extends Fragment {
         }
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_dash, container, false);
-
-        // Floating Action Button code
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         // Inflate the layout for this fragment
-        return view;
+        return inflater.inflate(R.layout.fragment_budget, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

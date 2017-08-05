@@ -20,8 +20,8 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <fragment android:name="com.stephengrice.momoney.DashFragment"
-        android:id="@+id/fragment_main"
+    <FrameLayout
+        android:id="@+id/content_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
