@@ -20,7 +20,10 @@ import android.view.MenuItem;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         DashFragment.OnFragmentInteractionListener,
-        BudgetFragment.OnFragmentInteractionListener {
+        BudgetFragment.OnFragmentInteractionListener,
+        TransactionsFragment.OnFragmentInteractionListener,
+        GoalsFragment.OnFragmentInteractionListener,
+        AddFragment.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +45,6 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        // Populate main content fragment
 
     }
 
@@ -85,18 +86,18 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        Fragment fragment = new BudgetFragment();
+        Fragment fragment = null;
 
         if (id == R.id.nav_dash) {
             fragment = new DashFragment();
         } else if (id == R.id.nav_budget) {
             fragment = new BudgetFragment();
         } else if (id == R.id.nav_transactions) {
-
+            fragment = new TransactionsFragment();
         } else if (id == R.id.nav_goals) {
-
+            fragment = new GoalsFragment();
         } else if (id == R.id.nav_add) {
-
+            fragment = new AddFragment();
         }
         if (fragment != null) {
             getSupportFragmentManager().beginTransaction()
