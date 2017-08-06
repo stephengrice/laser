@@ -3,10 +3,13 @@ package com.stephengrice.momoney;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
 
 /**
@@ -64,7 +67,21 @@ public class AddFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add, container, false);
+        final View view = inflater.inflate(R.layout.fragment_add, container, false);
+        Button btnAdd = (Button) view.findViewById(R.id.btn_save_transaction);
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText txtTransactionAmount = (EditText) view.findViewById(R.id.txt_transaction_amount);
+                EditText txtTransactionDescription = (EditText) view.findViewById(R.id.txt_transaction_description);
+                EditText txtTransactionCategory = (EditText) view.findViewById(R.id.txt_transaction_category);
+                float transactionAmount = Float.parseFloat(txtTransactionAmount.getText().toString());
+                String transactionDescription = txtTransactionDescription.getText().toString();
+                String transactionCategory = txtTransactionCategory.getText().toString();
+                Snackbar.make(view, "Transaction ("+transactionAmount+","+transactionDescription+","+transactionCategory+") not created", 3000).show();
+            }
+        });
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
