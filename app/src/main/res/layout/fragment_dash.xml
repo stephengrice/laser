@@ -9,10 +9,9 @@
         android:id="@+id/txt_title_dashboard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="59dp"
+        android:layout_marginTop="7dp"
         android:text="@string/title_dashboard"
         android:textSize="30sp"
-        app:layout_constraintHorizontal_bias="0.512"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -30,13 +29,13 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="125dp"
+        android:layout_marginTop="64dp"
         tools:layout_constraintLeft_creator="1"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        app:layout_constraintHorizontal_bias="1.0" />
+        app:layout_constraintHorizontal_bias="0.0" />
 
     <TextView
         android:id="@+id/txt_money"
@@ -77,7 +76,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginEnd="30dp"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginBottom="16dp"
-        android:layout_marginRight="30dp" />
+        android:layout_marginBottom="457dp"
+        android:layout_marginRight="-14dp" />
 
 </android.support.constraint.ConstraintLayout>

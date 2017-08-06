@@ -1,13 +1,34 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.stephengrice.momoney.GoalsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:gravity="center_horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Goals" />
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:text="@string/title_goals" />
 
-</FrameLayout>
+    <Spinner
+        android:id="@+id/spinner_goals"
+        android:entries="@array/spinner_dates"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="2/3 met" />
+
+    <ProgressBar
+        android:id="@+id/progressBar2"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:progress="66" />
+
+</LinearLayout>

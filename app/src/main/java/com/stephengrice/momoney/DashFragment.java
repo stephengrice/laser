@@ -73,8 +73,12 @@ public class DashFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                // Navigate to AddFragment
+                getFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_main, new AddFragment())
+                        .addToBackStack(null)
+                        .commit();
             }
         });
 
