@@ -1,12 +1,19 @@
 package com.stephengrice.momoney;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import com.stephengrice.momoney.db.MoMoneyContract;
+import com.stephengrice.momoney.db.MoMoneyDbHelper;
 
 
 /**
@@ -64,7 +71,24 @@ public class TransactionsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_transactions, container, false);
+        View view = inflater.inflate(R.layout.fragment_transactions, container, false);
+
+        // Create adapter
+        // Add row in database
+        MoMoneyDbHelper dbHelper = new MoMoneyDbHelper(getActivity());
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor cursor = db.rawQuery(MoMoneyContract.Transaction.SQL_SELECT_ALL, null);
+        TransactionCursorAdapter adapter = new TransactionCursorAdapter(getActivity(), cursor);
+
+        // Set adapter for ListView
+        ListView listView = (ListView)view.findViewById(R.id.transactions_listview);
+        listView.setAdapter(adapter);
+
+        // Set number of rows
+        TextView txtTransactions = (TextView)view.findViewById(R.id.transactions_num_transactions);
+        txtTransactions.setText(Integer.toString(cursor.getCount()) + " transactions");
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -25,6 +25,8 @@ public class MainActivity extends AppCompatActivity
         GoalsFragment.OnFragmentInteractionListener,
         AddFragment.OnFragmentInteractionListener {
 
+    public static final int SNACKBAR_TIME = 3000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -19,10 +19,15 @@
         android:layout_height="wrap_content" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/transactions_num_transactions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="3 transactions" />
+
+    <ListView
+        android:id="@+id/transactions_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 
 </LinearLayout>

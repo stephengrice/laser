@@ -19,7 +19,7 @@ public final class MoMoneyContract {
         public static final String COLUMN_NAME_DESCRIPTION = "description";
         public static final String COLUMN_NAME_CATEGORY = "category";
 
-        public static final String SQL_CREATE_TABLE = "CREATE TABLE" +
+        public static final String SQL_CREATE_TABLE = "CREATE TABLE " +
                 TABLE_NAME + "(" +
                 _ID + " INTEGER PRIMARY KEY, " +
                 COLUMN_NAME_AMOUNT + REAL_TYPE + COMMA_SEP +
@@ -28,6 +28,7 @@ public final class MoMoneyContract {
                 ")";
 
         public static final String SQL_DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
+        public static final String SQL_SELECT_ALL = "SELECT * FROM " + TABLE_NAME;
 
     }
     public static class Category implements BaseColumns {

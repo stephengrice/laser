@@ -1,6 +1,8 @@
 package com.stephengrice.momoney;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -10,6 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.stephengrice.momoney.db.MoMoneyContract;
+import com.stephengrice.momoney.db.MoMoneyDbHelper;
 
 
 /**
@@ -72,13 +77,7 @@ public class AddFragment extends Fragment {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText txtTransactionAmount = (EditText) view.findViewById(R.id.txt_transaction_amount);
-                EditText txtTransactionDescription = (EditText) view.findViewById(R.id.txt_transaction_description);
-                EditText txtTransactionCategory = (EditText) view.findViewById(R.id.txt_transaction_category);
-                float transactionAmount = Float.parseFloat(txtTransactionAmount.getText().toString());
-                String transactionDescription = txtTransactionDescription.getText().toString();
-                String transactionCategory = txtTransactionCategory.getText().toString();
-                Snackbar.make(view, "Transaction ("+transactionAmount+","+transactionDescription+","+transactionCategory+") not created", 3000).show();
+                addTransaction(view);
             }
         });
         return view;
@@ -121,5 +120,38 @@ public class AddFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    private void addTransaction(View view) {
+        // Select elements containing user input
+        EditText txtTransactionAmount = (EditText) view.findViewById(R.id.txt_transaction_amount);
+        EditText txtTransactionDescription = (EditText) view.findViewById(R.id.txt_transaction_description);
+        EditText txtTransactionCategory = (EditText) view.findViewById(R.id.txt_transaction_category);
+        // Get values for input to DB
+        float transactionAmount = Float.parseFloat(txtTransactionAmount.getText().toString());
+        String transactionDescription = txtTransactionDescription.getText().toString();
+        String transactionCategory = txtTransactionCategory.getText().toString();
+        // TODO validate input
+
+        // Add row in database
+        MoMoneyDbHelper dbHelper = new MoMoneyDbHelper(getActivity());
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        // Create ContentValues
+        ContentValues values = new ContentValues();
+        values.put(MoMoneyContract.Transaction.COLUMN_NAME_AMOUNT, transactionAmount);
+        values.put(MoMoneyContract.Transaction.COLUMN_NAME_CATEGORY, transactionCategory);
+        values.put(MoMoneyContract.Transaction.COLUMN_NAME_DESCRIPTION, transactionDescription);
+        long newRowId = db.insert(MoMoneyContract.Transaction.TABLE_NAME, null, values);
+
+        if (newRowId == -1) {
+            Snackbar.make(view, "An error occurred.", MainActivity.SNACKBAR_TIME).show();
+        } else {
+            // Switch to dash fragment
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.content_main, new TransactionsFragment())
+                    .addToBackStack(null)
+                    .commit();
+            Snackbar.make(view, "Save successful.", MainActivity.SNACKBAR_TIME).show();
+        }
     }
 }
