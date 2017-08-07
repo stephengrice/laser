@@ -1,20 +1,28 @@
 package com.stephengrice.momoney;
 
+import android.app.DatePickerDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ToggleButton;
 
 import com.stephengrice.momoney.db.MoMoneyContract;
 import com.stephengrice.momoney.db.MoMoneyDbHelper;
+
+import java.util.Date;
 
 
 /**
@@ -80,6 +88,7 @@ public class AddFragment extends Fragment {
                 addTransaction(view);
             }
         });
+
         return view;
     }
 
@@ -127,11 +136,33 @@ public class AddFragment extends Fragment {
         EditText txtTransactionAmount = (EditText) view.findViewById(R.id.txt_transaction_amount);
         EditText txtTransactionDescription = (EditText) view.findViewById(R.id.txt_transaction_description);
         EditText txtTransactionCategory = (EditText) view.findViewById(R.id.txt_transaction_category);
+        ToggleButton btnEarned = (ToggleButton) view.findViewById(R.id.btn_earned_spent);
         // Get values for input to DB
-        float transactionAmount = Float.parseFloat(txtTransactionAmount.getText().toString());
+        boolean positive = btnEarned.isChecked();
+        float transactionAmount;
+        try {
+            transactionAmount = Float.parseFloat(txtTransactionAmount.getText().toString());
+        } catch(NumberFormatException e) {
+            transactionAmount = 0;
+        }
         String transactionDescription = txtTransactionDescription.getText().toString();
         String transactionCategory = txtTransactionCategory.getText().toString();
-        // TODO validate input
+        if (!positive) {
+            transactionAmount = -transactionAmount;
+        }
+
+        // Hide the soft keyboard
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+
+        // Validate input - only transactionAmount is required and must be properly parsed
+        if (transactionAmount == 0) {
+            Snackbar.make(view, "Please enter a transaction amount.", MainActivity.SNACKBAR_TIME).show();
+            txtTransactionAmount.requestFocus();
+            return;
+        }
 
         // Add row in database
         MoMoneyDbHelper dbHelper = new MoMoneyDbHelper(getActivity());
@@ -140,6 +171,7 @@ public class AddFragment extends Fragment {
         ContentValues values = new ContentValues();
         values.put(MoMoneyContract.Transaction.COLUMN_NAME_AMOUNT, transactionAmount);
         values.put(MoMoneyContract.Transaction.COLUMN_NAME_CATEGORY, transactionCategory);
+        values.put(MoMoneyContract.Transaction.COLUMN_NAME_DATE, new Date().getTime());
         values.put(MoMoneyContract.Transaction.COLUMN_NAME_DESCRIPTION, transactionDescription);
         long newRowId = db.insert(MoMoneyContract.Transaction.TABLE_NAME, null, values);
 
@@ -151,7 +183,6 @@ public class AddFragment extends Fragment {
                     .replace(R.id.content_main, new TransactionsFragment())
                     .addToBackStack(null)
                     .commit();
-            Snackbar.make(view, "Save successful.", MainActivity.SNACKBAR_TIME).show();
         }
     }
 }

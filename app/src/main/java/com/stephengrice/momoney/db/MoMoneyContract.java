@@ -5,7 +5,7 @@ import android.provider.BaseColumns;
 public final class MoMoneyContract {
     private MoMoneyContract() {}
 
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "MoMoney.db";
 
     private static final String TEXT_TYPE = " TEXT";
@@ -16,6 +16,7 @@ public final class MoMoneyContract {
     public static class Transaction implements BaseColumns {
         public static final String TABLE_NAME = "transactions";
         public static final String COLUMN_NAME_AMOUNT = "amount";
+        public static final String COLUMN_NAME_DATE = "date";
         public static final String COLUMN_NAME_DESCRIPTION = "description";
         public static final String COLUMN_NAME_CATEGORY = "category";
 
@@ -23,6 +24,7 @@ public final class MoMoneyContract {
                 TABLE_NAME + "(" +
                 _ID + " INTEGER PRIMARY KEY, " +
                 COLUMN_NAME_AMOUNT + REAL_TYPE + COMMA_SEP +
+                COLUMN_NAME_DATE + INTEGER_TYPE + COMMA_SEP +
                 COLUMN_NAME_CATEGORY + INTEGER_TYPE + COMMA_SEP +
                 COLUMN_NAME_DESCRIPTION + TEXT_TYPE +
                 ")";
