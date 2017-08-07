@@ -86,7 +86,7 @@ public class TransactionsFragment extends Fragment {
 
         // Set number of rows
         TextView txtTransactions = (TextView)view.findViewById(R.id.transactions_num_transactions);
-        txtTransactions.setText(Integer.toString(cursor.getCount()) + " transactions");
+        txtTransactions.setText(Integer.toString(cursor.getCount()) + " transaction" + (cursor.getCount() == 1 ? "" : "s"));
 
         return view;
     }

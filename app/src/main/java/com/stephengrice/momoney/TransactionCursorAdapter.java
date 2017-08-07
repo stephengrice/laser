@@ -2,6 +2,7 @@ package com.stephengrice.momoney;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,13 +15,20 @@ import java.util.Date;
 
 public class TransactionCursorAdapter extends CursorAdapter {
 
-    public TransactionCursorAdapter(Context context, Cursor c) {
-        super(context, c);
+    float mAmount;
+
+    public TransactionCursorAdapter(Context context, Cursor cursor) {
+        super(context, cursor);
     }
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        return LayoutInflater.from(context).inflate(R.layout.item_transaction, parent, false);
+        mAmount = cursor.getFloat(cursor.getColumnIndexOrThrow(MoMoneyContract.Transaction.COLUMN_NAME_AMOUNT));
+        if (mAmount > 0) {
+            return LayoutInflater.from(context).inflate(R.layout.item_transaction_positive, parent, false);
+        } else {
+            return LayoutInflater.from(context).inflate(R.layout.item_transaction_negative, parent, false);
+        }
     }
 
     // Bind all data, including set text
@@ -37,7 +45,7 @@ public class TransactionCursorAdapter extends CursorAdapter {
         String description = cursor.getString(cursor.getColumnIndexOrThrow(MoMoneyContract.Transaction.COLUMN_NAME_DESCRIPTION));
         String category = cursor.getString(cursor.getColumnIndexOrThrow(MoMoneyContract.Transaction.COLUMN_NAME_CATEGORY));
         // Fill data
-        itemAmount.setText(Float.toString(amount));
+        itemAmount.setText(Float.toString(Math.abs(amount)));
         itemDate.setText(new Date(date).toString());
         itemDescription.setText(description);
         itemCategory.setText(category);
