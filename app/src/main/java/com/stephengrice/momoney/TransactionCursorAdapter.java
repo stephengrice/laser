@@ -7,15 +7,17 @@ import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.stephengrice.momoney.db.MoMoneyContract;
+import com.stephengrice.momoney.db.DbContract;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 
 public class TransactionCursorAdapter extends CursorAdapter {
 
-    float mAmount;
+    private float mAmount;
 
     public TransactionCursorAdapter(Context context, Cursor cursor) {
         super(context, cursor);
@@ -23,12 +25,7 @@ public class TransactionCursorAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        mAmount = cursor.getFloat(cursor.getColumnIndexOrThrow(MoMoneyContract.Transaction.COLUMN_NAME_AMOUNT));
-        if (mAmount > 0) {
-            return LayoutInflater.from(context).inflate(R.layout.item_transaction_positive, parent, false);
-        } else {
-            return LayoutInflater.from(context).inflate(R.layout.item_transaction_negative, parent, false);
-        }
+        return LayoutInflater.from(context).inflate(R.layout.item_transaction, parent, false);
     }
 
     // Bind all data, including set text
@@ -40,14 +37,30 @@ public class TransactionCursorAdapter extends CursorAdapter {
         TextView itemDescription = (TextView) view.findViewById(R.id.item_transaction_description);
         TextView itemCategory = (TextView) view.findViewById(R.id.item_transaction_category);
         // Extract data from cursor
-        float amount = cursor.getFloat(cursor.getColumnIndexOrThrow(MoMoneyContract.Transaction.COLUMN_NAME_AMOUNT));
-        long date = cursor.getLong(cursor.getColumnIndexOrThrow(MoMoneyContract.Transaction.COLUMN_NAME_DATE));
-        String description = cursor.getString(cursor.getColumnIndexOrThrow(MoMoneyContract.Transaction.COLUMN_NAME_DESCRIPTION));
-        String category = cursor.getString(cursor.getColumnIndexOrThrow(MoMoneyContract.Transaction.COLUMN_NAME_CATEGORY));
+        mAmount = cursor.getFloat(cursor.getColumnIndexOrThrow(DbContract.Transaction.COLUMN_NAME_AMOUNT));
+        long date = cursor.getLong(cursor.getColumnIndexOrThrow(DbContract.Transaction.COLUMN_NAME_DATE));
+        String description = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.Transaction.COLUMN_NAME_DESCRIPTION));
+        String category = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.Transaction.COLUMN_NAME_CATEGORY));
         // Fill data
-        itemAmount.setText(Float.toString(Math.abs(amount)));
+        String formattedAmount = new DecimalFormat("$0.00").format(Math.abs(mAmount));
+        itemAmount.setText(formattedAmount);
         itemDate.setText(new Date(date).toString());
         itemDescription.setText(description);
         itemCategory.setText(category);
+
+        // Conditional formatting - change from negative-appearing item to positive appearance
+        if (mAmount > 0) {
+            // Change bg color
+            view.setBackgroundColor(ContextCompat.getColor(context, R.color.colorTintGreen));
+            // Change icon imageview
+            ImageView imgIcon = (ImageView)view.findViewById(R.id.item_transaction_img);
+            imgIcon.setImageResource(R.drawable.ic_up_black);
+        } else {
+            // Change bg color
+            view.setBackgroundColor(ContextCompat.getColor(context, R.color.colorTintRed));
+            // Change icon imageview
+            ImageView imgIcon = (ImageView)view.findViewById(R.id.item_transaction_img);
+            imgIcon.setImageResource(R.drawable.ic_down_black);
+        }
     }
 }

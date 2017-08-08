@@ -2,8 +2,8 @@ package com.stephengrice.momoney.db;
 
 import android.provider.BaseColumns;
 
-public final class MoMoneyContract {
-    private MoMoneyContract() {}
+public final class DbContract {
+    private DbContract() {}
 
     public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "MoMoney.db";
@@ -30,7 +30,7 @@ public final class MoMoneyContract {
                 ")";
 
         public static final String SQL_DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
-        public static final String SQL_SELECT_ALL = "SELECT * FROM " + TABLE_NAME;
+        public static final String SQL_SELECT_ALL = "SELECT * FROM " + TABLE_NAME + " ORDER BY date DESC";
 
     }
     public static class Category implements BaseColumns {

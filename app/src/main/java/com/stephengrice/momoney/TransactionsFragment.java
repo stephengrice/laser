@@ -12,8 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.stephengrice.momoney.db.MoMoneyContract;
-import com.stephengrice.momoney.db.MoMoneyDbHelper;
+import com.stephengrice.momoney.db.DbContract;
+import com.stephengrice.momoney.db.DbHelper;
 
 
 /**
@@ -74,10 +74,10 @@ public class TransactionsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_transactions, container, false);
 
         // Create adapter
-        // Add row in database
-        MoMoneyDbHelper dbHelper = new MoMoneyDbHelper(getActivity());
+        // Select all rows
+        DbHelper dbHelper = new DbHelper(getActivity());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        Cursor cursor = db.rawQuery(MoMoneyContract.Transaction.SQL_SELECT_ALL, null);
+        Cursor cursor = db.rawQuery(DbContract.Transaction.SQL_SELECT_ALL, null);
         TransactionCursorAdapter adapter = new TransactionCursorAdapter(getActivity(), cursor);
 
         // Set adapter for ListView

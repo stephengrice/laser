@@ -34,10 +34,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Replace content_main with dash fragment
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.content_main, new DashFragment())
-                .commit();
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -45,9 +42,35 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        // Replace content_main with dash fragment
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.content_main, new DashFragment())
+                .commit();
+        // Select the dashboard menu item to start
+        navigationView.getMenu().getItem(0).setChecked(true);
+
+        // Set up back press for fragments
+        getSupportFragmentManager().addOnBackStackChangedListener(
+                new FragmentManager.OnBackStackChangedListener() {
+                    public void onBackStackChanged() {
+                        // Update UI
+                        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.content_main);
+                        if (currentFragment instanceof DashFragment) {
+                            navigationView.getMenu().getItem(0).setChecked(true);
+                        } else if (currentFragment instanceof BudgetFragment) {
+                            navigationView.getMenu().getItem(1).setChecked(true);
+                        } else if (currentFragment instanceof TransactionsFragment) {
+                            navigationView.getMenu().getItem(2).setChecked(true);
+                        } else if (currentFragment instanceof GoalsFragment) {
+                            navigationView.getMenu().getItem(3).setChecked(true);
+                        } else if (currentFragment instanceof AddFragment) {
+                            navigationView.getMenu().getItem(4).setChecked(true);
+                        }
+                    }
+                });
     }
 
     @Override

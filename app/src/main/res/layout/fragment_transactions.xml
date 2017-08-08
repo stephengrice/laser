@@ -22,7 +22,10 @@
         android:id="@+id/transactions_num_transactions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="3 transactions" />
+        android:text="3 transactions"
+        android:textStyle="bold"
+        android:gravity="center"
+        />
 
     <ListView
         android:id="@+id/transactions_listview"

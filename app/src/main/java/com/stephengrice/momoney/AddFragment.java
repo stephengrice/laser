@@ -1,13 +1,10 @@
 package com.stephengrice.momoney;
 
-import android.app.DatePickerDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -15,12 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ToggleButton;
 
-import com.stephengrice.momoney.db.MoMoneyContract;
-import com.stephengrice.momoney.db.MoMoneyDbHelper;
+import com.stephengrice.momoney.db.DbContract;
+import com.stephengrice.momoney.db.DbHelper;
 
 import java.util.Date;
 
@@ -165,15 +161,15 @@ public class AddFragment extends Fragment {
         }
 
         // Add row in database
-        MoMoneyDbHelper dbHelper = new MoMoneyDbHelper(getActivity());
+        DbHelper dbHelper = new DbHelper(getActivity());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         // Create ContentValues
         ContentValues values = new ContentValues();
-        values.put(MoMoneyContract.Transaction.COLUMN_NAME_AMOUNT, transactionAmount);
-        values.put(MoMoneyContract.Transaction.COLUMN_NAME_CATEGORY, transactionCategory);
-        values.put(MoMoneyContract.Transaction.COLUMN_NAME_DATE, new Date().getTime());
-        values.put(MoMoneyContract.Transaction.COLUMN_NAME_DESCRIPTION, transactionDescription);
-        long newRowId = db.insert(MoMoneyContract.Transaction.TABLE_NAME, null, values);
+        values.put(DbContract.Transaction.COLUMN_NAME_AMOUNT, transactionAmount);
+        values.put(DbContract.Transaction.COLUMN_NAME_CATEGORY, transactionCategory);
+        values.put(DbContract.Transaction.COLUMN_NAME_DATE, new Date().getTime());
+        values.put(DbContract.Transaction.COLUMN_NAME_DESCRIPTION, transactionDescription);
+        long newRowId = db.insert(DbContract.Transaction.TABLE_NAME, null, values);
 
         if (newRowId == -1) {
             Snackbar.make(view, "An error occurred.", MainActivity.SNACKBAR_TIME).show();

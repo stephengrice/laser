@@ -1,14 +1,21 @@
 package com.stephengrice.momoney;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.stephengrice.momoney.db.DbContract;
+import com.stephengrice.momoney.db.DbHelper;
+
+import java.text.DecimalFormat;
 
 
 /**
@@ -81,6 +88,19 @@ public class DashFragment extends Fragment {
                         .commit();
             }
         });
+
+        // Query DB and determine total balance
+        // Select all rows
+        DbHelper dbHelper = new DbHelper(getActivity());
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor cursor = db.rawQuery(DbContract.Transaction.SQL_SELECT_ALL, null);
+        float balance = 0;
+        while (cursor.moveToNext()) {
+            balance += cursor.getFloat(cursor.getColumnIndexOrThrow(DbContract.Transaction.COLUMN_NAME_AMOUNT));
+        }
+        // Fill view
+        TextView txtBalance = (TextView) view.findViewById(R.id.txt_balance);
+        txtBalance.setText(new DecimalFormat("$0.00").format(balance));
 
         // Inflate the layout for this fragment
         return view;
