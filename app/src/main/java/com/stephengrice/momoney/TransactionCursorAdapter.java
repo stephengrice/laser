@@ -40,14 +40,14 @@ public class TransactionCursorAdapter extends CursorAdapter {
         mAmount = cursor.getFloat(cursor.getColumnIndexOrThrow(DbContract.Transaction.COLUMN_NAME_AMOUNT));
         long date = cursor.getLong(cursor.getColumnIndexOrThrow(DbContract.Transaction.COLUMN_NAME_DATE));
         String description = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.Transaction.COLUMN_NAME_DESCRIPTION));
-        int category_id = cursor.getInt(cursor.getColumnIndexOrThrow(DbContract.Transaction.COLUMN_NAME_CATEGORY_ID));
+        long category_id = cursor.getLong(cursor.getColumnIndexOrThrow(DbContract.Transaction.COLUMN_NAME_CATEGORY_ID));
         String category = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.Category.COLUMN_NAME_TITLE));
         // Fill data
         String formattedAmount = new DecimalFormat("$0.00").format(Math.abs(mAmount));
         itemAmount.setText(formattedAmount);
         itemDate.setText(new Date(date).toString());
         itemDescription.setText(description);
-        itemCategory.setText(category);
+        itemCategory.setText(Long.toString(category_id) + " category: " + category);
 
         // Conditional formatting - change from negative-appearing item to positive appearance
         if (mAmount > 0) {

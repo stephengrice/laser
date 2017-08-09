@@ -22,15 +22,6 @@ import com.stephengrice.momoney.db.DbHelper;
 
 import java.util.Date;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link AddFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link AddFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class AddFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -96,6 +87,14 @@ public class AddFragment extends Fragment {
         AutoCompleteTextView autoComplete = (AutoCompleteTextView) view.findViewById(R.id.transaction_category_autocomplete);
         autoComplete.setAdapter(adapter);
 
+        // Sample data
+        // TODO remove this
+        // Add row in database
+        // Create ContentValues
+        ContentValues values = new ContentValues();
+        values.put(DbContract.Category.COLUMN_NAME_TITLE, "Sample Category");
+        long newRowId = db.insert(DbContract.Category.TABLE_NAME, null, values);
+
         return view;
     }
 
@@ -142,7 +141,7 @@ public class AddFragment extends Fragment {
         // Select elements containing user input
         EditText txtTransactionAmount = (EditText) view.findViewById(R.id.txt_transaction_amount);
         EditText txtTransactionDescription = (EditText) view.findViewById(R.id.txt_transaction_description);
-        EditText txtTransactionCategory = (EditText) view.findViewById(R.id.txt_transaction_category);
+        AutoCompleteTextView txtTransactionCategory = (AutoCompleteTextView) view.findViewById(R.id.transaction_category_autocomplete);
         ToggleButton btnEarned = (ToggleButton) view.findViewById(R.id.btn_earned_spent);
         // Get values for input to DB
         boolean positive = btnEarned.isChecked();
@@ -153,7 +152,7 @@ public class AddFragment extends Fragment {
             transactionAmount = 0;
         }
         String transactionDescription = txtTransactionDescription.getText().toString();
-        String transactionCategory = txtTransactionCategory.getText().toString();
+        //String transactionCategory = txtTransactionCategory.getText().toString();
         if (!positive) {
             transactionAmount = -transactionAmount;
         }
@@ -171,14 +170,26 @@ public class AddFragment extends Fragment {
             return;
         }
 
-        // Add row in database
+
+
+        // Add transaction row in database
         DbHelper dbHelper = new DbHelper(getActivity());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         // Create ContentValues
         ContentValues values = new ContentValues();
         values.put(DbContract.Transaction.COLUMN_NAME_AMOUNT, transactionAmount);
-        values.put(DbContract.Transaction.COLUMN_NAME_CATEGORY_ID, transactionCategory);
         values.put(DbContract.Transaction.COLUMN_NAME_DATE, new Date().getTime());
+
+        // Sort out whether to include a category_id (if the field is empty, don't)
+        String mTitle = txtTransactionCategory.getText().toString();
+        if (mTitle.length() < 1) {
+            // Add the category or lookup. Either way, get the row id
+            long category_id = getCategoryId(txtTransactionCategory.getText().toString());
+            values.put(DbContract.Transaction.COLUMN_NAME_CATEGORY_ID, category_id);
+        } else {
+            values.putNull(DbContract.Transaction.COLUMN_NAME_CATEGORY_ID);
+        }
+
         values.put(DbContract.Transaction.COLUMN_NAME_DESCRIPTION, transactionDescription);
         long newRowId = db.insert(DbContract.Transaction.TABLE_NAME, null, values);
 
@@ -190,6 +201,32 @@ public class AddFragment extends Fragment {
                     .replace(R.id.content_main, new TransactionsFragment())
                     .addToBackStack(null)
                     .commit();
+        }
+    }
+
+    /**
+     * Pass in a category title
+     * IF category exists, get the id for it
+     * ELSE create a new category and return its id
+     * @param title Category title (case insensitive)
+     * @return id of category row with given title
+     */
+    private long getCategoryId(String title) {
+        // Determine whether this category exists
+        DbHelper dbHelper = new DbHelper(getActivity());
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor cursor = db.rawQuery(DbContract.Category.sqlSelectByTitle(title), null);
+
+        if (cursor.getCount() == 1) {
+            long rowId = cursor.getLong(cursor.getColumnIndexOrThrow(DbContract.Category._ID));
+            cursor.close();
+            return rowId;
+        } else {
+            // Create new row
+            cursor.close();
+            ContentValues values = new ContentValues();
+            values.put(DbContract.Category.COLUMN_NAME_TITLE, title);
+            return db.insert(DbContract.Category.TABLE_NAME, null, values);
         }
     }
 }

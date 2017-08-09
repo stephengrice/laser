@@ -1,5 +1,6 @@
 package com.stephengrice.momoney.db;
 
+import android.database.DatabaseUtils;
 import android.provider.BaseColumns;
 
 public final class DbContract {
@@ -48,5 +49,9 @@ public final class DbContract {
         public static final String SQL_DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
         public static final String SQL_SELECT_ALL = "SELECT * FROM " + TABLE_NAME
                 + " ORDER BY title DESC";
+
+        public static final String sqlSelectByTitle(String title) {
+            return "SELECT 1 FROM " + TABLE_NAME + " WHERE title='" + DatabaseUtils.sqlEscapeString(title) + "'";
+        }
     }
 }
