@@ -43,6 +43,11 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:hint="Category (optional)" />
+    <AutoCompleteTextView
+        android:id="@+id/transaction_category_autocomplete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
 
     <Button
         android:id="@+id/btn_save_transaction"

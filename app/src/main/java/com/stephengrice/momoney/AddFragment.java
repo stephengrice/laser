@@ -2,6 +2,7 @@ package com.stephengrice.momoney;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ToggleButton;
@@ -84,6 +86,15 @@ public class AddFragment extends Fragment {
                 addTransaction(view);
             }
         });
+
+        // Create adapter for categories autocomplete
+        DbHelper dbHelper = new DbHelper(getActivity());
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor cursor = db.rawQuery(DbContract.Category.SQL_SELECT_ALL, null);
+        CategoryCursorAdapter adapter = new CategoryCursorAdapter(getActivity(), cursor);
+        // Set adapter
+        AutoCompleteTextView autoComplete = (AutoCompleteTextView) view.findViewById(R.id.transaction_category_autocomplete);
+        autoComplete.setAdapter(adapter);
 
         return view;
     }
@@ -166,7 +177,7 @@ public class AddFragment extends Fragment {
         // Create ContentValues
         ContentValues values = new ContentValues();
         values.put(DbContract.Transaction.COLUMN_NAME_AMOUNT, transactionAmount);
-        values.put(DbContract.Transaction.COLUMN_NAME_CATEGORY, transactionCategory);
+        values.put(DbContract.Transaction.COLUMN_NAME_CATEGORY_ID, transactionCategory);
         values.put(DbContract.Transaction.COLUMN_NAME_DATE, new Date().getTime());
         values.put(DbContract.Transaction.COLUMN_NAME_DESCRIPTION, transactionDescription);
         long newRowId = db.insert(DbContract.Transaction.TABLE_NAME, null, values);
