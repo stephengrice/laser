@@ -51,7 +51,7 @@ public final class DbContract {
                 + " ORDER BY title DESC";
 
         public static final String sqlSelectByTitle(String title) {
-            return "SELECT 1 FROM " + TABLE_NAME + " WHERE title='" + DatabaseUtils.sqlEscapeString(title) + "'";
+            return "SELECT 1 FROM " + TABLE_NAME + " WHERE title=" + DatabaseUtils.sqlEscapeString(title);
         }
     }
 }

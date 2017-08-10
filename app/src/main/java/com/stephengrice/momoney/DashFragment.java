@@ -98,6 +98,7 @@ public class DashFragment extends Fragment {
         while (cursor.moveToNext()) {
             balance += cursor.getFloat(cursor.getColumnIndexOrThrow(DbContract.Transaction.COLUMN_NAME_AMOUNT));
         }
+        cursor.close();
         // Fill view
         TextView txtBalance = (TextView) view.findViewById(R.id.txt_balance);
         txtBalance.setText(new DecimalFormat("$0.00").format(balance));
