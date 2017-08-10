@@ -35,7 +35,9 @@ public final class DbContract {
         public static final String SQL_SELECT_ALL = "SELECT * FROM " + TABLE_NAME
                 + " LEFT JOIN categories on " + COLUMN_NAME_CATEGORY_ID + "=" + Category.TABLE_NAME + "." + Category._ID + " "
                 + " ORDER BY date DESC";
-
+        public static final String sqlSelectByCategoryId(int category_id) {
+            return "SELECT 1 FROM " + TABLE_NAME + " WHERE "+COLUMN_NAME_CATEGORY_ID+"=" + category_id;
+        }
     }
     public static class Category implements BaseColumns {
         public static final String TABLE_NAME = "categories";

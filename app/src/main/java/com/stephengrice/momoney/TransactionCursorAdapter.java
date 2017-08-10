@@ -47,7 +47,7 @@ public class TransactionCursorAdapter extends CursorAdapter {
         itemAmount.setText(formattedAmount);
         itemDate.setText(new Date(date).toString());
         itemDescription.setText(description);
-        itemCategory.setText("category id: " + Long.toString(category_id) + " category title: " + category);
+        itemCategory.setText((category_id < 1 ? "Uncategorized" : category));
 
         // Conditional formatting - change from negative-appearing item to positive appearance
         if (mAmount > 0) {

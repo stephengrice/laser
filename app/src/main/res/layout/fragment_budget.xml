@@ -28,11 +28,11 @@
         android:textStyle="bold"
         android:text="In" />
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        app:srcCompat="@android:drawable/ic_menu_more" />
+    <com.github.mikephil.charting.charts.PieChart
+    android:id="@+id/chart_in"
+        android:layout_weight="1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
 
     <TextView
         android:id="@+id/textView4"
@@ -43,10 +43,10 @@
         android:textSize="20sp"
         android:text="Out" />
 
-    <ImageView
-        android:id="@+id/imageView3"
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/chart_out"
+        android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        app:srcCompat="@android:drawable/alert_light_frame" />
+        android:layout_height="match_parent" />
 
 </LinearLayout>

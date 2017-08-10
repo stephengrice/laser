@@ -90,15 +90,7 @@ public class DashFragment extends Fragment {
         });
 
         // Query DB and determine total balance
-        // Select all rows
-        DbHelper dbHelper = new DbHelper(getActivity());
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        Cursor cursor = db.rawQuery(DbContract.Transaction.SQL_SELECT_ALL, null);
-        float balance = 0;
-        while (cursor.moveToNext()) {
-            balance += cursor.getFloat(cursor.getColumnIndexOrThrow(DbContract.Transaction.COLUMN_NAME_AMOUNT));
-        }
-        cursor.close();
+        float balance = DbHelper.getBalance(getActivity());
         // Fill view
         TextView txtBalance = (TextView) view.findViewById(R.id.txt_balance);
         txtBalance.setText(new DecimalFormat("$0.00").format(balance));

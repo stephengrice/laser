@@ -8,6 +8,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
+import com.stephengrice.momoney.db.DbHelper;
+
+import java.util.ArrayList;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -64,7 +74,15 @@ public class BudgetFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_budget, container, false);
+        View view = inflater.inflate(R.layout.fragment_budget, container, false);
+
+        PieChart chartIn = (PieChart) view.findViewById(R.id.chart_in);
+        fillChartIn(chartIn);
+
+        PieChart chartOut = (PieChart) view.findViewById(R.id.chart_out);
+        fillChartOut(chartOut);
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -105,4 +123,75 @@ public class BudgetFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    private void fillChartIn(PieChart chart) {
+        ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
+        entries.add(new PieEntry(5.0f, "Salary"));
+        entries.add(new PieEntry(6.0f, "eBay"));
+        PieDataSet dataSet = new PieDataSet(entries, "");
+        PieData data = new PieData();
+        data.setDataSet(dataSet);
+
+        // add a lot of colors
+
+        ArrayList<Integer> colors = new ArrayList<Integer>();
+
+        for (int c : ColorTemplate.VORDIPLOM_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.JOYFUL_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.COLORFUL_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.LIBERTY_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.PASTEL_COLORS)
+            colors.add(c);
+
+        colors.add(ColorTemplate.getHoloBlue());
+
+        dataSet.setColors(colors);
+        chart.setData(data);
+        chart.getDescription().setEnabled(false);
+        chart.invalidate();
+    }
+
+    private void fillChartOut(PieChart chart) {
+        ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
+        entries.add(new PieEntry(5.0f, "Food"));
+        entries.add(new PieEntry(6.0f, "Gas"));
+        PieDataSet dataSet = new PieDataSet(entries, "");
+        PieData data = new PieData();
+        data.setDataSet(dataSet);
+
+        // add a lot of colors
+
+        ArrayList<Integer> colors = new ArrayList<Integer>();
+
+        for (int c : ColorTemplate.VORDIPLOM_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.JOYFUL_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.COLORFUL_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.LIBERTY_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.PASTEL_COLORS)
+            colors.add(c);
+
+        colors.add(ColorTemplate.getHoloBlue());
+
+        dataSet.setColors(colors);
+        chart.setData(data);
+        chart.getDescription().setEnabled(false);
+        chart.invalidate();
+    }
 }
+

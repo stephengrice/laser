@@ -15,6 +15,8 @@ import android.widget.TextView;
 import com.stephengrice.momoney.db.DbContract;
 import com.stephengrice.momoney.db.DbHelper;
 
+import java.text.DecimalFormat;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -84,9 +86,15 @@ public class TransactionsFragment extends Fragment {
         ListView listView = (ListView)view.findViewById(R.id.transactions_listview);
         listView.setAdapter(adapter);
 
+        float balance = DbHelper.getBalance(getActivity());
+        String formattedBalance = new DecimalFormat("$0.00").format(balance);
         // Set number of rows
         TextView txtTransactions = (TextView)view.findViewById(R.id.transactions_num_transactions);
-        txtTransactions.setText(Integer.toString(cursor.getCount()) + " transaction" + (cursor.getCount() == 1 ? "" : "s"));
+        txtTransactions.setText(
+                        Integer.toString(cursor.getCount()) +
+                        " transaction" + (cursor.getCount() == 1 ? "" : "s") +
+                        " : " + formattedBalance
+        );
 
         return view;
     }
