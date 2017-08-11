@@ -1,4 +1,4 @@
-package com.stephengrice.momoney;
+package com.stephengrice.laser;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +19,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ToggleButton;
 
-import com.stephengrice.momoney.db.DbContract;
-import com.stephengrice.momoney.db.DbHelper;
+import com.stephengrice.laser.db.DbContract;
+import com.stephengrice.laser.db.DbHelper;
 
 import java.util.Date;
 
@@ -87,6 +88,19 @@ public class AddFragment extends Fragment {
         // Set adapter
         AutoCompleteTextView autoComplete = (AutoCompleteTextView) view.findViewById(R.id.transaction_category_autocomplete);
         autoComplete.setAdapter(adapter);
+
+        // Set onclick listener for spent/earned toggle to change bg color
+        final ToggleButton btnSpentEarned = (ToggleButton) view.findViewById(R.id.btn_earned_spent);
+        btnSpentEarned.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (btnSpentEarned.isChecked()) {
+                    btnSpentEarned.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintGreen));
+                } else {
+                    btnSpentEarned.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintRed));
+                }
+            }
+        });
 
         return view;
     }
@@ -208,7 +222,7 @@ public class AddFragment extends Fragment {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         Cursor cursor = db.rawQuery(DbContract.Category.sqlSelectByTitle(title), null);
 
-        if (cursor.getCount() == 1) {
+        if (cursor.moveToFirst()) {
             long rowId = cursor.getLong(cursor.getColumnIndexOrThrow(DbContract.Category._ID));
             cursor.close();
             return rowId;

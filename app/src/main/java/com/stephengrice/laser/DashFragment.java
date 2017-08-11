@@ -1,23 +1,29 @@
-package com.stephengrice.momoney;
+package com.stephengrice.laser;
 
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.stephengrice.laser.db.DbHelper;
+
+import java.text.DecimalFormat;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link GoalsFragment.OnFragmentInteractionListener} interface
+ * {@link DashFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link GoalsFragment#newInstance} factory method to
+ * Use the {@link DashFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class GoalsFragment extends Fragment {
+public class DashFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -29,7 +35,7 @@ public class GoalsFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public GoalsFragment() {
+    public DashFragment() {
         // Required empty public constructor
     }
 
@@ -39,11 +45,11 @@ public class GoalsFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment GoalsFragment.
+     * @return A new instance of fragment DashFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static GoalsFragment newInstance(String param1, String param2) {
-        GoalsFragment fragment = new GoalsFragment();
+    public static DashFragment newInstance(String param1, String param2) {
+        DashFragment fragment = new DashFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -60,11 +66,34 @@ public class GoalsFragment extends Fragment {
         }
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_dash, container, false);
+
+        // Floating Action Button code
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Navigate to AddFragment
+                getFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_main, new AddFragment())
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
+        // Query DB and determine total balance
+        float balance = DbHelper.getBalance(getActivity());
+        // Fill view
+        TextView txtBalance = (TextView) view.findViewById(R.id.txt_balance);
+        txtBalance.setText(new DecimalFormat("$0.00").format(balance));
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_goals, container, false);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.stephengrice.momoney.AddFragment">
+    tools:context="com.stephengrice.laser.AddFragment">
 
     <TextView
         android:gravity="center_horizontal"
@@ -25,6 +25,8 @@
         android:id="@+id/btn_earned_spent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:checked="false"
+        android:background="@color/colorTintRed"
         android:textOff="Spent"
         android:textOn="Earned"/>
 

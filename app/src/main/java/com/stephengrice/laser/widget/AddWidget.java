@@ -1,4 +1,4 @@
-package com.stephengrice.momoney.widget;
+package com.stephengrice.laser.widget;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -7,8 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 
-import com.stephengrice.momoney.MainActivity;
-import com.stephengrice.momoney.R;
+import com.stephengrice.laser.MainActivity;
+import com.stephengrice.laser.R;
 
 /**
  * Implementation of App Widget functionality.

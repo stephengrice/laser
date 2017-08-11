@@ -1,16 +1,17 @@
-package com.stephengrice.momoney;
+package com.stephengrice.laser;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.CursorAdapter;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.stephengrice.momoney.db.DbContract;
+import com.stephengrice.laser.db.DbContract;
 
 import java.text.DecimalFormat;
 import java.util.Date;
@@ -42,10 +43,12 @@ public class TransactionCursorAdapter extends CursorAdapter {
         String description = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.Transaction.COLUMN_NAME_DESCRIPTION));
         long category_id = cursor.getLong(cursor.getColumnIndexOrThrow(DbContract.Transaction.COLUMN_NAME_CATEGORY_ID));
         String category = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.Category.COLUMN_NAME_TITLE));
-        // Fill data
+
         String formattedAmount = new DecimalFormat("$0.00").format(Math.abs(mAmount));
+        String formattedDate = DateUtils.getRelativeDateTimeString(context, date, 0, DateUtils.WEEK_IN_MILLIS, 0).toString();
+        // Fill data
         itemAmount.setText(formattedAmount);
-        itemDate.setText(new Date(date).toString());
+        itemDate.setText(formattedDate);
         itemDescription.setText(description);
         // If category_id is 0, it is not set, so display the no_category string. Otherwise, display the category title
         itemCategory.setText((category_id < 1 ? view.getResources().getString(R.string.no_category) : category));

@@ -1,32 +1,23 @@
-package com.stephengrice.momoney;
+package com.stephengrice.laser;
 
 import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.TextView;
-
-import com.stephengrice.momoney.db.DbContract;
-import com.stephengrice.momoney.db.DbHelper;
-
-import java.text.DecimalFormat;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link TransactionsFragment.OnFragmentInteractionListener} interface
+ * {@link GoalsFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link TransactionsFragment#newInstance} factory method to
+ * Use the {@link GoalsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TransactionsFragment extends Fragment {
+public class GoalsFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -38,7 +29,7 @@ public class TransactionsFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public TransactionsFragment() {
+    public GoalsFragment() {
         // Required empty public constructor
     }
 
@@ -48,11 +39,11 @@ public class TransactionsFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment TransactionsFragment.
+     * @return A new instance of fragment GoalsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static TransactionsFragment newInstance(String param1, String param2) {
-        TransactionsFragment fragment = new TransactionsFragment();
+    public static GoalsFragment newInstance(String param1, String param2) {
+        GoalsFragment fragment = new GoalsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -73,30 +64,7 @@ public class TransactionsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_transactions, container, false);
-
-        // Create adapter
-        // Select all rows
-        DbHelper dbHelper = new DbHelper(getActivity());
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        Cursor cursor = db.rawQuery(DbContract.Transaction.SQL_SELECT_ALL, null);
-        TransactionCursorAdapter adapter = new TransactionCursorAdapter(getActivity(), cursor);
-
-        // Set adapter for ListView
-        ListView listView = (ListView)view.findViewById(R.id.transactions_listview);
-        listView.setAdapter(adapter);
-
-        float balance = DbHelper.getBalance(getActivity());
-        String formattedBalance = new DecimalFormat("$0.00").format(balance);
-        // Set number of rows
-        TextView txtTransactions = (TextView)view.findViewById(R.id.transactions_num_transactions);
-        txtTransactions.setText(
-                        Integer.toString(cursor.getCount()) +
-                        " transaction" + (cursor.getCount() == 1 ? "" : "s") +
-                        " : " + formattedBalance
-        );
-
-        return view;
+        return inflater.inflate(R.layout.fragment_goals, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

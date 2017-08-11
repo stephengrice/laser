@@ -1,4 +1,4 @@
-package com.stephengrice.momoney;
+package com.stephengrice.laser;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -10,12 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.stephengrice.momoney.db.DbHelper;
+import com.stephengrice.laser.db.DbHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;

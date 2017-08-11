@@ -1,4 +1,4 @@
-package com.stephengrice.momoney.db;
+package com.stephengrice.laser.db;
 
 
 import android.content.Context;
@@ -6,11 +6,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.stephengrice.momoney.R;
+import com.stephengrice.laser.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
 public class DbHelper extends SQLiteOpenHelper {
 

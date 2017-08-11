@@ -1,4 +1,4 @@
-package com.stephengrice.momoney.db;
+package com.stephengrice.laser.db;
 
 import android.database.DatabaseUtils;
 import android.provider.BaseColumns;
@@ -7,7 +7,7 @@ public final class DbContract {
     private DbContract() {}
 
     public static final int DATABASE_VERSION = 3;
-    public static final String DATABASE_NAME = "MoMoney.db";
+    public static final String DATABASE_NAME = "Laser.db";
 
     private static final String TEXT_TYPE = " TEXT";
     private static final String REAL_TYPE = " REAL";
@@ -36,7 +36,7 @@ public final class DbContract {
                 + " LEFT JOIN categories on " + COLUMN_NAME_CATEGORY_ID + "=" + Category.TABLE_NAME + "." + Category._ID + " "
                 + " ORDER BY date DESC";
         public static final String sqlSelectByCategoryId(int category_id) {
-            return "SELECT 1 FROM " + TABLE_NAME + " WHERE "+COLUMN_NAME_CATEGORY_ID+"=" + category_id;
+            return "SELECT * FROM " + TABLE_NAME + " WHERE "+COLUMN_NAME_CATEGORY_ID+"=" + category_id;
         }
 
         // Hopefully this double use won't cause problems: also allow this class to hold a Transaction object from DB
@@ -67,7 +67,7 @@ public final class DbContract {
                 + " ORDER BY title DESC";
 
         public static final String sqlSelectByTitle(String title) {
-            return "SELECT 1 FROM " + TABLE_NAME + " WHERE title=" + DatabaseUtils.sqlEscapeString(title);
+            return "SELECT * FROM " + TABLE_NAME + " WHERE title=" + DatabaseUtils.sqlEscapeString(title);
         }
 
     }

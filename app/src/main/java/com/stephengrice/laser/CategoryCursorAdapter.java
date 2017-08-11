@@ -1,4 +1,4 @@
-package com.stephengrice.momoney;
+package com.stephengrice.laser;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.stephengrice.momoney.db.DbContract;
+import com.stephengrice.laser.db.DbContract;
 
 public class CategoryCursorAdapter extends CursorAdapter {
 

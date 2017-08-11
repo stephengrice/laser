@@ -1,4 +1,4 @@
-package com.stephengrice.momoney;
+package com.stephengrice.laser;
 
 import org.junit.Test;
 
