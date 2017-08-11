@@ -88,14 +88,6 @@ public class AddFragment extends Fragment {
         AutoCompleteTextView autoComplete = (AutoCompleteTextView) view.findViewById(R.id.transaction_category_autocomplete);
         autoComplete.setAdapter(adapter);
 
-        // Sample data
-        // TODO remove this
-        // Add row in database
-        // Create ContentValues
-        ContentValues values = new ContentValues();
-        values.put(DbContract.Category.COLUMN_NAME_TITLE, "Sample Category");
-        long newRowId = db.insert(DbContract.Category.TABLE_NAME, null, values);
-
         return view;
     }
 

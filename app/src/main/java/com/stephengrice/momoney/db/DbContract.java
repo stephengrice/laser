@@ -38,6 +38,20 @@ public final class DbContract {
         public static final String sqlSelectByCategoryId(int category_id) {
             return "SELECT 1 FROM " + TABLE_NAME + " WHERE "+COLUMN_NAME_CATEGORY_ID+"=" + category_id;
         }
+
+        // Hopefully this double use won't cause problems: also allow this class to hold a Transaction object from DB
+        public float amount;
+        public int date;
+        public String description;
+        public int category_id;
+        String category_title;
+        public Transaction(float amount, int date, String description, int category_id, String category_title) {
+            this.amount = amount;
+            this.date = date;
+            this.description = description;
+            this.category_id = category_id;
+            this.category_title = category_title;
+        }
     }
     public static class Category implements BaseColumns {
         public static final String TABLE_NAME = "categories";
@@ -55,5 +69,6 @@ public final class DbContract {
         public static final String sqlSelectByTitle(String title) {
             return "SELECT 1 FROM " + TABLE_NAME + " WHERE title=" + DatabaseUtils.sqlEscapeString(title);
         }
+
     }
 }

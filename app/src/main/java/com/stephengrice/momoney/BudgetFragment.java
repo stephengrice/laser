@@ -1,6 +1,7 @@
 package com.stephengrice.momoney;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,7 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.stephengrice.momoney.db.DbHelper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 /**
@@ -77,10 +79,10 @@ public class BudgetFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_budget, container, false);
 
         PieChart chartIn = (PieChart) view.findViewById(R.id.chart_in);
-        fillChartIn(chartIn);
+        fillChart(chartIn, DbHelper.CountMode.POSITIVE);
 
         PieChart chartOut = (PieChart) view.findViewById(R.id.chart_out);
-        fillChartOut(chartOut);
+        fillChart(chartOut, DbHelper.CountMode.NEGATIVE);
 
         return view;
     }
@@ -124,10 +126,17 @@ public class BudgetFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    private void fillChartIn(PieChart chart) {
+    private void fillChart(PieChart chart, DbHelper.CountMode mode) {
+        // Get category counts
+        HashMap<String, Integer> categories = DbHelper.countCategories(getActivity(), mode);
+        // Create entries and fill
         ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
-        entries.add(new PieEntry(5.0f, "Salary"));
-        entries.add(new PieEntry(6.0f, "eBay"));
+
+        // Populate pie entries with category data
+        for (HashMap.Entry<String, Integer> categoryEntry : categories.entrySet()) {
+            entries.add(new PieEntry(categoryEntry.getValue(), categoryEntry.getKey()));
+        }
+
         PieDataSet dataSet = new PieDataSet(entries, "");
         PieData data = new PieData();
         data.setDataSet(dataSet);
@@ -155,41 +164,7 @@ public class BudgetFragment extends Fragment {
 
         dataSet.setColors(colors);
         chart.setData(data);
-        chart.getDescription().setEnabled(false);
-        chart.invalidate();
-    }
-
-    private void fillChartOut(PieChart chart) {
-        ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
-        entries.add(new PieEntry(5.0f, "Food"));
-        entries.add(new PieEntry(6.0f, "Gas"));
-        PieDataSet dataSet = new PieDataSet(entries, "");
-        PieData data = new PieData();
-        data.setDataSet(dataSet);
-
-        // add a lot of colors
-
-        ArrayList<Integer> colors = new ArrayList<Integer>();
-
-        for (int c : ColorTemplate.VORDIPLOM_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.JOYFUL_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.COLORFUL_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.LIBERTY_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.PASTEL_COLORS)
-            colors.add(c);
-
-        colors.add(ColorTemplate.getHoloBlue());
-
-        dataSet.setColors(colors);
-        chart.setData(data);
+        chart.setEntryLabelColor(Color.BLACK);
         chart.getDescription().setEnabled(false);
         chart.invalidate();
     }
