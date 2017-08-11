@@ -1,6 +1,7 @@
 package com.stephengrice.laser.db;
 
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -43,6 +44,7 @@ public class DbHelper extends SQLiteOpenHelper {
             balance += cursor.getFloat(cursor.getColumnIndexOrThrow(DbContract.Transaction.COLUMN_NAME_AMOUNT));
         }
         cursor.close();
+        db.close();
 
         return balance;
     }
@@ -66,6 +68,7 @@ public class DbHelper extends SQLiteOpenHelper {
             result.add(current);
         }
         cursor.close();
+        db.close();
 
         return result;
     }
@@ -108,4 +111,29 @@ public class DbHelper extends SQLiteOpenHelper {
         return result;
     }
 
+    /**
+     * Pass in a category title
+     * IF category exists, get the id for it
+     * ELSE create a new category and return its id
+     * @param title Category title (case insensitive)
+     * @return id of category row with given title
+     */
+    public static long getCategoryId(Context context, String title) {
+        // Determine whether this category exists
+        DbHelper dbHelper = new DbHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor cursor = db.rawQuery(DbContract.Category.sqlSelectByTitle(title), null);
+
+        if (cursor.moveToFirst()) {
+            long rowId = cursor.getLong(cursor.getColumnIndexOrThrow(DbContract.Category._ID));
+            cursor.close();
+            return rowId;
+        } else {
+            // Create new row
+            cursor.close();
+            ContentValues values = new ContentValues();
+            values.put(DbContract.Category.COLUMN_NAME_TITLE, title);
+            return db.insert(DbContract.Category.TABLE_NAME, null, values);
+        }
+    }
 }

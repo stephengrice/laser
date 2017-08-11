@@ -37,6 +37,8 @@ public class TransactionsFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    private Cursor mCursor;
+    private SQLiteDatabase mDatabase;
 
     public TransactionsFragment() {
         // Required empty public constructor
@@ -78,9 +80,9 @@ public class TransactionsFragment extends Fragment {
         // Create adapter
         // Select all rows
         DbHelper dbHelper = new DbHelper(getActivity());
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        Cursor cursor = db.rawQuery(DbContract.Transaction.SQL_SELECT_ALL, null);
-        TransactionCursorAdapter adapter = new TransactionCursorAdapter(getActivity(), cursor);
+        mDatabase = dbHelper.getWritableDatabase();
+        mCursor = mDatabase.rawQuery(DbContract.Transaction.SQL_SELECT_ALL, null);
+        TransactionCursorAdapter adapter = new TransactionCursorAdapter(getActivity(), mCursor);
 
         // Set adapter for ListView
         ListView listView = (ListView)view.findViewById(R.id.transactions_listview);
@@ -91,8 +93,8 @@ public class TransactionsFragment extends Fragment {
         // Set number of rows
         TextView txtTransactions = (TextView)view.findViewById(R.id.transactions_num_transactions);
         txtTransactions.setText(
-                        Integer.toString(cursor.getCount()) +
-                        " transaction" + (cursor.getCount() == 1 ? "" : "s") +
+                        Integer.toString(mCursor.getCount()) +
+                        " transaction" + (mCursor.getCount() == 1 ? "" : "s") +
                         " : " + formattedBalance
         );
 
@@ -121,6 +123,12 @@ public class TransactionsFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        if (mCursor != null) {
+            mCursor.close();
+        }
+        if (mDatabase != null) {
+            mDatabase.close();
+        }
     }
 
     /**

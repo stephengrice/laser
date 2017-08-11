@@ -35,4 +35,6 @@ public class CategoryCursorAdapter extends CursorAdapter {
     private String getTitle(Cursor cursor) {
         return cursor.getString(cursor.getColumnIndexOrThrow(DbContract.Category.COLUMN_NAME_TITLE));
     }
+
+
 }
