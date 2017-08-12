@@ -73,9 +73,9 @@ public class DbHelper extends SQLiteOpenHelper {
         return result;
     }
 
-    public static HashMap<String, Integer> countCategories(Context context, CountMode mode) {
+    public static HashMap<String, Float> countByCategory(Context context, CountMode mode) {
         // Create result object (to be returned)
-        HashMap<String, Integer> result = new HashMap<String, Integer>();
+        HashMap<String, Float> result = new HashMap<String, Float>();
         // Get arraylist of all transactions
         ArrayList<DbContract.Transaction> transactions = getTransactions(context);
 
@@ -95,16 +95,16 @@ public class DbHelper extends SQLiteOpenHelper {
                     break;
             }
 
+            // Replace no_category entries with proper string resource
+            if (transaction.category_title == null || transaction.category_title.length() < 1) {
+                transaction.category_title = context.getResources().getString(R.string.no_category);
+            }
+
             // Initialize or increment the key for this transaction's title
             if (!result.containsKey(transaction.category_title)) {
-                // Replace no_category entries with proper string resource
-                if (transaction.category_title == null || transaction.category_title.length() < 1) {
-                    result.put(context.getResources().getString(R.string.no_category), 1);
-                } else {
-                    result.put(transaction.category_title, 1);
-                }
+                result.put(transaction.category_title, transaction.amount);
             } else {
-                result.put(transaction.category_title, result.get(transaction.category_title) + 1);
+                result.put(transaction.category_title, result.get(transaction.category_title) + transaction.amount);
             }
         }
 

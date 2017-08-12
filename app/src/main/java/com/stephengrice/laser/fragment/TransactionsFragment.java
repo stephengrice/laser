@@ -1,34 +1,34 @@
-package com.stephengrice.laser;
+package com.stephengrice.laser.fragment;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.TextView;
 
-import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.utils.ColorTemplate;
+import com.stephengrice.laser.R;
+import com.stephengrice.laser.TransactionCursorAdapter;
+import com.stephengrice.laser.db.DbContract;
 import com.stephengrice.laser.db.DbHelper;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.text.DecimalFormat;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link BudgetFragment.OnFragmentInteractionListener} interface
+ * {@link TransactionsFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link BudgetFragment#newInstance} factory method to
+ * Use the {@link TransactionsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BudgetFragment extends Fragment {
+public class TransactionsFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -39,8 +39,10 @@ public class BudgetFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    private Cursor mCursor;
+    private SQLiteDatabase mDatabase;
 
-    public BudgetFragment() {
+    public TransactionsFragment() {
         // Required empty public constructor
     }
 
@@ -50,11 +52,11 @@ public class BudgetFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment BudgetFragment.
+     * @return A new instance of fragment TransactionsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static BudgetFragment newInstance(String param1, String param2) {
-        BudgetFragment fragment = new BudgetFragment();
+    public static TransactionsFragment newInstance(String param1, String param2) {
+        TransactionsFragment fragment = new TransactionsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -75,13 +77,28 @@ public class BudgetFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_budget, container, false);
+        View view = inflater.inflate(R.layout.fragment_transactions, container, false);
 
-        PieChart chartIn = (PieChart) view.findViewById(R.id.chart_in);
-        fillChart(chartIn, DbHelper.CountMode.POSITIVE);
+        // Create adapter
+        // Select all rows
+        DbHelper dbHelper = new DbHelper(getActivity());
+        mDatabase = dbHelper.getWritableDatabase();
+        mCursor = mDatabase.rawQuery(DbContract.Transaction.SQL_SELECT_ALL, null);
+        TransactionCursorAdapter adapter = new TransactionCursorAdapter(getActivity(), mCursor);
 
-        PieChart chartOut = (PieChart) view.findViewById(R.id.chart_out);
-        fillChart(chartOut, DbHelper.CountMode.NEGATIVE);
+        // Set adapter for ListView
+        ListView listView = (ListView)view.findViewById(R.id.transactions_listview);
+        listView.setAdapter(adapter);
+
+        float balance = DbHelper.getBalance(getActivity());
+        String formattedBalance = new DecimalFormat("$0.00").format(balance);
+        // Set number of rows
+        TextView txtTransactions = (TextView)view.findViewById(R.id.transactions_num_transactions);
+        txtTransactions.setText(
+                        Integer.toString(mCursor.getCount()) +
+                        " transaction" + (mCursor.getCount() == 1 ? "" : "s") +
+                        " : " + formattedBalance
+        );
 
         return view;
     }
@@ -108,6 +125,12 @@ public class BudgetFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        if (mCursor != null) {
+            mCursor.close();
+        }
+        if (mDatabase != null) {
+            mDatabase.close();
+        }
     }
 
     /**
@@ -124,48 +147,4 @@ public class BudgetFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-
-    private void fillChart(PieChart chart, DbHelper.CountMode mode) {
-        // Get category counts
-        HashMap<String, Integer> categories = DbHelper.countCategories(getActivity(), mode);
-        // Create entries and fill
-        ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
-
-        // Populate pie entries with category data
-        for (HashMap.Entry<String, Integer> categoryEntry : categories.entrySet()) {
-            entries.add(new PieEntry(categoryEntry.getValue(), categoryEntry.getKey()));
-        }
-
-        PieDataSet dataSet = new PieDataSet(entries, "");
-        PieData data = new PieData();
-        data.setDataSet(dataSet);
-
-        // add a lot of colors
-
-        ArrayList<Integer> colors = new ArrayList<Integer>();
-
-        for (int c : ColorTemplate.VORDIPLOM_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.JOYFUL_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.COLORFUL_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.LIBERTY_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.PASTEL_COLORS)
-            colors.add(c);
-
-        colors.add(ColorTemplate.getHoloBlue());
-
-        dataSet.setColors(colors);
-        chart.setData(data);
-        chart.setEntryLabelColor(Color.BLACK);
-        chart.getDescription().setEnabled(false);
-        chart.invalidate();
-    }
 }
-

@@ -14,6 +14,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.stephengrice.laser.fragment.AddFragment;
+import com.stephengrice.laser.fragment.BudgetFragment;
+import com.stephengrice.laser.fragment.DashFragment;
+import com.stephengrice.laser.fragment.GoalsFragment;
+import com.stephengrice.laser.fragment.TransactionsFragment;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         DashFragment.OnFragmentInteractionListener,
