@@ -1,5 +1,6 @@
 package com.stephengrice.laser.db;
 
+import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.provider.BaseColumns;
 
@@ -42,17 +43,27 @@ public final class DbContract {
         }
 
         // Hopefully this double use won't cause problems: also allow this class to hold a Transaction object from DB
+        public long _id;
         public float amount;
         public long date;
         public String description;
         public int category_id;
         public String category_title;
-        public Transaction(float amount, long date, String description, int category_id, String category_title) {
+        public Transaction(long _id, float amount, long date, String description, int category_id, String category_title) {
+            this._id = _id;
             this.amount = amount;
             this.date = date;
             this.description = description;
             this.category_id = category_id;
             this.category_title = category_title;
+        }
+        public Transaction(Cursor cursor) {
+            this._id = cursor.getLong(cursor.getColumnIndexOrThrow(DbContract.Transaction.COLUMN_NAME_AMOUNT));
+            this.amount = cursor.getFloat(cursor.getColumnIndexOrThrow(DbContract.Transaction.COLUMN_NAME_AMOUNT));
+            this.date = cursor.getLong(cursor.getColumnIndexOrThrow(DbContract.Transaction.COLUMN_NAME_DATE));
+            this.description = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.Transaction.COLUMN_NAME_DESCRIPTION));
+            this.category_id = cursor.getInt(cursor.getColumnIndexOrThrow(DbContract.Transaction.COLUMN_NAME_CATEGORY_ID));
+            this.category_title = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.Category.COLUMN_NAME_TITLE));
         }
     }
     public static class Category implements BaseColumns {
