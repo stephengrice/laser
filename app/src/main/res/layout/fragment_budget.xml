@@ -1,9 +1,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="com.stephengrice.laser.fragment.BudgetFragment">
 
     <TextView
@@ -19,34 +19,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/textView3"
+    <android.support.design.widget.TabLayout
+        android:id="@+id/budget_tab_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:gravity="center"
-        android:textStyle="bold"
-        android:text="In" />
+        android:layout_height="wrap_content" />
 
-    <com.github.mikephil.charting.charts.PieChart
-    android:id="@+id/chart_in"
-        android:layout_weight="1"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:gravity="center"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/budget_view_pager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:text="Out" />
+        android:layout_height="match_parent"/>
 
-    <com.github.mikephil.charting.charts.PieChart
-        android:id="@+id/chart_out"
-        android:layout_weight="1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
 </LinearLayout>

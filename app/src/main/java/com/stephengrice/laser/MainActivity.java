@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.stephengrice.laser.fragment.AddFragment;
+import com.stephengrice.laser.fragment.BudgetChartFragment;
 import com.stephengrice.laser.fragment.BudgetFragment;
 import com.stephengrice.laser.fragment.DashFragment;
 import com.stephengrice.laser.fragment.GoalsFragment;
@@ -26,7 +27,8 @@ public class MainActivity extends AppCompatActivity
         BudgetFragment.OnFragmentInteractionListener,
         TransactionsFragment.OnFragmentInteractionListener,
         GoalsFragment.OnFragmentInteractionListener,
-        AddFragment.OnFragmentInteractionListener {
+        AddFragment.OnFragmentInteractionListener,
+        BudgetChartFragment.OnFragmentInteractionListener {
 
     public static final int SNACKBAR_TIME = 3000;
 
