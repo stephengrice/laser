@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,6 +80,21 @@ public class TransactionsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_transactions, container, false);
 
+        // Floating Action Button code
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.transactions_fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Navigate to AddFragment
+                getFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_main, new AddFragment())
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
+
         // Create adapter
         // Select all rows
         DbHelper dbHelper = new DbHelper(getActivity());
@@ -91,7 +107,7 @@ public class TransactionsFragment extends Fragment {
         listView.setAdapter(adapter);
 
         float balance = DbHelper.getBalance(getActivity());
-        String formattedBalance = new DecimalFormat("$0.00").format(balance);
+        String formattedBalance = new DecimalFormat("$#,###.00").format(balance);
         // Set number of rows
         TextView txtTransactions = (TextView)view.findViewById(R.id.transactions_num_transactions);
         txtTransactions.setText(

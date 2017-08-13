@@ -39,6 +39,7 @@ public class BudgetChartFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    private View mView;
     private DbHelper.CountMode mMode;
     private PieChart mChart;
 
@@ -66,13 +67,17 @@ public class BudgetChartFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_budget_chart, container, false);
+        mView = inflater.inflate(R.layout.fragment_budget_chart, container, false);
 
-        mChart = (PieChart) view.findViewById(R.id.fragment_chart);
+
+        return mView;
+    }
+
+    public void onResume() {
+        super.onResume();
+
+        mChart = (PieChart) mView.findViewById(R.id.fragment_chart);
         fillChart(mChart, mMode);
-
-
-        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

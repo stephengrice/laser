@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,7 +92,12 @@ public class DashFragment extends Fragment {
         float balance = DbHelper.getBalance(getActivity());
         // Fill view
         TextView txtBalance = (TextView) view.findViewById(R.id.txt_balance);
-        txtBalance.setText(new DecimalFormat("$0.00").format(balance));
+        txtBalance.setText(new DecimalFormat("$#,###.00").format(balance));
+        if (balance >= 0) {
+            txtBalance.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorTintGreen));
+        } else {
+            txtBalance.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorTintRed));
+        }
 
         // Inflate the layout for this fragment
         return view;

@@ -44,7 +44,7 @@ public class TransactionCursorAdapter extends CursorAdapter {
         long category_id = cursor.getLong(cursor.getColumnIndexOrThrow(DbContract.Transaction.COLUMN_NAME_CATEGORY_ID));
         String category = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.Category.COLUMN_NAME_TITLE));
 
-        String formattedAmount = new DecimalFormat("$0.00").format(Math.abs(mAmount));
+        String formattedAmount = new DecimalFormat("$#,###.00").format(Math.abs(mAmount));
         String formattedDate = DateUtils.getRelativeDateTimeString(context, date, 0, DateUtils.WEEK_IN_MILLIS, 0).toString();
         // Fill data
         itemAmount.setText(formattedAmount);

@@ -97,6 +97,11 @@ public class BudgetFragment extends Fragment {
         return view;
     }
 
+    public void onResume() {
+        super.onResume();
+        
+    }
+
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
