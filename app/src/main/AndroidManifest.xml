@@ -21,6 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.stephengrice.laser.SettingsActivity" />
+        <activity android:name="com.stephengrice.laser.IntroActivity" />
 
         <receiver android:name="com.stephengrice.laser.widget.AddWidget">
             <intent-filter>
