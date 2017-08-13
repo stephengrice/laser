@@ -3,11 +3,13 @@ package com.stephengrice.laser.fragment;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,7 +51,10 @@ public class BudgetFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private View mView;
     private OnFragmentInteractionListener mListener;
+    private ViewPager mViewPager;
+    private PagerAdapter mPagerAdapter;
 
     public BudgetFragment() {
         // Required empty public constructor
@@ -86,20 +91,35 @@ public class BudgetFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_budget, container, false);
+        mView = inflater.inflate(R.layout.fragment_budget, container, false);
 
         // Setup tabs
-        ViewPager viewPager = (ViewPager) view.findViewById(R.id.budget_view_pager);
-        viewPager.setAdapter(new BudgetTabsPagerAdapter(getFragmentManager()));
-        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.budget_tab_layout);
-        tabLayout.setupWithViewPager(viewPager);
+        mPagerAdapter = new BudgetTabsPagerAdapter(getFragmentManager());
+        mViewPager = (ViewPager) mView.findViewById(R.id.budget_view_pager);
+        mViewPager.setAdapter(mPagerAdapter);
+        TabLayout tabLayout = (TabLayout) mView.findViewById(R.id.budget_tab_layout);
+        tabLayout.setupWithViewPager(mViewPager);
 
-        return view;
+        return mView;
     }
 
     public void onResume() {
         super.onResume();
-        
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+//        BudgetChartFragment fragment1 = (BudgetChartFragment) mPagerAdapter.instantiateItem(mViewPager, 0);
+//        fragment1.onResume();
+//        BudgetChartFragment fragment2 = (BudgetChartFragment) mPagerAdapter.instantiateItem(mViewPager, 1);
+////        fragment1.onResume();
+//        // Setup tabs
+//        mPagerAdapter = new BudgetTabsPagerAdapter(getFragmentManager());
+//        mViewPager = (ViewPager) mView.findViewById(R.id.budget_view_pager);
+//        mViewPager.setAdapter(mPagerAdapter);
+//        TabLayout tabLayout = (TabLayout) mView.findViewById(R.id.budget_tab_layout);
+//        tabLayout.setupWithViewPager(mViewPager);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

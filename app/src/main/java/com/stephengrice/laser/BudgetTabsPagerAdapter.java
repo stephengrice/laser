@@ -40,4 +40,10 @@ public class BudgetTabsPagerAdapter extends FragmentPagerAdapter {
                 return null;
         }
     }
+
+    // THIS of all things fixed the budget disappearing chart problem.
+    @Override
+    public long getItemId(int position) {
+        return System.currentTimeMillis();
+    }
 }

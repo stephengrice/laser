@@ -76,8 +76,10 @@ public class BudgetChartFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        mChart = (PieChart) mView.findViewById(R.id.fragment_chart);
-        fillChart(mChart, mMode);
+        if (mView != null) {
+            mChart = (PieChart) mView.findViewById(R.id.fragment_chart);
+            fillChart(mChart, mMode);
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event

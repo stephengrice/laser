@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     tools:context="com.stephengrice.laser.fragment.BudgetChartFragment">
 
-
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/fragment_chart"
         android:layout_weight="1"
