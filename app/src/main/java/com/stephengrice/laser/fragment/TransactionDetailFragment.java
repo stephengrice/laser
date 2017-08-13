@@ -3,9 +3,7 @@ package com.stephengrice.laser.fragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,49 +11,35 @@ import android.widget.TextView;
 
 import com.stephengrice.laser.MainActivity;
 import com.stephengrice.laser.R;
-import com.stephengrice.laser.db.DbHelper;
-
-import java.text.DecimalFormat;
-
+import com.stephengrice.laser.db.DbContract;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link DashFragment.OnFragmentInteractionListener} interface
+ * {@link TransactionDetailFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link DashFragment#newInstance} factory method to
+ * Use the {@link TransactionDetailFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DashFragment extends Fragment {
+public class TransactionDetailFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_TRANSACTION = "transaction";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private DbContract.Transaction mTransaction;
 
     private OnFragmentInteractionListener mListener;
+    private View mView;
 
-    public DashFragment() {
+    public TransactionDetailFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment DashFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static DashFragment newInstance(String param1, String param2) {
-        DashFragment fragment = new DashFragment();
+    public static TransactionDetailFragment newInstance(DbContract.Transaction param1) {
+        TransactionDetailFragment fragment = new TransactionDetailFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putSerializable(ARG_TRANSACTION, param1);
         fragment.setArguments(args);
         return fragment;
     }
@@ -64,44 +48,27 @@ public class DashFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mTransaction = (DbContract.Transaction) getArguments().getSerializable(ARG_TRANSACTION);
         }
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_dash, container, false);
-
-        // Floating Action Button code
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Navigate to AddFragment
-                getFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content_main, new AddFragment())
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
-
-        // Query DB and determine total balance
-        float balance = DbHelper.getBalance(getActivity());
-        // Fill view
-        TextView txtBalance = (TextView) view.findViewById(R.id.txt_balance);
-        txtBalance.setText(MainActivity.formatCurrency(balance));
-        if (balance >= 0) {
-            txtBalance.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorTintGreen));
-        } else {
-            txtBalance.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorTintRed));
-        }
-
         // Inflate the layout for this fragment
-        return view;
+        mView = inflater.inflate(R.layout.fragment_transaction_detail, container, false);
+
+        TextView txtAmount = (TextView) mView.findViewById(R.id.txt_amount);
+        TextView txtDate = (TextView) mView.findViewById(R.id.txt_date);
+        TextView txtDescription = (TextView) mView.findViewById(R.id.txt_description);
+        TextView txtCategoryTitle = (TextView) mView.findViewById(R.id.txt_category_title);
+
+        txtAmount.setText("Amount: " + MainActivity.formatCurrency(mTransaction.amount));
+        txtDate.setText(MainActivity.formatDate(getActivity(), mTransaction.date));
+        txtDescription.setText("Description: " + mTransaction.description);
+        txtCategoryTitle.setText("Category: " + mTransaction.category_title);
+
+        return mView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

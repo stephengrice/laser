@@ -3,6 +3,8 @@ package com.stephengrice.laser.db;
 import android.database.DatabaseUtils;
 import android.provider.BaseColumns;
 
+import java.io.Serializable;
+
 public final class DbContract {
     private DbContract() {}
 
@@ -14,7 +16,7 @@ public final class DbContract {
     private static final String INTEGER_TYPE = " INTEGER";
     private static final String COMMA_SEP = ",";
 
-    public static class Transaction implements BaseColumns {
+    public static class Transaction implements BaseColumns, Serializable {
         public static final String TABLE_NAME = "transactions";
         public static final String COLUMN_NAME_AMOUNT = "amount";
         public static final String COLUMN_NAME_DATE = "date";
@@ -41,11 +43,11 @@ public final class DbContract {
 
         // Hopefully this double use won't cause problems: also allow this class to hold a Transaction object from DB
         public float amount;
-        public int date;
+        public long date;
         public String description;
         public int category_id;
-        String category_title;
-        public Transaction(float amount, int date, String description, int category_id, String category_title) {
+        public String category_title;
+        public Transaction(float amount, long date, String description, int category_id, String category_title) {
             this.amount = amount;
             this.date = date;
             this.description = description;

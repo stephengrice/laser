@@ -1,5 +1,6 @@
 package com.stephengrice.laser;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -13,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.format.DateUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -21,7 +23,10 @@ import com.stephengrice.laser.fragment.BudgetChartFragment;
 import com.stephengrice.laser.fragment.BudgetFragment;
 import com.stephengrice.laser.fragment.DashFragment;
 import com.stephengrice.laser.fragment.GoalsFragment;
+import com.stephengrice.laser.fragment.TransactionDetailFragment;
 import com.stephengrice.laser.fragment.TransactionsFragment;
+
+import java.text.DecimalFormat;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -30,7 +35,8 @@ public class MainActivity extends AppCompatActivity
         TransactionsFragment.OnFragmentInteractionListener,
         GoalsFragment.OnFragmentInteractionListener,
         AddFragment.OnFragmentInteractionListener,
-        BudgetChartFragment.OnFragmentInteractionListener {
+        BudgetChartFragment.OnFragmentInteractionListener,
+        TransactionDetailFragment.OnFragmentInteractionListener {
 
     public static final int SNACKBAR_TIME = 3000;
 
@@ -150,7 +156,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public void showIntro() {
+    private void showIntro() {
         //  Declare a new thread to do a preference check
         Thread t = new Thread(new Runnable() {
             @Override
@@ -188,5 +194,17 @@ public class MainActivity extends AppCompatActivity
 
         // Start the thread
         t.start();
+    }
+
+    public static String formatDate(Context context, long date) {
+        return DateUtils.getRelativeDateTimeString(context, date, 0, DateUtils.WEEK_IN_MILLIS, 0).toString();
+    }
+
+    public static String formatCurrency(float currency) {
+        return new DecimalFormat("$#,###.00").format(currency);
+    }
+
+    public static String formatPercent(float percent) {
+        return new DecimalFormat("0.0'%'").format(percent);
     }
 }

@@ -7,18 +7,23 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.stephengrice.laser.MainActivity;
 import com.stephengrice.laser.R;
 import com.stephengrice.laser.TransactionCursorAdapter;
 import com.stephengrice.laser.db.DbContract;
 import com.stephengrice.laser.db.DbHelper;
 
 import java.text.DecimalFormat;
+
+import static android.R.attr.fragment;
 
 
 /**
@@ -105,9 +110,28 @@ public class TransactionsFragment extends Fragment {
         // Set adapter for ListView
         ListView listView = (ListView)view.findViewById(R.id.transactions_listview);
         listView.setAdapter(adapter);
+        // On Item Click: Launch TransactionDetailsFragment
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+                DbContract.Transaction transaction = new DbContract.Transaction(
+                        cursor.getFloat(cursor.getColumnIndexOrThrow(DbContract.Transaction.COLUMN_NAME_AMOUNT)),
+                        cursor.getLong(cursor.getColumnIndexOrThrow(DbContract.Transaction.COLUMN_NAME_DATE)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.Transaction.COLUMN_NAME_DESCRIPTION)),
+                        cursor.getInt(cursor.getColumnIndexOrThrow(DbContract.Transaction.COLUMN_NAME_CATEGORY_ID)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.Category.COLUMN_NAME_TITLE))
+                );
+                Fragment fragment = TransactionDetailFragment.newInstance(transaction);
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.content_main, fragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
 
         float balance = DbHelper.getBalance(getActivity());
-        String formattedBalance = new DecimalFormat("$#,###.00").format(balance);
+        String formattedBalance = MainActivity.formatCurrency(balance);
         // Set number of rows
         TextView txtTransactions = (TextView)view.findViewById(R.id.transactions_num_transactions);
         txtTransactions.setText(

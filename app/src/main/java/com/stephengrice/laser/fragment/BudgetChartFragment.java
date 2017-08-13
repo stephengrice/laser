@@ -17,6 +17,7 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.ViewPortHandler;
+import com.stephengrice.laser.MainActivity;
 import com.stephengrice.laser.R;
 import com.stephengrice.laser.db.DbHelper;
 
@@ -161,7 +162,7 @@ public class BudgetChartFragment extends Fragment {
         dataSet.setValueFormatter(new IValueFormatter() {
             @Override
             public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-                return new DecimalFormat("0.0'%'").format(value);
+                return MainActivity.formatPercent(value);
             }
         });
         dataSet.setValueTextSize(15f);
