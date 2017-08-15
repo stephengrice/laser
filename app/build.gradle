@@ -45,5 +45,8 @@ dependencies {
     compile 'com.android.support:support-v4:25.+'
 }
 dependencies {
+    compile 'com.android.support:support-v4:25.+'
+}
+dependencies {
     compile 'com.github.apl-devs:appintro:v4.2.2'
 }

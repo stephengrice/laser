@@ -18,12 +18,13 @@ import android.text.format.DateUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.stephengrice.laser.fragment.AddFragment;
+import com.stephengrice.laser.fragment.TransactionAddFragment;
 import com.stephengrice.laser.fragment.BudgetChartFragment;
 import com.stephengrice.laser.fragment.BudgetFragment;
 import com.stephengrice.laser.fragment.DashFragment;
 import com.stephengrice.laser.fragment.GoalsFragment;
 import com.stephengrice.laser.fragment.TransactionDetailFragment;
+import com.stephengrice.laser.fragment.TransactionEditFragment;
 import com.stephengrice.laser.fragment.TransactionsFragment;
 
 import java.text.DecimalFormat;
@@ -34,9 +35,10 @@ public class MainActivity extends AppCompatActivity
         BudgetFragment.OnFragmentInteractionListener,
         TransactionsFragment.OnFragmentInteractionListener,
         GoalsFragment.OnFragmentInteractionListener,
-        AddFragment.OnFragmentInteractionListener,
+        TransactionAddFragment.OnFragmentInteractionListener,
         BudgetChartFragment.OnFragmentInteractionListener,
-        TransactionDetailFragment.OnFragmentInteractionListener {
+        TransactionDetailFragment.OnFragmentInteractionListener,
+        TransactionEditFragment.OnFragmentInteractionListener {
 
     public static final int SNACKBAR_TIME = 3000;
 
@@ -80,7 +82,7 @@ public class MainActivity extends AppCompatActivity
                             navigationView.getMenu().getItem(2).setChecked(true);
                         } else if (currentFragment instanceof GoalsFragment) {
                             navigationView.getMenu().getItem(3).setChecked(true);
-                        } else if (currentFragment instanceof AddFragment) {
+                        } else if (currentFragment instanceof TransactionAddFragment) {
                             navigationView.getMenu().getItem(4).setChecked(true);
                         }
                     }
@@ -137,7 +139,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_goals) {
             fragment = new GoalsFragment();
         } else if (id == R.id.nav_add) {
-            fragment = new AddFragment();
+            fragment = new TransactionAddFragment();
         }
         if (fragment != null) {
             getSupportFragmentManager().beginTransaction()

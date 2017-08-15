@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +19,6 @@ import com.stephengrice.laser.R;
 import com.stephengrice.laser.TransactionCursorAdapter;
 import com.stephengrice.laser.db.DbContract;
 import com.stephengrice.laser.db.DbHelper;
-
-import java.text.DecimalFormat;
-
-import static android.R.attr.fragment;
 
 
 /**
@@ -90,10 +85,10 @@ public class TransactionsFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Navigate to AddFragment
+                // Navigate to TransactionAddFragment
                 getFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.content_main, new AddFragment())
+                        .replace(R.id.content_main, new TransactionAddFragment())
                         .addToBackStack(null)
                         .commit();
             }

@@ -3,6 +3,7 @@ package com.stephengrice.laser.fragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,6 +68,20 @@ public class TransactionDetailFragment extends Fragment {
         txtDate.setText(MainActivity.formatDate(getActivity(), mTransaction.date));
         txtDescription.setText("Description: " + mTransaction.description);
         txtCategoryTitle.setText("Category: " + mTransaction.category_title);
+
+        // Floating Action Button code
+        FloatingActionButton fab = (FloatingActionButton) mView.findViewById(R.id.transaction_edit_fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Navigate to TransactionAddFragment
+                getFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_main, new TransactionEditFragment())
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
 
         return mView;
     }

@@ -26,7 +26,7 @@ import com.stephengrice.laser.db.DbHelper;
 
 import java.util.Date;
 
-public class AddFragment extends Fragment {
+public class TransactionAddFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -40,7 +40,7 @@ public class AddFragment extends Fragment {
 
     private Cursor mCursor;
 
-    public AddFragment() {
+    public TransactionAddFragment() {
         // Required empty public constructor
     }
 
@@ -50,11 +50,11 @@ public class AddFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment AddFragment.
+     * @return A new instance of fragment TransactionAddFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AddFragment newInstance(String param1, String param2) {
-        AddFragment fragment = new AddFragment();
+    public static TransactionAddFragment newInstance(String param1, String param2) {
+        TransactionAddFragment fragment = new TransactionAddFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
