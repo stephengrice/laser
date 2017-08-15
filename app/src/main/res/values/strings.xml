@@ -25,4 +25,6 @@
     <string name="no_category">Uncategorized</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+
+    <string name="title_edit_transaction">Edit Transaction</string>
 </resources>

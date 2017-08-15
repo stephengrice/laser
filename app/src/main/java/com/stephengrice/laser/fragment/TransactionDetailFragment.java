@@ -77,7 +77,7 @@ public class TransactionDetailFragment extends Fragment {
                 // Navigate to TransactionAddFragment
                 getFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.content_main, new TransactionEditFragment())
+                        .replace(R.id.content_main, TransactionEditFragment.newInstance(mTransaction))
                         .addToBackStack(null)
                         .commit();
             }

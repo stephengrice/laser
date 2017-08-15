@@ -1,13 +1,57 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.stephengrice.laser.fragment.TransactionEditFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:gravity="center_horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:text="@string/title_edit_transaction" />
 
-</FrameLayout>
+    <EditText
+        android:id="@+id/txt_transaction_amount"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        android:hint="$0.00"/>
+
+    <ToggleButton
+        android:id="@+id/btn_earned_spent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:background="@color/colorTintRed"
+        android:textOff="Spent"
+        android:textOn="Earned"/>
+
+    <EditText
+        android:id="@+id/txt_transaction_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textCapSentences"
+        android:hint="Description (optional)" />
+
+    <AutoCompleteTextView
+        android:id="@+id/transaction_category_autocomplete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textCapWords"
+        android:hint="Category (optional)"
+        />
+
+
+    <Button
+        android:id="@+id/btn_update_transaction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:text="Save" />
+
+</LinearLayout>
