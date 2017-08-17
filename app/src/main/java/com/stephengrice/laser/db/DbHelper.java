@@ -130,4 +130,19 @@ public class DbHelper extends SQLiteOpenHelper {
             return db.insert(DbContract.Category.TABLE_NAME, null, values);
         }
     }
+
+    /**
+     *
+     * @param context
+     * @param transaction
+     * @return number of rows affected
+     */
+    public static int updateTransaction(Context context, DbContract.Transaction transaction) {
+        DbHelper dbHelper = new DbHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String whereClause = DbContract.Transaction._ID + "=" + transaction._id;
+        int result = db.update(DbContract.Transaction.TABLE_NAME, transaction.getContentValues(), whereClause, null);
+        db.close();
+        return result;
+    }
 }

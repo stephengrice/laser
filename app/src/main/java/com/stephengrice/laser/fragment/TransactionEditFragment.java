@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,6 +78,24 @@ public class TransactionEditFragment extends Fragment {
             }
         });
 
+        // Set onclick listener for spent/earned toggle to change bg color
+        final ToggleButton btnSpentEarned = (ToggleButton) mView.findViewById(R.id.btn_earned_spent);
+        if (btnSpentEarned.isChecked()) {
+            btnSpentEarned.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintGreen));
+        } else {
+            btnSpentEarned.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintRed));
+        }
+        btnSpentEarned.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (btnSpentEarned.isChecked()) {
+                    btnSpentEarned.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintGreen));
+                } else {
+                    btnSpentEarned.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintRed));
+                }
+            }
+        });
+
         return mView;
     }
 
@@ -140,6 +159,7 @@ public class TransactionEditFragment extends Fragment {
         EditText txtTransactionDescription = (EditText) mView.findViewById(R.id.txt_transaction_description);
         AutoCompleteTextView txtTransactionCategory = (AutoCompleteTextView) mView.findViewById(R.id.transaction_category_autocomplete);
         ToggleButton btnEarned = (ToggleButton) mView.findViewById(R.id.btn_earned_spent);
+
         // Get values for input to DB
         boolean positive = btnEarned.isChecked();
         float transactionAmount;
@@ -166,25 +186,19 @@ public class TransactionEditFragment extends Fragment {
             return false;
         }
 
-
-
-        // Add transaction row in database
-        DbHelper dbHelper = new DbHelper(getActivity());
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        // Create ContentValues
-        ContentValues values = new ContentValues();
-        values.put(DbContract.Transaction.COLUMN_NAME_AMOUNT, transactionAmount);
-        values.put(DbContract.Transaction.COLUMN_NAME_DATE, new Date().getTime());
-        // Sort out whether to include a category_id (if the field is empty, don't)
         String mTitle = txtTransactionCategory.getText().toString();
-        values.put(DbContract.Transaction.COLUMN_NAME_DESCRIPTION, transactionDescription);
-        long newRowId = db.insert(DbContract.Transaction.TABLE_NAME, null, values);
 
-        if (newRowId == -1) {
+        mTransaction.amount = transactionAmount;
+        // Keep same date
+        mTransaction.category_id = DbHelper.getCategoryId(getContext(), mTitle);
+        mTransaction.description = transactionDescription;
+
+        int rowsAffected = DbHelper.updateTransaction(getContext(), mTransaction);
+
+        if (rowsAffected < 1) {
             Snackbar.make(mView, "An error occurred.", MainActivity.SNACKBAR_TIME).show();
             return false;
         } else {
-            // Switch to dash fragment
             getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.content_main, new TransactionsFragment())
                     .addToBackStack(null)

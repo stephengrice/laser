@@ -1,5 +1,6 @@
 package com.stephengrice.laser.db;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.provider.BaseColumns;
@@ -47,9 +48,9 @@ public final class DbContract {
         public float amount;
         public long date;
         public String description;
-        public int category_id;
+        public long category_id;
         public String category_title;
-        public Transaction(long _id, float amount, long date, String description, int category_id, String category_title) {
+        public Transaction(long _id, float amount, long date, String description, long category_id, String category_title) {
             this._id = _id;
             this.amount = amount;
             this.date = date;
@@ -58,12 +59,22 @@ public final class DbContract {
             this.category_title = category_title;
         }
         public Transaction(Cursor cursor) {
-            this._id = cursor.getLong(cursor.getColumnIndexOrThrow(DbContract.Transaction.COLUMN_NAME_AMOUNT));
+            this._id = cursor.getLong(cursor.getColumnIndexOrThrow(DbContract.Transaction._ID));
             this.amount = cursor.getFloat(cursor.getColumnIndexOrThrow(DbContract.Transaction.COLUMN_NAME_AMOUNT));
             this.date = cursor.getLong(cursor.getColumnIndexOrThrow(DbContract.Transaction.COLUMN_NAME_DATE));
             this.description = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.Transaction.COLUMN_NAME_DESCRIPTION));
             this.category_id = cursor.getInt(cursor.getColumnIndexOrThrow(DbContract.Transaction.COLUMN_NAME_CATEGORY_ID));
             this.category_title = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.Category.COLUMN_NAME_TITLE));
+        }
+
+        public ContentValues getContentValues() {
+            ContentValues values = new ContentValues();
+            values.put(_ID, _id);
+            values.put(COLUMN_NAME_AMOUNT, amount);
+            values.put(COLUMN_NAME_DATE, date);
+            values.put(COLUMN_NAME_DESCRIPTION, description);
+            values.put(COLUMN_NAME_CATEGORY_ID, category_id);
+            return values;
         }
     }
     public static class Category implements BaseColumns {
