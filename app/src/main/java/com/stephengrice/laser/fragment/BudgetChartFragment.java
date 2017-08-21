@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,7 +80,10 @@ public class BudgetChartFragment extends Fragment {
 
         if (mView != null) {
             mChart = (PieChart) mView.findViewById(R.id.fragment_chart);
-            fillChart(mChart, mMode);
+            if (!fillChart(mChart, mMode)) {
+                // No data for chart
+                //Snackbar.make(mView, "No data found for this chart. Add a transaction!", MainActivity.SNACKBAR_TIME).show();
+            }
         }
     }
 
@@ -122,9 +126,14 @@ public class BudgetChartFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    private void fillChart(PieChart chart, DbHelper.CountMode mode) {
+    private boolean fillChart(PieChart chart, DbHelper.CountMode mode) {
         // Get category counts
         HashMap<String, Float> categories = DbHelper.countByCategory(getActivity(), mode);
+
+        if (categories.size() < 1) {
+            return false;
+        }
+
         // Create entries and fill
         ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
 
@@ -141,22 +150,18 @@ public class BudgetChartFragment extends Fragment {
 
         ArrayList<Integer> colors = new ArrayList<Integer>();
 
-//        for (int c : ColorTemplate.VORDIPLOM_COLORS)
-//            colors.add(c);
 
-        for (int c : ColorTemplate.JOYFUL_COLORS)
+        int[] resource;
+        if (mode == DbHelper.CountMode.POSITIVE) {
+            resource = getContext().getResources().getIntArray(R.array.chartGreen);
+        } else {
+            resource = getContext().getResources().getIntArray(R.array.chartRed);
+        }
+
+        for (int c : resource) {
             colors.add(c);
-//
-//        for (int c : ColorTemplate.COLORFUL_COLORS)
-//            colors.add(c);
-//
-//        for (int c : ColorTemplate.LIBERTY_COLORS)
-//            colors.add(c);
-//
-//        for (int c : ColorTemplate.PASTEL_COLORS)
-//            colors.add(c);
-//
-//        colors.add(ColorTemplate.getHoloBlue());
+        }
+
 
         dataSet.setColors(colors);
         dataSet.setValueFormatter(new IValueFormatter() {
@@ -175,5 +180,7 @@ public class BudgetChartFragment extends Fragment {
 //        chart.setHoleRadius(0f);
         chart.setDrawHoleEnabled(false);
         chart.invalidate();
+
+        return true;
     }
 }

@@ -203,7 +203,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public static String formatCurrency(float currency) {
-        return new DecimalFormat("$#,###.00").format(currency);
+        return new DecimalFormat("$#,##0.00").format(currency);
     }
 
     public static String formatPercent(float percent) {

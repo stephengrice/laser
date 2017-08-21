@@ -27,4 +27,30 @@
     <!--Subdued Tints-->
     <color name="colorTintRed">#ef9a9a</color>
     <color name="colorTintGreen">#a5d6a7</color>
+
+    <!-- Chart colors (derived from subdued tints) -->
+    <color name="chartRed1">#A13535</color>
+    <color name="chartRed2">#C76161</color>
+    <color name="chartRed3">#EF9A9A</color>
+    <color name="chartRed4">#FFC7C7</color>
+    <color name="chartRed5">#FFE5E5</color>
+    <color name="chartGreen1">#479B4D</color>
+    <color name="chartGreen2">#77BD7C</color>
+    <color name="chartGreen3">#A5D6A8</color>
+    <color name="chartGreen4">#CEE9D0</color>
+    <color name="chartGreen5">#EFF8EF</color>
+    <array name="chartRed">
+        <item>@color/chartRed1</item>
+        <item>@color/chartRed2</item>
+        <item>@color/chartRed3</item>
+        <item>@color/chartRed4</item>
+        <item>@color/chartRed5</item>
+    </array>
+    <array name="chartGreen">
+        <item>@color/chartGreen1</item>
+        <item>@color/chartGreen2</item>
+        <item>@color/chartGreen3</item>
+        <item>@color/chartGreen4</item>
+        <item>@color/chartGreen5</item>
+    </array>
 </resources>

@@ -94,7 +94,7 @@ public class BudgetFragment extends Fragment {
         mView = inflater.inflate(R.layout.fragment_budget, container, false);
 
         // Setup tabs
-        mPagerAdapter = new BudgetTabsPagerAdapter(getFragmentManager());
+        mPagerAdapter = new BudgetTabsPagerAdapter(getFragmentManager(), getActivity());
         mViewPager = (ViewPager) mView.findViewById(R.id.budget_view_pager);
         mViewPager.setAdapter(mPagerAdapter);
         TabLayout tabLayout = (TabLayout) mView.findViewById(R.id.budget_tab_layout);
@@ -110,16 +110,6 @@ public class BudgetFragment extends Fragment {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-//        BudgetChartFragment fragment1 = (BudgetChartFragment) mPagerAdapter.instantiateItem(mViewPager, 0);
-//        fragment1.onResume();
-//        BudgetChartFragment fragment2 = (BudgetChartFragment) mPagerAdapter.instantiateItem(mViewPager, 1);
-////        fragment1.onResume();
-//        // Setup tabs
-//        mPagerAdapter = new BudgetTabsPagerAdapter(getFragmentManager());
-//        mViewPager = (ViewPager) mView.findViewById(R.id.budget_view_pager);
-//        mViewPager.setAdapter(mPagerAdapter);
-//        TabLayout tabLayout = (TabLayout) mView.findViewById(R.id.budget_tab_layout);
-//        tabLayout.setupWithViewPager(mViewPager);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
