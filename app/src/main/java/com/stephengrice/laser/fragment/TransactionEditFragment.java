@@ -2,6 +2,7 @@ package com.stephengrice.laser.fragment;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,16 +14,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ToggleButton;
 
+import com.stephengrice.laser.CategoryCursorAdapter;
 import com.stephengrice.laser.MainActivity;
 import com.stephengrice.laser.R;
 import com.stephengrice.laser.db.DbContract;
 import com.stephengrice.laser.db.DbHelper;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -41,6 +45,7 @@ public class TransactionEditFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private View mView;
+    private Cursor mCursor;
 
     public TransactionEditFragment() {
         // Required empty public constructor
@@ -77,6 +82,15 @@ public class TransactionEditFragment extends Fragment {
                 updateTransaction();
             }
         });
+
+        // Create adapter for categories autocomplete
+        DbHelper dbHelper = new DbHelper(getActivity());
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        mCursor = db.rawQuery(DbContract.Category.SQL_SELECT_ALL, null);
+        CategoryCursorAdapter adapter = new CategoryCursorAdapter(getActivity(), mCursor);
+        // Set adapter
+        AutoCompleteTextView autoComplete = (AutoCompleteTextView) mView.findViewById(R.id.transaction_category_autocomplete);
+        autoComplete.setAdapter(adapter);
 
         // Set onclick listener for spent/earned toggle to change bg color
         final ToggleButton btnSpentEarned = (ToggleButton) mView.findViewById(R.id.btn_earned_spent);

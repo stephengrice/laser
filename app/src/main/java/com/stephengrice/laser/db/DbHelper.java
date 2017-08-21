@@ -67,6 +67,23 @@ public class DbHelper extends SQLiteOpenHelper {
         return result;
     }
 
+    public static ArrayList<DbContract.Category> getCategories(Context context) {
+        DbHelper dbHelper = new DbHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor cursor = db.rawQuery(DbContract.Category.SQL_SELECT_ALL, null);
+
+        ArrayList<DbContract.Category> result = new ArrayList<>();
+
+        while (cursor.moveToNext()) {
+            DbContract.Category current = new DbContract.Category(cursor);
+            result.add(current);
+        }
+        cursor.close();
+        db.close();
+
+        return result;
+    }
+
     public static HashMap<String, Float> countByCategory(Context context, CountMode mode) {
         // Create result object (to be returned)
         HashMap<String, Float> result = new HashMap<String, Float>();

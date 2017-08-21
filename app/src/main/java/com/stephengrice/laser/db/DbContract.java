@@ -94,5 +94,11 @@ public final class DbContract {
             return "SELECT * FROM " + TABLE_NAME + " WHERE title=" + DatabaseUtils.sqlEscapeString(title);
         }
 
+        public long _id;
+        public String title;
+        public Category(Cursor cursor) {
+            this._id = cursor.getLong(cursor.getColumnIndexOrThrow(DbContract.Category._ID));
+            this.title = cursor.getString(cursor.getColumnIndexOrThrow(Category.COLUMN_NAME_TITLE));
+        }
     }
 }
