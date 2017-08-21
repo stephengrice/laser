@@ -167,6 +167,11 @@ public class TransactionEditFragment extends Fragment {
     private boolean updateTransaction() {
         if (mView == null)
             return false;
+        // Hide the soft keyboard
+        if (mView != null) {
+            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(mView.getWindowToken(), 0);
+        }
 
         // Select elements containing user input
         EditText txtTransactionAmount = (EditText) mView.findViewById(R.id.txt_transaction_amount);
@@ -174,38 +179,27 @@ public class TransactionEditFragment extends Fragment {
         AutoCompleteTextView txtTransactionCategory = (AutoCompleteTextView) mView.findViewById(R.id.transaction_category_autocomplete);
         ToggleButton btnEarned = (ToggleButton) mView.findViewById(R.id.btn_earned_spent);
 
-        // Get values for input to DB
+        // Populate mTransaction with new values
         boolean positive = btnEarned.isChecked();
-        float transactionAmount;
         try {
-            transactionAmount = Float.parseFloat(txtTransactionAmount.getText().toString());
+            mTransaction.amount = Float.parseFloat(txtTransactionAmount.getText().toString());
         } catch(NumberFormatException e) {
-            transactionAmount = 0;
+            mTransaction.amount = 0;
         }
-        String transactionDescription = txtTransactionDescription.getText().toString();
+        mTransaction.description = txtTransactionDescription.getText().toString();
         if (!positive) {
-            transactionAmount = -transactionAmount;
+            mTransaction.amount = -mTransaction.amount;
         }
-
-        // Hide the soft keyboard
-        if (mView != null) {
-            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(mView.getWindowToken(), 0);
-        }
+        mTransaction.category_title = txtTransactionCategory.getText().toString();
+        // Keep same date
+        mTransaction.category_id = DbHelper.getCategoryId(getContext(), mTransaction.category_title);
 
         // Validate input - only transactionAmount is required and must be properly parsed
-        if (transactionAmount == 0) {
+        if (mTransaction.amount == 0) {
             Snackbar.make(mView, "Please enter a transaction amount.", MainActivity.SNACKBAR_TIME).show();
             txtTransactionAmount.requestFocus();
             return false;
         }
-
-        String mTitle = txtTransactionCategory.getText().toString();
-
-        mTransaction.amount = transactionAmount;
-        // Keep same date
-        mTransaction.category_id = DbHelper.getCategoryId(getContext(), mTitle);
-        mTransaction.description = transactionDescription;
 
         int rowsAffected = DbHelper.updateTransaction(getContext(), mTransaction);
 

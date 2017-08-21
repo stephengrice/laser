@@ -157,8 +157,12 @@ public class DbHelper extends SQLiteOpenHelper {
     public static int updateTransaction(Context context, DbContract.Transaction transaction) {
         DbHelper dbHelper = new DbHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        String whereClause = DbContract.Transaction._ID + "=" + transaction._id;
-        int result = db.update(DbContract.Transaction.TABLE_NAME, transaction.getContentValues(), whereClause, null);
+        int result = db.update(
+                DbContract.Transaction.TABLE_NAME,
+                transaction.getContentValues(),
+                DbContract.Transaction._ID + " = ?",
+                new String[] { Long.toString(transaction._id) }
+        );
         db.close();
         return result;
     }
