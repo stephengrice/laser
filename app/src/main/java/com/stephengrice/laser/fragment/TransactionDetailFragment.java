@@ -67,7 +67,7 @@ public class TransactionDetailFragment extends Fragment {
         txtAmount.setText("Amount: " + MainActivity.formatCurrency(mTransaction.amount));
         txtDate.setText(MainActivity.formatDate(getActivity(), mTransaction.date));
         txtDescription.setText("Description: " + mTransaction.description);
-        txtCategoryTitle.setText("Category: " + mTransaction.category_title);
+        txtCategoryTitle.setText("Category: " + mTransaction.category_title == null ? mView.getResources().getString(R.string.no_category) : mTransaction.category_title);
 
         // Floating Action Button code
         FloatingActionButton fab = (FloatingActionButton) mView.findViewById(R.id.transaction_edit_fab);
