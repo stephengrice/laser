@@ -4,6 +4,12 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <string name="nav_dash">Dash</string>
+    <string name="nav_budget">My Budget</string>
+    <string name="nav_transactions">My Transactions</string>
+    <string name="nav_goals">Goals</string>
+    <string name="nav_transaction_add">Add Transaction</string>
+
     <string name="action_settings">Settings</string>
 
     <string-array name="spinner_dates">

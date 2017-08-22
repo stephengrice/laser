@@ -17,7 +17,10 @@ import android.support.v7.widget.Toolbar;
 import android.text.format.DateUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
+import com.stephengrice.laser.db.DbHelper;
 import com.stephengrice.laser.fragment.TransactionAddFragment;
 import com.stephengrice.laser.fragment.BudgetChartFragment;
 import com.stephengrice.laser.fragment.BudgetFragment;
@@ -56,6 +59,31 @@ public class MainActivity extends AppCompatActivity
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                if (slideOffset > 0) {
+
+                }
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                // Update balance in nav tray
+                TextView txtNavBalance = (TextView) drawerView.findViewById(R.id.txt_nav_balance);
+                txtNavBalance.setText(formatCurrency(DbHelper.getBalance(MainActivity.this)));
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        });
         toggle.syncState();
 
         final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
