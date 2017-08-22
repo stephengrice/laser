@@ -144,7 +144,9 @@ public class DbHelper extends SQLiteOpenHelper {
             cursor.close();
             ContentValues values = new ContentValues();
             values.put(DbContract.Category.COLUMN_NAME_TITLE, title);
-            return db.insert(DbContract.Category.TABLE_NAME, null, values);
+            long newRow = db.insert(DbContract.Category.TABLE_NAME, null, values);
+            db.close();
+            return newRow;
         }
     }
 

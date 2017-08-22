@@ -152,6 +152,10 @@ public class TransactionAddFragment extends Fragment {
     }
 
     private void addTransaction(View view) {
+        // Hide the soft keyboard
+        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
         // Select elements containing user input
         EditText txtTransactionAmount = (EditText) view.findViewById(R.id.txt_transaction_amount);
         EditText txtTransactionDescription = (EditText) view.findViewById(R.id.txt_transaction_description);
@@ -168,12 +172,6 @@ public class TransactionAddFragment extends Fragment {
         String transactionDescription = txtTransactionDescription.getText().toString();
         if (!positive) {
             transactionAmount = -transactionAmount;
-        }
-
-        // Hide the soft keyboard
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
 
         // Validate input - only transactionAmount is required and must be properly parsed

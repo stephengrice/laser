@@ -168,10 +168,8 @@ public class TransactionEditFragment extends Fragment {
         if (mView == null)
             return false;
         // Hide the soft keyboard
-        if (mView != null) {
-            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(mView.getWindowToken(), 0);
-        }
+        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mView.getWindowToken(), 0);
 
         // Select elements containing user input
         EditText txtTransactionAmount = (EditText) mView.findViewById(R.id.txt_transaction_amount);
