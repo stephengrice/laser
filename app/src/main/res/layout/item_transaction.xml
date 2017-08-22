@@ -23,7 +23,7 @@
             android:id="@+id/item_transaction_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="30dp"
+            android:textSize="@dimen/title_text_size"
             android:text="Amount" />
 
         <TextView

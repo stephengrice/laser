@@ -22,6 +22,16 @@
             android:id="@+id/nav_add"
             android:icon="@drawable/ic_add_24dp"
             android:title="@string/nav_transaction_add" />
+        <item
+            android:id="@+id/nav_scheduled_transactions"
+            android:icon="@drawable/ic_date_range_24dp"
+            android:title="@string/nav_scheduled_transactions"
+            />
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_settings_24dp"
+            android:title="@string/nav_settings"
+            />
     </group>
 <!--
 

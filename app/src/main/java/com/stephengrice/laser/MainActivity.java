@@ -21,6 +21,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.stephengrice.laser.db.DbHelper;
+import com.stephengrice.laser.fragment.ScheduledTransactionsFragment;
+import com.stephengrice.laser.fragment.SettingsFragment;
 import com.stephengrice.laser.fragment.TransactionAddFragment;
 import com.stephengrice.laser.fragment.BudgetChartFragment;
 import com.stephengrice.laser.fragment.BudgetFragment;
@@ -41,7 +43,9 @@ public class MainActivity extends AppCompatActivity
         TransactionAddFragment.OnFragmentInteractionListener,
         BudgetChartFragment.OnFragmentInteractionListener,
         TransactionDetailFragment.OnFragmentInteractionListener,
-        TransactionEditFragment.OnFragmentInteractionListener {
+        TransactionEditFragment.OnFragmentInteractionListener,
+        SettingsFragment.OnFragmentInteractionListener,
+        ScheduledTransactionsFragment.OnFragmentInteractionListener {
 
     public static final int SNACKBAR_TIME = 3000;
 
@@ -62,9 +66,7 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
-                if (slideOffset > 0) {
 
-                }
             }
 
             @Override
@@ -112,6 +114,10 @@ public class MainActivity extends AppCompatActivity
                             navigationView.getMenu().getItem(3).setChecked(true);
                         } else if (currentFragment instanceof TransactionAddFragment) {
                             navigationView.getMenu().getItem(4).setChecked(true);
+                        } else if (currentFragment instanceof ScheduledTransactionsFragment) {
+                            navigationView.getMenu().getItem(5).setChecked(true);
+                        } else if (currentFragment instanceof SettingsFragment) {
+                            navigationView.getMenu().getItem(6).setChecked(true);
                         }
                     }
                 });
@@ -142,11 +148,11 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Intent i = new Intent(this, SettingsActivity.class);
-            startActivity(i);
-            return true;
-        }
+//        if (id == R.id.action_settings) {
+//            Intent i = new Intent(this, SettingsActivity.class);
+//            startActivity(i);
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -168,6 +174,10 @@ public class MainActivity extends AppCompatActivity
             fragment = new GoalsFragment();
         } else if (id == R.id.nav_add) {
             fragment = new TransactionAddFragment();
+        } else if (id == R.id.nav_scheduled_transactions) {
+            fragment = new ScheduledTransactionsFragment();
+        } else if (id == R.id.nav_settings) {
+            fragment = new SettingsFragment();
         }
         if (fragment != null) {
             getSupportFragmentManager().beginTransaction()
@@ -236,5 +246,10 @@ public class MainActivity extends AppCompatActivity
 
     public static String formatPercent(float percent) {
         return new DecimalFormat("0.0'%'").format(percent);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu (Menu menu) {
+        return false;
     }
 }

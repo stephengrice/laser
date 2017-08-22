@@ -9,8 +9,12 @@
     <string name="nav_transactions">My Transactions</string>
     <string name="nav_goals">Goals</string>
     <string name="nav_transaction_add">Add Transaction</string>
+    <string name="nav_scheduled_transactions">Scheduled Transactions</string>
+    <string name="nav_settings">Settings</string>
 
     <string name="action_settings">Settings</string>
+    <string name="title_settings">Settings</string>
+    <string name="settings_btn_clear">Clear Database</string>
 
     <string-array name="spinner_dates">
         <item>All</item>
