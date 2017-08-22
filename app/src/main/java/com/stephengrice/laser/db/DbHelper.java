@@ -130,6 +130,11 @@ public class DbHelper extends SQLiteOpenHelper {
      * @return id of category row with given title
      */
     public static long getCategoryId(Context context, String title) {
+        // Don't store a blank category
+        if (title.length() < 1) {
+            return 0;
+        }
+
         // Determine whether this category exists
         DbHelper dbHelper = new DbHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -163,7 +168,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 DbContract.Transaction.TABLE_NAME,
                 transaction.getContentValues(),
                 DbContract.Transaction._ID + " = ?",
-                new String[] { Long.toString(transaction._id) }
+                new String[] { Long.toString(transaction.id) }
         );
         db.close();
         return result;

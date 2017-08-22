@@ -17,8 +17,11 @@ import android.widget.TextView;
 import com.stephengrice.laser.MainActivity;
 import com.stephengrice.laser.R;
 import com.stephengrice.laser.TransactionCursorAdapter;
+import com.stephengrice.laser.TransactionsArrayAdapter;
 import com.stephengrice.laser.db.DbContract;
 import com.stephengrice.laser.db.DbHelper;
+
+import java.util.ArrayList;
 
 
 /**
@@ -95,12 +98,15 @@ public class TransactionsFragment extends Fragment {
         });
 
 
+        ArrayList<DbContract.Transaction> transactions = DbHelper.getTransactions(getActivity());
+        TransactionsArrayAdapter adapter = new TransactionsArrayAdapter(getActivity(), transactions);
+
         // Create adapter
         // Select all rows
-        DbHelper dbHelper = new DbHelper(getActivity());
-        mDatabase = dbHelper.getWritableDatabase();
-        mCursor = mDatabase.rawQuery(DbContract.Transaction.SQL_SELECT_ALL, null);
-        TransactionCursorAdapter adapter = new TransactionCursorAdapter(getActivity(), mCursor);
+//        DbHelper dbHelper = new DbHelper(getActivity());
+//        mDatabase = dbHelper.getWritableDatabase();
+//        mCursor = mDatabase.rawQuery(DbContract.Transaction.SQL_SELECT_ALL, null);
+//        TransactionCursorAdapter adapter = new TransactionCursorAdapter(getActivity(), mCursor);
 
         // Set adapter for ListView
         ListView listView = (ListView)view.findViewById(R.id.transactions_listview);
@@ -109,8 +115,7 @@ public class TransactionsFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-                DbContract.Transaction transaction = new DbContract.Transaction(cursor);
+                DbContract.Transaction transaction = (DbContract.Transaction) parent.getItemAtPosition(position);
                 Fragment fragment = TransactionDetailFragment.newInstance(transaction);
                 getFragmentManager().beginTransaction()
                         .replace(R.id.content_main, fragment)
@@ -123,9 +128,10 @@ public class TransactionsFragment extends Fragment {
         String formattedBalance = MainActivity.formatCurrency(balance);
         // Set number of rows
         TextView txtTransactions = (TextView)view.findViewById(R.id.transactions_num_transactions);
+        int numTransactions = transactions.size();
         txtTransactions.setText(
-                        Integer.toString(mCursor.getCount()) +
-                        " transaction" + (mCursor.getCount() == 1 ? "" : "s") +
+                        Integer.toString(numTransactions) +
+                        " transaction" + (numTransactions == 1 ? "" : "s") +
                         " : " + formattedBalance
         );
 
