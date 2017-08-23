@@ -71,9 +71,7 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onDrawerOpened(View drawerView) {
-                // Update balance in nav tray
-                TextView txtNavBalance = (TextView) drawerView.findViewById(R.id.txt_nav_balance);
-                txtNavBalance.setText(formatCurrency(DbHelper.getBalance(MainActivity.this)));
+                updateNavBalance();
             }
 
             @Override
@@ -110,14 +108,12 @@ public class MainActivity extends AppCompatActivity
                             navigationView.getMenu().getItem(1).setChecked(true);
                         } else if (currentFragment instanceof TransactionsFragment) {
                             navigationView.getMenu().getItem(2).setChecked(true);
-                        } else if (currentFragment instanceof GoalsFragment) {
-                            navigationView.getMenu().getItem(3).setChecked(true);
-                        } else if (currentFragment instanceof TransactionAddFragment) {
-                            navigationView.getMenu().getItem(4).setChecked(true);
                         } else if (currentFragment instanceof ScheduledTransactionsFragment) {
-                            navigationView.getMenu().getItem(5).setChecked(true);
+                            navigationView.getMenu().getItem(3).setChecked(true);
+                        } else if (currentFragment instanceof GoalsFragment) {
+                            navigationView.getMenu().getItem(4).setChecked(true);
                         } else if (currentFragment instanceof SettingsFragment) {
-                            navigationView.getMenu().getItem(6).setChecked(true);
+                            navigationView.getMenu().getItem(5).setChecked(true);
                         }
                     }
                 });
@@ -172,8 +168,8 @@ public class MainActivity extends AppCompatActivity
             fragment = new TransactionsFragment();
         } else if (id == R.id.nav_goals) {
             fragment = new GoalsFragment();
-        } else if (id == R.id.nav_add) {
-            fragment = new TransactionAddFragment();
+//        } else if (id == R.id.nav_add) {
+//            fragment = new TransactionAddFragment();
         } else if (id == R.id.nav_scheduled_transactions) {
             fragment = new ScheduledTransactionsFragment();
         } else if (id == R.id.nav_settings) {
@@ -251,5 +247,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onPrepareOptionsMenu (Menu menu) {
         return false;
+    }
+
+    public void updateNavBalance() {
+        // Update balance in nav tray
+        TextView txtNavBalance = (TextView) findViewById(R.id.txt_nav_balance);
+        txtNavBalance.setText(formatCurrency(DbHelper.getBalance(MainActivity.this)));
     }
 }

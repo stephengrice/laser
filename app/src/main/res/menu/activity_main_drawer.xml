@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/menu_group_top"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_dash"
             android:icon="@drawable/ic_dash_24dp"
@@ -15,18 +17,23 @@
             android:icon="@drawable/ic_money_24dp"
             android:title="@string/nav_transactions" />
         <item
-            android:id="@+id/nav_goals"
-            android:icon="@drawable/ic_flag_24dp"
-            android:title="@string/nav_goals" />
-        <item
-            android:id="@+id/nav_add"
-            android:icon="@drawable/ic_add_24dp"
-            android:title="@string/nav_transaction_add" />
-        <item
             android:id="@+id/nav_scheduled_transactions"
             android:icon="@drawable/ic_date_range_24dp"
             android:title="@string/nav_scheduled_transactions"
             />
+        <item
+            android:id="@+id/nav_goals"
+            android:icon="@drawable/ic_flag_24dp"
+            android:title="@string/nav_goals" />
+        <!--<item-->
+            <!--android:id="@+id/nav_add"-->
+            <!--android:icon="@drawable/ic_add_24dp"-->
+            <!--android:title="@string/nav_transaction_add" />-->
+    </group>
+
+    <group
+        android:checkableBehavior="single"
+        android:id="@+id/menu_group_bottom">
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings_24dp"
