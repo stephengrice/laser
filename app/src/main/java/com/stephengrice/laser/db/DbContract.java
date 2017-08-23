@@ -10,7 +10,7 @@ import java.io.Serializable;
 public final class DbContract {
     private DbContract() {}
 
-    public static final int DATABASE_VERSION = 8;
+    public static final int DATABASE_VERSION = 9;
     public static final String DATABASE_NAME = "Laser.db";
 
     private static final String TEXT_TYPE = " TEXT";
@@ -20,7 +20,6 @@ public final class DbContract {
 
     public static class Transaction implements BaseColumns, Serializable {
         public static final String TABLE_NAME = "transactions";
-//        public static final String _ID = "transaction_id";
         public static final String COLUMN_NAME_AMOUNT = "amount";
         public static final String COLUMN_NAME_DATE = "date";
         public static final String COLUMN_NAME_DESCRIPTION = "description";
@@ -80,7 +79,6 @@ public final class DbContract {
     }
     public static class Category implements BaseColumns {
         public static final String TABLE_NAME = "categories";
-//        public static final String _ID = "category_id";
         public static final String COLUMN_NAME_TITLE = "title";
 
         public static final String SQL_CREATE_TABLE = "CREATE TABLE " +
@@ -102,5 +100,46 @@ public final class DbContract {
             this.id = cursor.getLong(cursor.getColumnIndexOrThrow(Category._ID));
             this.title = cursor.getString(cursor.getColumnIndexOrThrow(Category.COLUMN_NAME_TITLE));
         }
+    }
+
+    public static class ScheduledTransaction implements BaseColumns{
+        public static final String TABLE_NAME = "scheduled_transactions";
+        public static final String COLUMN_NAME_AMOUNT = "amount";
+        public static final String COLUMN_NAME_DATE = "date";
+        public static final String COLUMN_NAME_DESCRIPTION = "description";
+        public static final String COLUMN_NAME_CATEGORY_ID = "category_id";
+        public static final String COLUMN_NAME_REPEAT = "repeat";
+
+        public static final String SQL_CREATE_TABLE = "CREATE TABLE " +
+                TABLE_NAME + "(" +
+                _ID + " INTEGER PRIMARY KEY, " +
+                COLUMN_NAME_AMOUNT + REAL_TYPE + COMMA_SEP +
+                COLUMN_NAME_DATE + INTEGER_TYPE + COMMA_SEP +
+                COLUMN_NAME_CATEGORY_ID + INTEGER_TYPE + COMMA_SEP +
+                COLUMN_NAME_DESCRIPTION + TEXT_TYPE + COMMA_SEP +
+                COLUMN_NAME_REPEAT + INTEGER_TYPE + COMMA_SEP +
+                "FOREIGN KEY (" + COLUMN_NAME_CATEGORY_ID + ") REFERENCES " + Category.TABLE_NAME + "(" + Category._ID + ")" +
+                ")";
+        public static final String SQL_DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
+
+    }
+
+    public static class Goal implements BaseColumns {
+        public static final String TABLE_NAME = "goals";
+        public static final String COLUMN_NAME_TITLE = "title";
+        public static final String COLUMN_NAME_DUE_DATE = "due_date";
+        public static final String COLUMN_NAME_TYPE = "type";
+        public static final String COLUMN_NAME_AMOUNT = "amount";
+        // Later: A "repeat" field, maybe a category
+
+        public static final String SQL_CREATE_TABLE = "CREATE TABLE " +
+                TABLE_NAME + "(" +
+                _ID + " INTEGER PRIMARY KEY, " +
+                COLUMN_NAME_TITLE + TEXT_TYPE +
+                COLUMN_NAME_DUE_DATE + INTEGER_TYPE + COMMA_SEP +
+                COLUMN_NAME_TYPE + INTEGER_TYPE + COMMA_SEP +
+                COLUMN_NAME_AMOUNT + REAL_TYPE + COMMA_SEP +
+                ")";
+        public static final String SQL_DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
     }
 }

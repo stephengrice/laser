@@ -26,12 +26,16 @@ public class DbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(DbContract.Transaction.SQL_CREATE_TABLE);
         db.execSQL(DbContract.Category.SQL_CREATE_TABLE);
+        db.execSQL(DbContract.ScheduledTransaction.SQL_CREATE_TABLE);
+        db.execSQL(DbContract.Goal.SQL_CREATE_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(DbContract.Transaction.SQL_DELETE_TABLE);
         db.execSQL(DbContract.Category.SQL_DELETE_TABLE);
+        db.execSQL(DbContract.ScheduledTransaction.SQL_DELETE_TABLE);
+        db.execSQL(DbContract.Goal.SQL_DELETE_TABLE);
         onCreate(db);
     }
 
