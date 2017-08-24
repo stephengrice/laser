@@ -88,6 +88,24 @@ public class DbHelper extends SQLiteOpenHelper {
         return result;
     }
 
+    public static ArrayList<DbContract.ScheduledTransaction> getScheduledTransactions(Context context) {
+        DbHelper dbHelper = new DbHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor cursor = db.rawQuery(DbContract.ScheduledTransaction.SQL_SELECT_ALL, null);
+
+        ArrayList<DbContract.ScheduledTransaction> result = new ArrayList<>();
+
+        while (cursor.moveToNext()) {
+            DbContract.ScheduledTransaction current = new DbContract.ScheduledTransaction(cursor);
+            result.add(current);
+        }
+        cursor.close();
+        db.close();
+
+        return result;
+    }
+
+
     public static HashMap<String, Float> countByCategory(Context context, CountMode mode) {
         // Create result object (to be returned)
         HashMap<String, Float> result = new HashMap<String, Float>();

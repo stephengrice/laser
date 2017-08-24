@@ -75,7 +75,7 @@ public class TransactionAddFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        final View view = inflater.inflate(R.layout.fragment_add, container, false);
+        final View view = inflater.inflate(R.layout.fragment_transaction_add, container, false);
         Button btnAdd = (Button) view.findViewById(R.id.btn_save_transaction);
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override

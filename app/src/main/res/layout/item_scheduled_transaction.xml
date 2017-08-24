@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorTintRed">
+
+    <ImageView
+        android:id="@+id/item_st_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_down_black"
+        />
+    <LinearLayout
+        android:id="@+id/item_st_info"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@id/item_st_img"
+        android:layout_toEndOf="@id/item_st_img"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/item_st_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/title_text_size"
+            android:text="Amount" />
+
+        <TextView
+            android:id="@+id/item_st_date"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Date" />
+
+        <TextView
+            android:id="@+id/item_st_description"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Description" />
+
+        <TextView
+            android:id="@+id/item_st_category"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Category" />
+    </LinearLayout>
+
+
+</RelativeLayout>

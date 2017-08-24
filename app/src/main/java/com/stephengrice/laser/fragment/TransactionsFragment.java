@@ -101,13 +101,6 @@ public class TransactionsFragment extends Fragment {
         ArrayList<DbContract.Transaction> transactions = DbHelper.getTransactions(getActivity());
         TransactionsArrayAdapter adapter = new TransactionsArrayAdapter(getActivity(), transactions);
 
-        // Create adapter
-        // Select all rows
-//        DbHelper dbHelper = new DbHelper(getActivity());
-//        mDatabase = dbHelper.getWritableDatabase();
-//        mCursor = mDatabase.rawQuery(DbContract.Transaction.SQL_SELECT_ALL, null);
-//        TransactionCursorAdapter adapter = new TransactionCursorAdapter(getActivity(), mCursor);
-
         // Set adapter for ListView
         ListView listView = (ListView)view.findViewById(R.id.transactions_listview);
         listView.setAdapter(adapter);

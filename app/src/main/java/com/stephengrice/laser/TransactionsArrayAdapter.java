@@ -24,6 +24,7 @@ public class TransactionsArrayAdapter extends ArrayAdapter<DbContract.Transactio
         super(context, mLayout, data);
     }
 
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         DbContract.Transaction transaction = getItem(position);
 

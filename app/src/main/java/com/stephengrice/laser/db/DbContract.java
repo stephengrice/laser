@@ -102,7 +102,7 @@ public final class DbContract {
         }
     }
 
-    public static class ScheduledTransaction implements BaseColumns{
+    public static class ScheduledTransaction implements BaseColumns, Serializable {
         public static final String TABLE_NAME = "scheduled_transactions";
         public static final String COLUMN_NAME_AMOUNT = "amount";
         public static final String COLUMN_NAME_DATE = "date";
@@ -121,6 +121,31 @@ public final class DbContract {
                 "FOREIGN KEY (" + COLUMN_NAME_CATEGORY_ID + ") REFERENCES " + Category.TABLE_NAME + "(" + Category._ID + ")" +
                 ")";
         public static final String SQL_DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
+        public static final String SQL_SELECT_ALL = "SELECT "+TABLE_NAME+".*, "+Category.TABLE_NAME+".title FROM " + TABLE_NAME
+                + " LEFT JOIN categories on " + COLUMN_NAME_CATEGORY_ID + "=" + Category.TABLE_NAME + "." + Category._ID + " "
+                + " ORDER BY date DESC";
+
+        public long id;
+        public float amount;
+        public long date;
+        public String description;
+        public long category_id;
+        public String category_title;
+        public int repeat;
+
+        public ScheduledTransaction(Cursor cursor) {
+            this.id = cursor.getLong(cursor.getColumnIndexOrThrow(Transaction._ID));
+            this.amount = cursor.getFloat(cursor.getColumnIndexOrThrow(DbContract.Transaction.COLUMN_NAME_AMOUNT));
+            this.date = cursor.getLong(cursor.getColumnIndexOrThrow(DbContract.Transaction.COLUMN_NAME_DATE));
+            this.description = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.Transaction.COLUMN_NAME_DESCRIPTION));
+            this.category_id = cursor.getInt(cursor.getColumnIndexOrThrow(DbContract.Transaction.COLUMN_NAME_CATEGORY_ID));
+            this.category_title = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.Category.COLUMN_NAME_TITLE));
+            this.repeat = cursor.getInt(cursor.getColumnIndexOrThrow(ScheduledTransaction.COLUMN_NAME_REPEAT));
+        }
+
+        public ScheduledTransaction() {
+
+        }
 
     }
 
@@ -141,5 +166,6 @@ public final class DbContract {
                 COLUMN_NAME_AMOUNT + REAL_TYPE + COMMA_SEP +
                 ")";
         public static final String SQL_DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
+
     }
 }
