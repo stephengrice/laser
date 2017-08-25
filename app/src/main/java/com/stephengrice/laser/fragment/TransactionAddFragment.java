@@ -176,34 +176,29 @@ public class TransactionAddFragment extends Fragment {
 
         // Validate input - only transactionAmount is required and must be properly parsed
         if (transactionAmount == 0) {
-            Snackbar.make(view, "Please enter a transaction amount.", MainActivity.SNACKBAR_TIME).show();
+            Snackbar.make(view, getContext().getString(R.string.enter_an_amount), MainActivity.SNACKBAR_TIME).show();
             txtTransactionAmount.requestFocus();
             return;
         }
 
 
-
-        // Add transaction row in database
-        DbHelper dbHelper = new DbHelper(getActivity());
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        // Create ContentValues
-        ContentValues values = new ContentValues();
-        values.put(DbContract.Transaction.COLUMN_NAME_AMOUNT, transactionAmount);
-        values.put(DbContract.Transaction.COLUMN_NAME_DATE, new Date().getTime());
-        // Sort out whether to include a category_id (if the field is empty, don't)
-        String mTitle = txtTransactionCategory.getText().toString();
-        if (mTitle.length() >= 1) {
+        DbContract.Transaction transaction = new DbContract.Transaction();
+        transaction.amount = transactionAmount;
+        transaction.date = new Date().getTime();
+        transaction.category_title = txtTransactionCategory.getText().toString();
+        transaction.description = transactionDescription;
+        if (transaction.category_title.length() >= 1) {
             // Add the category or lookup. Either way, get the row id
             long category_id = DbHelper.getCategoryId(getActivity(), txtTransactionCategory.getText().toString());
-            values.put(DbContract.Transaction.COLUMN_NAME_CATEGORY_ID, category_id);
+            transaction.category_id = category_id;
         } else {
-            values.putNull(DbContract.Transaction.COLUMN_NAME_CATEGORY_ID);
+            transaction.category_id = 0;
         }
-        values.put(DbContract.Transaction.COLUMN_NAME_DESCRIPTION, transactionDescription);
-        long newRowId = db.insert(DbContract.Transaction.TABLE_NAME, null, values);
+
+        long newRowId = DbHelper.insertTransaction(getActivity(), transaction);
 
         if (newRowId == -1) {
-            Snackbar.make(view, "An error occurred.", MainActivity.SNACKBAR_TIME).show();
+            Snackbar.make(view, getContext().getString(R.string.db_error), MainActivity.SNACKBAR_TIME).show();
         } else {
             // Switch to dash fragment
             getActivity().getSupportFragmentManager().beginTransaction()

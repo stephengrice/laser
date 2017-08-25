@@ -50,14 +50,7 @@ public final class DbContract {
         public String description;
         public long category_id;
         public String category_title;
-        public Transaction(long _id, float amount, long date, String description, long category_id, String category_title) {
-            this.id = _id;
-            this.amount = amount;
-            this.date = date;
-            this.description = description;
-            this.category_id = category_id;
-            this.category_title = category_title;
-        }
+
         public Transaction(Cursor cursor) {
             this.id = cursor.getLong(cursor.getColumnIndexOrThrow(Transaction._ID));
             this.amount = cursor.getFloat(cursor.getColumnIndexOrThrow(DbContract.Transaction.COLUMN_NAME_AMOUNT));
@@ -67,13 +60,21 @@ public final class DbContract {
             this.category_title = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.Category.COLUMN_NAME_TITLE));
         }
 
+        public Transaction() {
+
+        }
+
         public ContentValues getContentValues() {
             ContentValues values = new ContentValues();
             values.put(_ID, id);
             values.put(COLUMN_NAME_AMOUNT, amount);
             values.put(COLUMN_NAME_DATE, date);
             values.put(COLUMN_NAME_DESCRIPTION, description);
-            values.put(COLUMN_NAME_CATEGORY_ID, category_id);
+            if (this.category_id < 1) {
+                values.putNull(COLUMN_NAME_CATEGORY_ID);
+            } else {
+                values.put(COLUMN_NAME_CATEGORY_ID, category_id);
+            }
             return values;
         }
     }
@@ -147,6 +148,20 @@ public final class DbContract {
 
         }
 
+        public ContentValues getContentValues() {
+            ContentValues values = new ContentValues();
+            values.put(_ID, id);
+            values.put(COLUMN_NAME_AMOUNT, amount);
+            values.put(COLUMN_NAME_DATE, date);
+            values.put(COLUMN_NAME_DESCRIPTION, description);
+            if (this.category_id < 1) {
+                values.putNull(COLUMN_NAME_CATEGORY_ID);
+            } else {
+                values.put(COLUMN_NAME_CATEGORY_ID, category_id);
+            }
+            values.put(COLUMN_NAME_REPEAT, repeat);
+            return values;
+        }
     }
 
     public static class Goal implements BaseColumns {

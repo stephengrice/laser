@@ -24,6 +24,7 @@
     </string-array>
 
     <string-array name="spinner_repeat">
+        <item>No Repeat</item>
         <item>Daily</item>
         <item>Weekly</item>
         <item>Bi-weekly</item>
@@ -51,4 +52,7 @@
 
     <string name="st_add">New Scheduled Transaction</string>
     <string name="btn_st_change_date">Change Date</string>
+
+    <string name="enter_an_amount">Please enter an amount.</string>
+    <string name="db_error">An error occurred.</string>
 </resources>

@@ -71,6 +71,14 @@ public class DbHelper extends SQLiteOpenHelper {
         return result;
     }
 
+    public static long insertTransaction(Context context, DbContract.Transaction transaction) {
+        DbHelper dbHelper = new DbHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        long newRowId = db.insert(DbContract.Transaction.TABLE_NAME, null, transaction.getContentValues());
+        db.close();
+        return newRowId;
+    }
+
     public static ArrayList<DbContract.Category> getCategories(Context context) {
         DbHelper dbHelper = new DbHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -103,6 +111,14 @@ public class DbHelper extends SQLiteOpenHelper {
         db.close();
 
         return result;
+    }
+
+    public static long insertScheduledTransaction(Context context, DbContract.ScheduledTransaction st) {
+        DbHelper dbHelper = new DbHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        long newRowId = db.insert(DbContract.ScheduledTransaction.TABLE_NAME, null, st.getContentValues());
+        db.close();
+        return newRowId;
     }
 
 
