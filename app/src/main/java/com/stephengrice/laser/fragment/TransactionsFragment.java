@@ -16,8 +16,7 @@ import android.widget.TextView;
 
 import com.stephengrice.laser.MainActivity;
 import com.stephengrice.laser.R;
-import com.stephengrice.laser.TransactionCursorAdapter;
-import com.stephengrice.laser.TransactionsArrayAdapter;
+import com.stephengrice.laser.TransactionArrayAdapter;
 import com.stephengrice.laser.db.DbContract;
 import com.stephengrice.laser.db.DbHelper;
 
@@ -99,7 +98,7 @@ public class TransactionsFragment extends Fragment {
 
 
         ArrayList<DbContract.Transaction> transactions = DbHelper.getTransactions(getActivity());
-        TransactionsArrayAdapter adapter = new TransactionsArrayAdapter(getActivity(), transactions);
+        TransactionArrayAdapter adapter = new TransactionArrayAdapter(getActivity(), transactions);
 
         // Set adapter for ListView
         ListView listView = (ListView)view.findViewById(R.id.transactions_listview);

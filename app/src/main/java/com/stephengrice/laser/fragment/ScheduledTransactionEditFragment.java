@@ -1,12 +1,9 @@
 package com.stephengrice.laser.fragment;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -14,12 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
+import android.view.textservice.SpellCheckerInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ToggleButton;
 
+import com.stephengrice.laser.CategoryArrayAdapter;
 import com.stephengrice.laser.CategoryCursorAdapter;
 import com.stephengrice.laser.MainActivity;
 import com.stephengrice.laser.R;
@@ -27,34 +25,31 @@ import com.stephengrice.laser.db.DbContract;
 import com.stephengrice.laser.db.DbHelper;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link TransactionEditFragment.OnFragmentInteractionListener} interface
+ * {@link ScheduledTransactionEditFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link TransactionEditFragment#newInstance} factory method to
+ * Use the {@link ScheduledTransactionEditFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TransactionEditFragment extends Fragment {
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_TRANSACTION = "transaction";
-
-    private DbContract.Transaction mTransaction;
+public class ScheduledTransactionEditFragment extends Fragment {
+    private static final String ARG_ST = "scheduledTransaction";
 
     private OnFragmentInteractionListener mListener;
-    private View mView;
-    private Cursor mCursor;
 
-    public TransactionEditFragment() {
+    private DbContract.ScheduledTransaction mScheduledTransaction;
+    private View mView;
+
+    public ScheduledTransactionEditFragment() {
         // Required empty public constructor
     }
 
-    public static TransactionEditFragment newInstance(DbContract.Transaction param1) {
-        TransactionEditFragment fragment = new TransactionEditFragment();
+    public static ScheduledTransactionEditFragment newInstance(DbContract.ScheduledTransaction st) {
+        ScheduledTransactionEditFragment fragment = new ScheduledTransactionEditFragment();
         Bundle args = new Bundle();
-        args.putSerializable(ARG_TRANSACTION, param1);
+        args.putSerializable(ARG_ST, st);
         fragment.setArguments(args);
         return fragment;
     }
@@ -63,7 +58,7 @@ public class TransactionEditFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mTransaction = (DbContract.Transaction) getArguments().getSerializable(ARG_TRANSACTION);
+            mScheduledTransaction = (DbContract.ScheduledTransaction) getArguments().getSerializable(ARG_ST);
         }
     }
 
@@ -84,10 +79,8 @@ public class TransactionEditFragment extends Fragment {
         });
 
         // Create adapter for categories autocomplete
-        DbHelper dbHelper = new DbHelper(getActivity());
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        mCursor = db.rawQuery(DbContract.Category.SQL_SELECT_ALL, null);
-        CategoryCursorAdapter adapter = new CategoryCursorAdapter(getActivity(), mCursor);
+        ArrayList<DbContract.Category> categories = DbHelper.getCategories(getContext());
+        CategoryArrayAdapter adapter = new CategoryArrayAdapter(getContext(), categories);
         // Set adapter
         AutoCompleteTextView autoComplete = (AutoCompleteTextView) mView.findViewById(R.id.transaction_category_autocomplete);
         autoComplete.setAdapter(adapter);
@@ -110,8 +103,7 @@ public class TransactionEditFragment extends Fragment {
             }
         });
 
-        return mView;
-    }
+        return mView;    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -158,10 +150,10 @@ public class TransactionEditFragment extends Fragment {
         AutoCompleteTextView txtTransactionCategory = (AutoCompleteTextView) mView.findViewById(R.id.transaction_category_autocomplete);
         ToggleButton btnEarned = (ToggleButton) mView.findViewById(R.id.btn_earned_spent);
 
-        txtTransactionAmount.setText(Float.toString(Math.abs(mTransaction.amount)));
-        txtTransactionDescription.setText(mTransaction.description);
-        txtTransactionCategory.setText(mTransaction.category_title);
-        btnEarned.setChecked(mTransaction.amount >= 0);
+        txtTransactionAmount.setText(Float.toString(Math.abs(mScheduledTransaction.amount)));
+        txtTransactionDescription.setText(mScheduledTransaction.description);
+        txtTransactionCategory.setText(mScheduledTransaction.category_title);
+        btnEarned.setChecked(mScheduledTransaction.amount >= 0);
     }
 
     private boolean updateTransaction() {
@@ -180,26 +172,26 @@ public class TransactionEditFragment extends Fragment {
         // Populate mTransaction with new values
         boolean positive = btnEarned.isChecked();
         try {
-            mTransaction.amount = Float.parseFloat(txtTransactionAmount.getText().toString());
+            mScheduledTransaction.amount = Float.parseFloat(txtTransactionAmount.getText().toString());
         } catch(NumberFormatException e) {
-            mTransaction.amount = 0;
+            mScheduledTransaction.amount = 0;
         }
-        mTransaction.description = txtTransactionDescription.getText().toString();
+        mScheduledTransaction.description = txtTransactionDescription.getText().toString();
         if (!positive) {
-            mTransaction.amount = -mTransaction.amount;
+            mScheduledTransaction.amount = -mScheduledTransaction.amount;
         }
-        mTransaction.category_title = txtTransactionCategory.getText().toString();
+        mScheduledTransaction.category_title = txtTransactionCategory.getText().toString();
         // Keep same date
-        mTransaction.category_id = DbHelper.getCategoryId(getContext(), mTransaction.category_title);
+        mScheduledTransaction.category_id = DbHelper.getCategoryId(getContext(), mScheduledTransaction.category_title);
 
         // Validate input - only transactionAmount is required and must be properly parsed
-        if (mTransaction.amount == 0) {
+        if (mScheduledTransaction.amount == 0) {
             Snackbar.make(mView, getContext().getString(R.string.enter_an_amount), MainActivity.SNACKBAR_TIME).show();
             txtTransactionAmount.requestFocus();
             return false;
         }
 
-        int rowsAffected = DbHelper.updateTransaction(getContext(), mTransaction);
+        int rowsAffected = -1;//DbHelper.updateTransaction(getContext(), mScheduledTransaction);
 
         if (rowsAffected < 1) {
             Snackbar.make(mView, "An error occurred.", MainActivity.SNACKBAR_TIME).show();

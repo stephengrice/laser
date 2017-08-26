@@ -12,8 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.stephengrice.laser.R;
-import com.stephengrice.laser.ScheduledTransactionsArrayAdapter;
-import com.stephengrice.laser.TransactionsArrayAdapter;
+import com.stephengrice.laser.ScheduledTransactionArrayAdapter;
 import com.stephengrice.laser.db.DbContract;
 import com.stephengrice.laser.db.DbHelper;
 
@@ -92,7 +91,7 @@ public class ScheduledTransactionsFragment extends Fragment {
 
         ArrayList<DbContract.ScheduledTransaction> scs = DbHelper.getScheduledTransactions(getActivity());
 
-        ScheduledTransactionsArrayAdapter adapter = new ScheduledTransactionsArrayAdapter(getActivity(), scs);
+        ScheduledTransactionArrayAdapter adapter = new ScheduledTransactionArrayAdapter(getActivity(), scs);
         // Set adapter for ListView
         ListView listView = (ListView)mView.findViewById(R.id.st_listview);
         listView.setAdapter(adapter);

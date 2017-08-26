@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.stephengrice.laser.db.DbHelper;
 import com.stephengrice.laser.fragment.ScheduledTransactionAddFragment;
 import com.stephengrice.laser.fragment.ScheduledTransactionDetailFragment;
+import com.stephengrice.laser.fragment.ScheduledTransactionEditFragment;
 import com.stephengrice.laser.fragment.ScheduledTransactionsFragment;
 import com.stephengrice.laser.fragment.SettingsFragment;
 import com.stephengrice.laser.fragment.TransactionAddFragment;
@@ -49,7 +50,8 @@ public class MainActivity extends AppCompatActivity
         SettingsFragment.OnFragmentInteractionListener,
         ScheduledTransactionsFragment.OnFragmentInteractionListener,
         ScheduledTransactionAddFragment.OnFragmentInteractionListener,
-        ScheduledTransactionDetailFragment.OnFragmentInteractionListener {
+        ScheduledTransactionDetailFragment.OnFragmentInteractionListener,
+        ScheduledTransactionEditFragment.OnFragmentInteractionListener {
 
     public static final int SNACKBAR_TIME = 3000;
 

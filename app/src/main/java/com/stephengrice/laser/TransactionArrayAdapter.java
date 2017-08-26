@@ -16,11 +16,11 @@ import com.stephengrice.laser.db.DbContract;
 import java.util.ArrayList;
 
 
-public class TransactionsArrayAdapter extends ArrayAdapter<DbContract.Transaction> {
+public class TransactionArrayAdapter extends ArrayAdapter<DbContract.Transaction> {
 
     private static int mLayout = R.layout.item_transaction;
 
-    public TransactionsArrayAdapter(Context context, ArrayList<DbContract.Transaction> data) {
+    public TransactionArrayAdapter(Context context, ArrayList<DbContract.Transaction> data) {
         super(context, mLayout, data);
     }
 

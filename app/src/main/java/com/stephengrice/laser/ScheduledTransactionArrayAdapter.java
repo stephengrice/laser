@@ -17,11 +17,11 @@ import com.stephengrice.laser.db.DbContract;
 
 import java.util.ArrayList;
 
-public class ScheduledTransactionsArrayAdapter extends ArrayAdapter<DbContract.ScheduledTransaction> {
+public class ScheduledTransactionArrayAdapter extends ArrayAdapter<DbContract.ScheduledTransaction> {
 
     private static int mLayout = R.layout.item_scheduled_transaction;
 
-    public ScheduledTransactionsArrayAdapter(Context context, ArrayList<DbContract.ScheduledTransaction> data) {
+    public ScheduledTransactionArrayAdapter(Context context, ArrayList<DbContract.ScheduledTransaction> data) {
         super(context, mLayout, data);
     }
 

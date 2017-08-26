@@ -3,11 +3,14 @@ package com.stephengrice.laser.fragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.stephengrice.laser.MainActivity;
 import com.stephengrice.laser.R;
 import com.stephengrice.laser.db.DbContract;
 
@@ -24,6 +27,7 @@ public class ScheduledTransactionDetailFragment extends Fragment {
 
     private DbContract.ScheduledTransaction mScheduledTransaction;
     private OnFragmentInteractionListener mListener;
+    private View mView;
 
     public ScheduledTransactionDetailFragment() {
         // Required empty public constructor
@@ -49,8 +53,34 @@ public class ScheduledTransactionDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_scheduled_transaction_detail, container, false);
-    }
+        // Inflate the layout for this fragment
+        mView = inflater.inflate(R.layout.fragment_scheduled_transaction_detail, container, false);
+
+        TextView txtAmount = (TextView) mView.findViewById(R.id.txt_amount);
+        TextView txtDate = (TextView) mView.findViewById(R.id.txt_date);
+        TextView txtDescription = (TextView) mView.findViewById(R.id.txt_description);
+        TextView txtCategoryTitle = (TextView) mView.findViewById(R.id.txt_category_title);
+
+        txtAmount.setText("Amount: " + MainActivity.formatCurrency(mScheduledTransaction.amount));
+        txtDate.setText(MainActivity.formatDate(getActivity(), mScheduledTransaction.date));
+        txtDescription.setText("Description: " + mScheduledTransaction.description);
+        txtCategoryTitle.setText("Category: " + mScheduledTransaction.category_title == null ? mView.getResources().getString(R.string.no_category) : mScheduledTransaction.category_title);
+
+        // Floating Action Button code
+        FloatingActionButton fab = (FloatingActionButton) mView.findViewById(R.id.transaction_edit_fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Navigate to TransactionAddFragment
+                getFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_main, ScheduledTransactionEditFragment.newInstance(mScheduledTransaction))
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
+        return mView;    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
