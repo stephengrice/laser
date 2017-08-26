@@ -55,4 +55,6 @@
 
     <string name="enter_an_amount">Please enter an amount.</string>
     <string name="db_error">An error occurred.</string>
+
+    <string name="st_number">%d on schedule</string>
 </resources>

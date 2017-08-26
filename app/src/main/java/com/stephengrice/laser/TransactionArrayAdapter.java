@@ -46,20 +46,19 @@ public class TransactionArrayAdapter extends ArrayAdapter<DbContract.Transaction
         itemDate.setText(formattedDate);
         itemDescription.setText(transaction.description);
         // If category_id is 0, it is not set, so display the no_category string. Otherwise, display the category title
-        itemCategory.setText((transaction.category_id < 1 ? convertView.getResources().getString(R.string.no_category) : transaction.category_title));
+        itemCategory.setText("Category: " + (transaction.category_id < 1 ? convertView.getResources().getString(R.string.no_category) : transaction.category_title));
 
+        ImageView imgIcon = (ImageView) convertView.findViewById(R.id.item_transaction_img);
         // Conditional formatting - change from negative-appearing item to positive appearance
         if (transaction.amount > 0) {
             // Change bg color
             convertView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintGreen));
             // Change icon imageview
-            ImageView imgIcon = (ImageView) convertView.findViewById(R.id.item_transaction_img);
             imgIcon.setImageResource(R.drawable.ic_up_black);
         } else {
             // Change bg color
             convertView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintRed));
             // Change icon imageview
-            ImageView imgIcon = (ImageView) convertView.findViewById(R.id.item_transaction_img);
             imgIcon.setImageResource(R.drawable.ic_down_black);
         }
 

@@ -21,7 +21,6 @@
             android:id="@+id/st_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="3 on schedule"
             android:textStyle="bold"
             android:gravity="center"
             />

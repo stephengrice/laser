@@ -66,7 +66,9 @@ public final class DbContract {
 
         public ContentValues getContentValues() {
             ContentValues values = new ContentValues();
-            values.put(_ID, id);
+            if (this.id > 0) {
+                values.put(_ID, this.id);
+            }
             values.put(COLUMN_NAME_AMOUNT, amount);
             values.put(COLUMN_NAME_DATE, date);
             values.put(COLUMN_NAME_DESCRIPTION, description);
@@ -150,7 +152,9 @@ public final class DbContract {
 
         public ContentValues getContentValues() {
             ContentValues values = new ContentValues();
-            values.put(_ID, id);
+            if (this.id > 0) {
+                values.put(_ID, this.id);
+            }
             values.put(COLUMN_NAME_AMOUNT, amount);
             values.put(COLUMN_NAME_DATE, date);
             values.put(COLUMN_NAME_DESCRIPTION, description);

@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.stephengrice.laser.db.DbContract;
 import com.stephengrice.laser.db.DbHelper;
 import com.stephengrice.laser.fragment.ScheduledTransactionAddFragment;
 import com.stephengrice.laser.fragment.ScheduledTransactionDetailFragment;
@@ -259,5 +260,9 @@ public class MainActivity extends AppCompatActivity
         // Update balance in nav tray
         TextView txtNavBalance = (TextView) findViewById(R.id.txt_nav_balance);
         txtNavBalance.setText(formatCurrency(DbHelper.getBalance(MainActivity.this)));
+    }
+
+    public static String getRepeatText(Context context, int repeat) {
+        return context.getResources().getStringArray(R.array.spinner_repeat)[repeat];
     }
 }

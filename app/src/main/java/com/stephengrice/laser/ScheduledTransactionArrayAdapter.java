@@ -38,6 +38,7 @@ public class ScheduledTransactionArrayAdapter extends ArrayAdapter<DbContract.Sc
         TextView itemDate = (TextView) convertView.findViewById(R.id.item_st_date);
         TextView itemDescription = (TextView) convertView.findViewById(R.id.item_st_description);
         TextView itemCategory = (TextView) convertView.findViewById(R.id.item_st_category);
+        TextView itemRepeat = (TextView) convertView.findViewById(R.id.item_st_repeat);
 
         // Format necessary data values
         String formattedAmount = MainActivity.formatCurrency(Math.abs(st.amount));
@@ -47,20 +48,20 @@ public class ScheduledTransactionArrayAdapter extends ArrayAdapter<DbContract.Sc
         itemDate.setText(formattedDate);
         itemDescription.setText(st.description);
         // If category_id is 0, it is not set, so display the no_category string. Otherwise, display the category title
-        itemCategory.setText((st.category_id < 1 ? convertView.getResources().getString(R.string.no_category) : st.category_title));
+        itemCategory.setText("Category: " + (st.category_id < 1 ? convertView.getResources().getString(R.string.no_category) : st.category_title));
+        itemRepeat.setText("Repeat: " + MainActivity.getRepeatText(getContext(), st.repeat));
 
+        ImageView imgIcon = (ImageView) convertView.findViewById(R.id.item_st_img);
         // Conditional formatting - change from negative-appearing item to positive appearance
         if (st.amount > 0) {
             // Change bg color
             convertView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintGreen));
             // Change icon imageview
-            ImageView imgIcon = (ImageView) convertView.findViewById(R.id.item_transaction_img);
             imgIcon.setImageResource(R.drawable.ic_up_black);
         } else {
             // Change bg color
             convertView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintRed));
             // Change icon imageview
-            ImageView imgIcon = (ImageView) convertView.findViewById(R.id.item_st_img);
             imgIcon.setImageResource(R.drawable.ic_down_black);
         }
 

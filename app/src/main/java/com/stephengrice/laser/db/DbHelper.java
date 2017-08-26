@@ -121,6 +121,19 @@ public class DbHelper extends SQLiteOpenHelper {
         return newRowId;
     }
 
+    public static long updateScheduledTransaction(Context context, DbContract.ScheduledTransaction st) {
+        DbHelper dbHelper = new DbHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        int result = db.update(
+                DbContract.ScheduledTransaction.TABLE_NAME,
+                st.getContentValues(),
+                DbContract.Transaction._ID + " = ?",
+                new String[] { Long.toString(st.id) }
+        );
+        db.close();
+        return result;
+    }
+
 
     public static HashMap<String, Float> countByCategory(Context context, CountMode mode) {
         // Create result object (to be returned)

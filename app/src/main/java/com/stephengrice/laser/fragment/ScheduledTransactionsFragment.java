@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.stephengrice.laser.R;
 import com.stephengrice.laser.ScheduledTransactionArrayAdapter;
@@ -90,7 +91,6 @@ public class ScheduledTransactionsFragment extends Fragment {
         });
 
         ArrayList<DbContract.ScheduledTransaction> scs = DbHelper.getScheduledTransactions(getActivity());
-
         ScheduledTransactionArrayAdapter adapter = new ScheduledTransactionArrayAdapter(getActivity(), scs);
         // Set adapter for ListView
         ListView listView = (ListView)mView.findViewById(R.id.st_listview);
@@ -107,6 +107,9 @@ public class ScheduledTransactionsFragment extends Fragment {
                         .commit();
             }
         });
+
+        TextView txtNumber = (TextView) mView.findViewById(R.id.st_number);
+        txtNumber.setText(getContext().getString(R.string.st_number, scs.size()));
 
         return mView;
     }

@@ -56,7 +56,7 @@
             android:id="@+id/txt_st_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="today"
+            android:text="Today"
             />
 
         <Button

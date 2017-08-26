@@ -1,9 +1,13 @@
 package com.stephengrice.laser.fragment;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -14,7 +18,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.view.textservice.SpellCheckerInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.ToggleButton;
 
 import com.stephengrice.laser.CategoryArrayAdapter;
@@ -25,6 +33,8 @@ import com.stephengrice.laser.db.DbContract;
 import com.stephengrice.laser.db.DbHelper;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,6 +51,8 @@ public class ScheduledTransactionEditFragment extends Fragment {
 
     private DbContract.ScheduledTransaction mScheduledTransaction;
     private View mView;
+    private Calendar mCalendar;
+    private TextView mDateView;
 
     public ScheduledTransactionEditFragment() {
         // Required empty public constructor
@@ -66,11 +78,14 @@ public class ScheduledTransactionEditFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mView = inflater.inflate(R.layout.fragment_transaction_edit, container, false);
+        mView = inflater.inflate(R.layout.fragment_scheduled_transaction_edit, container, false);
+
+        mDateView = (TextView) mView.findViewById(R.id.txt_st_date);
+        mCalendar = Calendar.getInstance();
 
         fillForm();
 
-        Button btnEdit = (Button) mView.findViewById(R.id.btn_update_transaction);
+        Button btnEdit = (Button) mView.findViewById(R.id.btn_save_st);
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,7 +97,7 @@ public class ScheduledTransactionEditFragment extends Fragment {
         ArrayList<DbContract.Category> categories = DbHelper.getCategories(getContext());
         CategoryArrayAdapter adapter = new CategoryArrayAdapter(getContext(), categories);
         // Set adapter
-        AutoCompleteTextView autoComplete = (AutoCompleteTextView) mView.findViewById(R.id.transaction_category_autocomplete);
+        AutoCompleteTextView autoComplete = (AutoCompleteTextView) mView.findViewById(R.id.txt_st_category_autocomplete);
         autoComplete.setAdapter(adapter);
 
         // Set onclick listener for spent/earned toggle to change bg color
@@ -100,6 +115,29 @@ public class ScheduledTransactionEditFragment extends Fragment {
                 } else {
                     btnSpentEarned.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintRed));
                 }
+            }
+        });
+
+        Button btnDate = (Button) mView.findViewById(R.id.btn_change_st_date);
+        btnDate.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog datePicker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, final int year, final int month, final int dayOfMonth) {
+                        TimePickerDialog timePicker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                mCalendar = new GregorianCalendar(year, month, dayOfMonth, hourOfDay, minute);
+                                mScheduledTransaction.date = mCalendar.getTimeInMillis();
+                                updateTimeView();
+                            }
+                        }, mCalendar.get(Calendar.HOUR), mCalendar.get(Calendar.MINUTE), false);
+                        timePicker.show();
+                    }
+                }, mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH));
+                datePicker.show();
             }
         });
 
@@ -145,15 +183,18 @@ public class ScheduledTransactionEditFragment extends Fragment {
     }
 
     private void fillForm() {
-        EditText txtTransactionAmount = (EditText) mView.findViewById(R.id.txt_transaction_amount);
-        EditText txtTransactionDescription = (EditText) mView.findViewById(R.id.txt_transaction_description);
-        AutoCompleteTextView txtTransactionCategory = (AutoCompleteTextView) mView.findViewById(R.id.transaction_category_autocomplete);
+        EditText txtTransactionAmount = (EditText) mView.findViewById(R.id.txt_st_amount);
+        EditText txtTransactionDescription = (EditText) mView.findViewById(R.id.txt_st_description);
+        AutoCompleteTextView txtTransactionCategory = (AutoCompleteTextView) mView.findViewById(R.id.txt_st_category_autocomplete);
         ToggleButton btnEarned = (ToggleButton) mView.findViewById(R.id.btn_earned_spent);
+        Spinner repeatSpinner = (Spinner) mView.findViewById(R.id.spinner_repeat);
 
         txtTransactionAmount.setText(Float.toString(Math.abs(mScheduledTransaction.amount)));
         txtTransactionDescription.setText(mScheduledTransaction.description);
         txtTransactionCategory.setText(mScheduledTransaction.category_title);
         btnEarned.setChecked(mScheduledTransaction.amount >= 0);
+        repeatSpinner.setSelection(mScheduledTransaction.repeat);
+        mDateView.setText(MainActivity.formatDate(getContext(), mScheduledTransaction.date));
     }
 
     private boolean updateTransaction() {
@@ -164,10 +205,11 @@ public class ScheduledTransactionEditFragment extends Fragment {
         imm.hideSoftInputFromWindow(mView.getWindowToken(), 0);
 
         // Select elements containing user input
-        EditText txtTransactionAmount = (EditText) mView.findViewById(R.id.txt_transaction_amount);
-        EditText txtTransactionDescription = (EditText) mView.findViewById(R.id.txt_transaction_description);
-        AutoCompleteTextView txtTransactionCategory = (AutoCompleteTextView) mView.findViewById(R.id.transaction_category_autocomplete);
+        EditText txtTransactionAmount = (EditText) mView.findViewById(R.id.txt_st_amount);
+        EditText txtTransactionDescription = (EditText) mView.findViewById(R.id.txt_st_description);
+        AutoCompleteTextView txtTransactionCategory = (AutoCompleteTextView) mView.findViewById(R.id.txt_st_category_autocomplete);
         ToggleButton btnEarned = (ToggleButton) mView.findViewById(R.id.btn_earned_spent);
+        Spinner repeatSpinner = (Spinner) mView.findViewById(R.id.spinner_repeat);
 
         // Populate mTransaction with new values
         boolean positive = btnEarned.isChecked();
@@ -183,6 +225,7 @@ public class ScheduledTransactionEditFragment extends Fragment {
         mScheduledTransaction.category_title = txtTransactionCategory.getText().toString();
         // Keep same date
         mScheduledTransaction.category_id = DbHelper.getCategoryId(getContext(), mScheduledTransaction.category_title);
+        mScheduledTransaction.repeat = repeatSpinner.getSelectedItemPosition();
 
         // Validate input - only transactionAmount is required and must be properly parsed
         if (mScheduledTransaction.amount == 0) {
@@ -191,17 +234,21 @@ public class ScheduledTransactionEditFragment extends Fragment {
             return false;
         }
 
-        int rowsAffected = -1;//DbHelper.updateTransaction(getContext(), mScheduledTransaction);
+        long rowsAffected = DbHelper.updateScheduledTransaction(getContext(), mScheduledTransaction);
 
         if (rowsAffected < 1) {
             Snackbar.make(mView, "An error occurred.", MainActivity.SNACKBAR_TIME).show();
             return false;
         } else {
             getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.content_main, new TransactionsFragment())
+                    .replace(R.id.content_main, new ScheduledTransactionsFragment())
                     .addToBackStack(null)
                     .commit();
             return true;
         }
+    }
+
+    private void updateTimeView() {
+        mDateView.setText(MainActivity.formatDate(getActivity(), mScheduledTransaction.date));
     }
 }

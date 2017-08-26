@@ -223,7 +223,9 @@ public class ScheduledTransactionAddFragment extends Fragment {
         mSt.category_id = DbHelper.getCategoryId(getContext(), mSt.category_title);
         mSt.repeat = getRepeatValue(mRepeatView.getSelectedItem().toString());
 
-        if (DbHelper.insertScheduledTransaction(getContext(), mSt) == -1) {
+        long result = DbHelper.insertScheduledTransaction(getContext(), mSt);
+
+        if (result == -1) {
             Snackbar.make(mView, getContext().getString(R.string.db_error), MainActivity.SNACKBAR_TIME).show();
         } else {
             getActivity().getSupportFragmentManager().beginTransaction()

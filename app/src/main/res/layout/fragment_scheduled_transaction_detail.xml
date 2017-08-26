@@ -32,6 +32,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="txt_category_title" />
+
+        <TextView
+            android:id="@+id/txt_repeat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="txt_repeat" />
     </LinearLayout>
 
 
