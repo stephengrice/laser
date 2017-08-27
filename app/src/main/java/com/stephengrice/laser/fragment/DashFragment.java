@@ -1,6 +1,7 @@
 package com.stephengrice.laser.fragment;
 
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -92,10 +93,12 @@ public class DashFragment extends Fragment {
         // Fill view
         TextView txtBalance = (TextView) view.findViewById(R.id.txt_balance);
         txtBalance.setText(MainActivity.formatCurrency(balance));
+        GradientDrawable gradientDrawable = (GradientDrawable) txtBalance.getBackground();
+
         if (balance >= 0) {
-            txtBalance.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorTintGreen));
+            gradientDrawable.setColor(ContextCompat.getColor(getActivity(), R.color.colorTintGreen));
         } else {
-            txtBalance.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorTintRed));
+            gradientDrawable.setColor(ContextCompat.getColor(getActivity(), R.color.colorTintRed));
         }
 
         // Inflate the layout for this fragment

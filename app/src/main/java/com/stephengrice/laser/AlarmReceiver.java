@@ -21,6 +21,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     private static final String ARG_ST_ID = "scheduledTransactionId";
 
+
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction() != null && intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {

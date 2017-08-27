@@ -24,40 +24,39 @@
             tools:layout_constraintRight_creator="1"
             tools:layout_constraintTop_creator="1" />
 
-        <!--<Spinner-->
-        <!--android:id="@+id/spinner"-->
-        <!--android:entries="@array/spinner_dates"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--tools:layout_constraintTop_creator="1"-->
-        <!--tools:layout_constraintRight_creator="1"-->
-        <!--android:layout_marginStart="8dp"-->
-        <!--android:layout_marginEnd="8dp"-->
-        <!--app:layout_constraintRight_toRightOf="parent"-->
-        <!--android:layout_marginTop="64dp"-->
-        <!--tools:layout_constraintLeft_creator="1"-->
-        <!--app:layout_constraintLeft_toLeftOf="parent"-->
-        <!--app:layout_constraintTop_toTopOf="parent"-->
-        <!--android:layout_marginLeft="8dp"-->
-        <!--android:layout_marginRight="8dp"-->
-        <!--app:layout_constraintHorizontal_bias="0.0" />-->
+        <TextView
+            android:text="Balance"
+            android:textSize="@dimen/subtitle_text_size"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
 
         <TextView
             android:id="@+id/txt_balance"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="17dp"
-            android:gravity="center"
-            android:text="$200"
-            android:textSize="@dimen/title_text_size"
-            android:background="@color/colorTintGreen" />
-
-        <TextView
-            android:id="@+id/txt_goals"
+            android:padding="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="2/3 goals met" />
+            android:minHeight="@dimen/dash_item_height"
+            android:textSize="@dimen/balance_text_size"
+            android:background="@drawable/background_rounded"/>
+
+        <com.stephengrice.laser.DashDisplayView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <com.stephengrice.laser.DashDisplayView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <com.stephengrice.laser.DashDisplayView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
