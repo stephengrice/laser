@@ -23,6 +23,13 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        if (intent.getAction() != null && intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
+            // Called on device bootup
+            // Re-sets the alarms that get cleared on shutdown
+            setAllAlarms(context);
+            return;
+        }
+
         long st_id = intent.getExtras().getLong(ARG_ST_ID);
         DbContract.ScheduledTransaction scheduledTransaction = DbHelper.getScheduledTransaction(context, st_id);
 
@@ -69,6 +76,8 @@ public class AlarmReceiver extends BroadcastReceiver {
     }
 
     public static void setAllAlarms(Context context) {
+        Log.d("mytag", "setAllAlarms called");
+
         ArrayList<DbContract.ScheduledTransaction> scheduledTransactions = DbHelper.getScheduledTransactions(context);
         long now = System.currentTimeMillis();
         for (DbContract.ScheduledTransaction scheduledTransaction : scheduledTransactions) {

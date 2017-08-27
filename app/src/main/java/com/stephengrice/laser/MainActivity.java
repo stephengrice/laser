@@ -73,6 +73,9 @@ public class MainActivity extends AppCompatActivity
 
         showIntro();
 
+        // Make sure all alarms are up to date according to DB
+        AlarmReceiver.cancelAllAlarms(this);
+        AlarmReceiver.setAllAlarms(this);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
