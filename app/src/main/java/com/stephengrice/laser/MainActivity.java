@@ -1,11 +1,16 @@
 package com.stephengrice.laser;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.design.widget.NavigationView;
@@ -15,6 +20,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,6 +43,8 @@ import com.stephengrice.laser.fragment.TransactionEditFragment;
 import com.stephengrice.laser.fragment.TransactionsFragment;
 
 import java.text.DecimalFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -124,6 +132,8 @@ public class MainActivity extends AppCompatActivity
                         }
                     }
                 });
+
+        new AlarmReceiver().setAlarm(this, System.currentTimeMillis() + 5000);
     }
 
     @Override
@@ -265,4 +275,15 @@ public class MainActivity extends AppCompatActivity
     public static String getRepeatText(Context context, int repeat) {
         return context.getResources().getStringArray(R.array.spinner_repeat)[repeat];
     }
+
+//    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+//    public void setAlarm(Context context, DbContract.ScheduledTransaction scheduledTransaction) {
+//        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+//        // TODO detect and change repeat time
+//        Intent intent = new Intent(getBaseContext(), AlarmReceiver.class);
+//        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+//        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, System.currentTimeMillis() + 5000, AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
+//        Log.d("mytag", "alarm set");
+//        Log.d("mytag", new Date(alarmManager.getNextAlarmClock().getTriggerTime()).toString());
+//    }
 }
