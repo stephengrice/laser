@@ -132,8 +132,6 @@ public class MainActivity extends AppCompatActivity
                         }
                     }
                 });
-
-        new AlarmReceiver().setAlarm(this, System.currentTimeMillis() + 5000);
     }
 
     @Override

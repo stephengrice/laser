@@ -5,12 +5,14 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.provider.BaseColumns;
 
+import com.stephengrice.laser.RepeatType;
+
 import java.io.Serializable;
 
 public final class DbContract {
     private DbContract() {}
 
-    public static final int DATABASE_VERSION = 9;
+    public static final int DATABASE_VERSION = 10;
     public static final String DATABASE_NAME = "Laser.db";
 
     private static final String TEXT_TYPE = " TEXT";
@@ -127,6 +129,11 @@ public final class DbContract {
         public static final String SQL_SELECT_ALL = "SELECT "+TABLE_NAME+".*, "+Category.TABLE_NAME+".title FROM " + TABLE_NAME
                 + " LEFT JOIN categories on " + COLUMN_NAME_CATEGORY_ID + "=" + Category.TABLE_NAME + "." + Category._ID + " "
                 + " ORDER BY date DESC";
+        public static final String sqlSelectOne(long arg_id) {
+            return "SELECT "+TABLE_NAME+".*, "+Category.TABLE_NAME+".title FROM " + TABLE_NAME
+                    + " LEFT JOIN categories on " + COLUMN_NAME_CATEGORY_ID + "=" + Category.TABLE_NAME + "." + Category._ID + " "
+                    + " WHERE "+TABLE_NAME+"."+_ID+"=" + arg_id;
+        }
 
         public long id;
         public float amount;
@@ -134,7 +141,7 @@ public final class DbContract {
         public String description;
         public long category_id;
         public String category_title;
-        public int repeat;
+        public RepeatType repeat;
 
         public ScheduledTransaction(Cursor cursor) {
             this.id = cursor.getLong(cursor.getColumnIndexOrThrow(Transaction._ID));
@@ -143,7 +150,7 @@ public final class DbContract {
             this.description = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.Transaction.COLUMN_NAME_DESCRIPTION));
             this.category_id = cursor.getInt(cursor.getColumnIndexOrThrow(DbContract.Transaction.COLUMN_NAME_CATEGORY_ID));
             this.category_title = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.Category.COLUMN_NAME_TITLE));
-            this.repeat = cursor.getInt(cursor.getColumnIndexOrThrow(ScheduledTransaction.COLUMN_NAME_REPEAT));
+            this.repeat = RepeatType.fromInt(cursor.getInt(cursor.getColumnIndexOrThrow(ScheduledTransaction.COLUMN_NAME_REPEAT)));
         }
 
         public ScheduledTransaction() {
@@ -163,7 +170,7 @@ public final class DbContract {
             } else {
                 values.put(COLUMN_NAME_CATEGORY_ID, category_id);
             }
-            values.put(COLUMN_NAME_REPEAT, repeat);
+            values.put(COLUMN_NAME_REPEAT, repeat.getValue());
             return values;
         }
     }
@@ -182,7 +189,7 @@ public final class DbContract {
                 COLUMN_NAME_TITLE + TEXT_TYPE +
                 COLUMN_NAME_DUE_DATE + INTEGER_TYPE + COMMA_SEP +
                 COLUMN_NAME_TYPE + INTEGER_TYPE + COMMA_SEP +
-                COLUMN_NAME_AMOUNT + REAL_TYPE + COMMA_SEP +
+                COLUMN_NAME_AMOUNT + REAL_TYPE +
                 ")";
         public static final String SQL_DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
 

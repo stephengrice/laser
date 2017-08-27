@@ -24,6 +24,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.stephengrice.laser.AlarmReceiver;
 import com.stephengrice.laser.MainActivity;
 import com.stephengrice.laser.R;
 import com.stephengrice.laser.RepeatType;
@@ -223,11 +224,14 @@ public class ScheduledTransactionAddFragment extends Fragment {
         mSt.category_id = DbHelper.getCategoryId(getContext(), mSt.category_title);
         mSt.repeat = getRepeatValue(mRepeatView.getSelectedItem().toString());
 
-        long result = DbHelper.insertScheduledTransaction(getContext(), mSt);
+        mSt.id = DbHelper.insertScheduledTransaction(getContext(), mSt);
 
-        if (result == -1) {
+        if (mSt.id == -1) {
             Snackbar.make(mView, getContext().getString(R.string.db_error), MainActivity.SNACKBAR_TIME).show();
         } else {
+            // Schedule transaction
+            AlarmReceiver.setAlarm(getContext(), mSt);
+
             getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.content_main, new ScheduledTransactionsFragment())
                     .addToBackStack(null)
@@ -235,20 +239,20 @@ public class ScheduledTransactionAddFragment extends Fragment {
         }
     }
 
-    private int getRepeatValue(String repeatText) {
+    private RepeatType getRepeatValue(String repeatText) {
         String[] choices = getContext().getResources().getStringArray(R.array.spinner_repeat);
         if (repeatText.equals(choices[0])) { // NO REPEAT
-            return RepeatType.NO_REPEAT.getValue();
+            return RepeatType.NO_REPEAT;
         } else if (repeatText.equals(choices[1])) { // DAILY
-            return RepeatType.DAILY.getValue();
+            return RepeatType.DAILY;
         } else if (repeatText.equals(choices[2])) {
-            return RepeatType.WEEKLY.getValue();
+            return RepeatType.WEEKLY;
         } else if (repeatText.equals(choices[3])) {
-            return RepeatType.BI_WEEKLY.getValue();
+            return RepeatType.BI_WEEKLY;
         } else if (repeatText.equals(choices[4])) {
-            return RepeatType.MONTHLY.getValue();
+            return RepeatType.MONTHLY;
         } else {
-            return RepeatType.YEARLY.getValue();
+            return RepeatType.YEARLY;
         }
     }
 }

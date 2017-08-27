@@ -224,4 +224,17 @@ public class DbHelper extends SQLiteOpenHelper {
         db.close();
         return result;
     }
+
+    public static DbContract.ScheduledTransaction getScheduledTransaction(Context context, long search_id) {
+        DbHelper dbHelper = new DbHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor cursor = db.rawQuery(DbContract.ScheduledTransaction.sqlSelectOne(search_id), null);
+        cursor.moveToFirst();
+        DbContract.ScheduledTransaction result = new DbContract.ScheduledTransaction(cursor);
+
+        cursor.close();
+        db.close();
+
+        return result;
+    }
 }

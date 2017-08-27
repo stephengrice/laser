@@ -80,9 +80,9 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                 DbHelper dbHelper = new DbHelper(getActivity());
                 SQLiteDatabase db = dbHelper.getWritableDatabase();
-                // Drop tables
-                db.delete(DbContract.Transaction.TABLE_NAME,null,null);
-                db.delete(DbContract.Category.TABLE_NAME, null, null);
+                // Drop all tables via onUpgrade
+                dbHelper.onUpgrade(db, 1, 2);
+                db.close();
 
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -29,6 +29,7 @@ import com.stephengrice.laser.CategoryArrayAdapter;
 import com.stephengrice.laser.CategoryCursorAdapter;
 import com.stephengrice.laser.MainActivity;
 import com.stephengrice.laser.R;
+import com.stephengrice.laser.RepeatType;
 import com.stephengrice.laser.db.DbContract;
 import com.stephengrice.laser.db.DbHelper;
 
@@ -193,7 +194,7 @@ public class ScheduledTransactionEditFragment extends Fragment {
         txtTransactionDescription.setText(mScheduledTransaction.description);
         txtTransactionCategory.setText(mScheduledTransaction.category_title);
         btnEarned.setChecked(mScheduledTransaction.amount >= 0);
-        repeatSpinner.setSelection(mScheduledTransaction.repeat);
+        repeatSpinner.setSelection(mScheduledTransaction.repeat.getValue());
         mDateView.setText(MainActivity.formatDate(getContext(), mScheduledTransaction.date));
     }
 
@@ -225,7 +226,7 @@ public class ScheduledTransactionEditFragment extends Fragment {
         mScheduledTransaction.category_title = txtTransactionCategory.getText().toString();
         // Keep same date
         mScheduledTransaction.category_id = DbHelper.getCategoryId(getContext(), mScheduledTransaction.category_title);
-        mScheduledTransaction.repeat = repeatSpinner.getSelectedItemPosition();
+        mScheduledTransaction.repeat = RepeatType.fromInt(repeatSpinner.getSelectedItemPosition());
 
         // Validate input - only transactionAmount is required and must be properly parsed
         if (mScheduledTransaction.amount == 0) {
