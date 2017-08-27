@@ -64,6 +64,9 @@ public class ScheduledTransactionArrayAdapter extends ArrayAdapter<DbContract.Sc
             // Change icon imageview
             imgIcon.setImageResource(R.drawable.ic_down_black);
         }
+        if (!st.enabled) {
+            convertView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintGray));
+        }
 
         return convertView;
     }

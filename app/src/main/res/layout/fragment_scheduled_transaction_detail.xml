@@ -38,6 +38,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="txt_repeat" />
+
+        <TextView
+            android:id="@+id/txt_enabled"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="txt_enabled" />
     </LinearLayout>
 
 

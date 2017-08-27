@@ -61,12 +61,14 @@ public class ScheduledTransactionDetailFragment extends Fragment {
         TextView txtDescription = (TextView) mView.findViewById(R.id.txt_description);
         TextView txtCategoryTitle = (TextView) mView.findViewById(R.id.txt_category_title);
         TextView txtRepeat = (TextView) mView.findViewById(R.id.txt_repeat);
+        TextView txtEnabled = (TextView) mView.findViewById(R.id.txt_enabled);
 
         txtAmount.setText("Amount: " + MainActivity.formatCurrency(mScheduledTransaction.amount));
         txtDate.setText(MainActivity.formatDate(getActivity(), mScheduledTransaction.date));
         txtDescription.setText("Description: " + mScheduledTransaction.description);
         txtCategoryTitle.setText("Category: " + (mScheduledTransaction.category_title == null ? mView.getResources().getString(R.string.no_category) : mScheduledTransaction.category_title));
         txtRepeat.setText("Repeat: " + MainActivity.getRepeatText(getContext(), mScheduledTransaction.repeat.getValue()));
+        txtEnabled.setText("Enabled: " + Boolean.toString(mScheduledTransaction.enabled));
 
         // Floating Action Button code
         FloatingActionButton fab = (FloatingActionButton) mView.findViewById(R.id.transaction_edit_fab);

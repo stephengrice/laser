@@ -12,7 +12,7 @@ import java.io.Serializable;
 public final class DbContract {
     private DbContract() {}
 
-    public static final int DATABASE_VERSION = 10;
+    public static final int DATABASE_VERSION = 11;
     public static final String DATABASE_NAME = "Laser.db";
 
     private static final String TEXT_TYPE = " TEXT";
@@ -114,6 +114,7 @@ public final class DbContract {
         public static final String COLUMN_NAME_DESCRIPTION = "description";
         public static final String COLUMN_NAME_CATEGORY_ID = "category_id";
         public static final String COLUMN_NAME_REPEAT = "repeat";
+        public static final String COLUMN_NAME_ENABLED = "enabled";
 
         public static final String SQL_CREATE_TABLE = "CREATE TABLE " +
                 TABLE_NAME + "(" +
@@ -123,6 +124,7 @@ public final class DbContract {
                 COLUMN_NAME_CATEGORY_ID + INTEGER_TYPE + COMMA_SEP +
                 COLUMN_NAME_DESCRIPTION + TEXT_TYPE + COMMA_SEP +
                 COLUMN_NAME_REPEAT + INTEGER_TYPE + COMMA_SEP +
+                COLUMN_NAME_ENABLED + INTEGER_TYPE + COMMA_SEP +
                 "FOREIGN KEY (" + COLUMN_NAME_CATEGORY_ID + ") REFERENCES " + Category.TABLE_NAME + "(" + Category._ID + ")" +
                 ")";
         public static final String SQL_DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
@@ -142,15 +144,17 @@ public final class DbContract {
         public long category_id;
         public String category_title;
         public RepeatType repeat;
+        public boolean enabled;
 
         public ScheduledTransaction(Cursor cursor) {
-            this.id = cursor.getLong(cursor.getColumnIndexOrThrow(Transaction._ID));
-            this.amount = cursor.getFloat(cursor.getColumnIndexOrThrow(DbContract.Transaction.COLUMN_NAME_AMOUNT));
-            this.date = cursor.getLong(cursor.getColumnIndexOrThrow(DbContract.Transaction.COLUMN_NAME_DATE));
-            this.description = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.Transaction.COLUMN_NAME_DESCRIPTION));
-            this.category_id = cursor.getInt(cursor.getColumnIndexOrThrow(DbContract.Transaction.COLUMN_NAME_CATEGORY_ID));
+            this.id = cursor.getLong(cursor.getColumnIndexOrThrow(_ID));
+            this.amount = cursor.getFloat(cursor.getColumnIndexOrThrow(COLUMN_NAME_AMOUNT));
+            this.date = cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_NAME_DATE));
+            this.description = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME_DESCRIPTION));
+            this.category_id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_NAME_CATEGORY_ID));
             this.category_title = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.Category.COLUMN_NAME_TITLE));
-            this.repeat = RepeatType.fromInt(cursor.getInt(cursor.getColumnIndexOrThrow(ScheduledTransaction.COLUMN_NAME_REPEAT)));
+            this.repeat = RepeatType.fromInt(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_NAME_REPEAT)));
+            this.enabled = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_NAME_ENABLED)) == 1;
         }
 
         public ScheduledTransaction() {
@@ -171,6 +175,7 @@ public final class DbContract {
                 values.put(COLUMN_NAME_CATEGORY_ID, category_id);
             }
             values.put(COLUMN_NAME_REPEAT, repeat.getValue());
+            values.put(COLUMN_NAME_ENABLED, (enabled? 1 : 0));
             return values;
         }
     }

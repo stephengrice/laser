@@ -27,6 +27,7 @@
     <!--Subdued Tints-->
     <color name="colorTintRed">#ef9a9a</color>
     <color name="colorTintGreen">#a5d6a7</color>
+    <color name="colorTintGray">#9a9a9a</color>
 
     <!-- Chart colors (derived from subdued tints) -->
     <color name="chartRed1">#A13535</color>

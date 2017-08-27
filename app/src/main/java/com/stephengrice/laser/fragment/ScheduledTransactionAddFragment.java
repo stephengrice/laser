@@ -223,6 +223,7 @@ public class ScheduledTransactionAddFragment extends Fragment {
         mSt.category_title = mCategoryView.getText().toString();
         mSt.category_id = DbHelper.getCategoryId(getContext(), mSt.category_title);
         mSt.repeat = getRepeatValue(mRepeatView.getSelectedItem().toString());
+        mSt.enabled = true;
 
         mSt.id = DbHelper.insertScheduledTransaction(getContext(), mSt);
 

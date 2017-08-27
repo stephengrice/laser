@@ -74,6 +74,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <CheckBox
+        android:id="@+id/chk_enabled"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/st_enabled" />
 
     <Button
         android:id="@+id/btn_save_st"

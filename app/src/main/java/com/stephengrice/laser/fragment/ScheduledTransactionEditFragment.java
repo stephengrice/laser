@@ -18,6 +18,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.view.textservice.SpellCheckerInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -189,6 +190,7 @@ public class ScheduledTransactionEditFragment extends Fragment {
         AutoCompleteTextView txtTransactionCategory = (AutoCompleteTextView) mView.findViewById(R.id.txt_st_category_autocomplete);
         ToggleButton btnEarned = (ToggleButton) mView.findViewById(R.id.btn_earned_spent);
         Spinner repeatSpinner = (Spinner) mView.findViewById(R.id.spinner_repeat);
+        CheckBox chkEnabled = (CheckBox) mView.findViewById(R.id.chk_enabled);
 
         txtTransactionAmount.setText(Float.toString(Math.abs(mScheduledTransaction.amount)));
         txtTransactionDescription.setText(mScheduledTransaction.description);
@@ -196,6 +198,7 @@ public class ScheduledTransactionEditFragment extends Fragment {
         btnEarned.setChecked(mScheduledTransaction.amount >= 0);
         repeatSpinner.setSelection(mScheduledTransaction.repeat.getValue());
         mDateView.setText(MainActivity.formatDate(getContext(), mScheduledTransaction.date));
+        chkEnabled.setChecked(mScheduledTransaction.enabled);
     }
 
     private boolean updateTransaction() {
@@ -211,6 +214,7 @@ public class ScheduledTransactionEditFragment extends Fragment {
         AutoCompleteTextView txtTransactionCategory = (AutoCompleteTextView) mView.findViewById(R.id.txt_st_category_autocomplete);
         ToggleButton btnEarned = (ToggleButton) mView.findViewById(R.id.btn_earned_spent);
         Spinner repeatSpinner = (Spinner) mView.findViewById(R.id.spinner_repeat);
+        CheckBox chkEnabled = (CheckBox) mView.findViewById(R.id.chk_enabled);
 
         // Populate mTransaction with new values
         boolean positive = btnEarned.isChecked();
@@ -227,6 +231,7 @@ public class ScheduledTransactionEditFragment extends Fragment {
         // Keep same date
         mScheduledTransaction.category_id = DbHelper.getCategoryId(getContext(), mScheduledTransaction.category_title);
         mScheduledTransaction.repeat = RepeatType.fromInt(repeatSpinner.getSelectedItemPosition());
+        mScheduledTransaction.enabled = chkEnabled.isChecked();
 
         // Validate input - only transactionAmount is required and must be properly parsed
         if (mScheduledTransaction.amount == 0) {

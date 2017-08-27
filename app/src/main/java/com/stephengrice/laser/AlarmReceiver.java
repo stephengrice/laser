@@ -36,6 +36,11 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date(currentTime));
+
+        // Update ScheduledTransaction object in DB
+        scheduledTransaction.date = calendar.getTimeInMillis();
+        DbHelper.updateScheduledTransaction(context, scheduledTransaction);
+
         switch(scheduledTransaction.repeat) {
             default:
             case NO_REPEAT:
@@ -56,9 +61,6 @@ public class AlarmReceiver extends BroadcastReceiver {
                 calendar.add(Calendar.YEAR, 1);
                 break;
         }
-        // Update ScheduledTransaction object in DB
-        scheduledTransaction.date = calendar.getTimeInMillis();
-        DbHelper.updateScheduledTransaction(context, scheduledTransaction);
 
         // Set next alarm for this scheduled transaction based on RepeatType
         setAlarm(context, scheduledTransaction);
