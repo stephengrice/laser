@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.stephengrice.laser.db.DbContract;
 import com.stephengrice.laser.db.DbHelper;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -34,17 +35,60 @@ public class AlarmReceiver extends BroadcastReceiver {
         transaction.category_id = scheduledTransaction.category_id;
         DbHelper.insertTransaction(context, transaction);
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date(currentTime));
+        scheduledTransaction.date = getNextDate(scheduledTransaction);
+
+        if (scheduledTransaction.repeat == RepeatType.NO_REPEAT) {
+            scheduledTransaction.enabled = false;
+        } else {
+            // Set next alarm for this scheduled transaction based on RepeatType
+            setAlarm(context, scheduledTransaction);
+        }
 
         // Update ScheduledTransaction object in DB
-        scheduledTransaction.date = calendar.getTimeInMillis();
         DbHelper.updateScheduledTransaction(context, scheduledTransaction);
+
+        Toast.makeText(context, "Transaction added: " + scheduledTransaction.description + "; Next alarm: " + MainActivity.formatDate(context, scheduledTransaction.date), Toast.LENGTH_LONG).show();
+    }
+
+    public static void setAlarm(Context context, DbContract.ScheduledTransaction scheduledTransaction){
+        Intent intent = new Intent(context, AlarmReceiver.class);
+        intent.putExtra(ARG_ST_ID, scheduledTransaction.id);
+        PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // Get the AlarmManager service
+        AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        am.set(AlarmManager.RTC_WAKEUP, scheduledTransaction.date, sender);
+    }
+
+    public static void cancelAllAlarms(Context context) {
+        Intent intent = new Intent(context, AlarmReceiver.class);
+        PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        am.cancel(sender);
+    }
+
+    public static void setAllAlarms(Context context) {
+        ArrayList<DbContract.ScheduledTransaction> scheduledTransactions = DbHelper.getScheduledTransactions(context);
+        long now = System.currentTimeMillis();
+        for (DbContract.ScheduledTransaction scheduledTransaction : scheduledTransactions) {
+            if (scheduledTransaction.enabled) {
+                if (scheduledTransaction.date < now && scheduledTransaction.repeat != RepeatType.NO_REPEAT) {
+                    scheduledTransaction.date = getNextDate(scheduledTransaction);
+                }
+                setAlarm(context, scheduledTransaction);
+            }
+        }
+    }
+
+    public static long getNextDate(DbContract.ScheduledTransaction scheduledTransaction) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date(scheduledTransaction.date));
 
         switch(scheduledTransaction.repeat) {
             default:
             case NO_REPEAT:
-                return;
+                break;
             case DAILY:
                 calendar.add(Calendar.DATE, 1);
                 break;
@@ -61,19 +105,6 @@ public class AlarmReceiver extends BroadcastReceiver {
                 calendar.add(Calendar.YEAR, 1);
                 break;
         }
-
-        // Set next alarm for this scheduled transaction based on RepeatType
-        setAlarm(context, scheduledTransaction);
-        Toast.makeText(context, "Transaction added: " + scheduledTransaction.description + "; Next alarm: " + MainActivity.formatDate(context, calendar.getTimeInMillis()), Toast.LENGTH_LONG).show();
-    }
-
-    public static void setAlarm(Context context, DbContract.ScheduledTransaction scheduledTransaction){
-        Intent intent = new Intent(context, AlarmReceiver.class);
-        intent.putExtra(ARG_ST_ID, scheduledTransaction.id);
-        PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
-
-        // Get the AlarmManager service
-        AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        am.set(AlarmManager.RTC_WAKEUP, scheduledTransaction.date, sender);
+        return calendar.getTimeInMillis();
     }
 }

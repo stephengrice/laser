@@ -243,7 +243,7 @@ public class ScheduledTransactionEditFragment extends Fragment {
         long rowsAffected = DbHelper.updateScheduledTransaction(getContext(), mScheduledTransaction);
 
         if (rowsAffected < 1) {
-            Snackbar.make(mView, "An error occurred.", MainActivity.SNACKBAR_TIME).show();
+            Snackbar.make(mView, getContext().getString(R.string.db_error), MainActivity.SNACKBAR_TIME).show();
             return false;
         } else {
             getActivity().getSupportFragmentManager().beginTransaction()

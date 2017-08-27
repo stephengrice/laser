@@ -5,12 +5,12 @@ package com.stephengrice.laser;
  */
 
 public enum RepeatType {
-    NO_REPEAT(1),
-    DAILY(2),
-    WEEKLY(3),
-    BI_WEEKLY(4),
-    MONTHLY(5),
-    YEARLY(6);
+    NO_REPEAT(0),
+    DAILY(1),
+    WEEKLY(2),
+    BI_WEEKLY(3),
+    MONTHLY(4),
+    YEARLY(5);
 
     private int value;
 
@@ -24,17 +24,17 @@ public enum RepeatType {
 
     public static RepeatType fromInt(int i) {
         switch(i) {
-            case 1:
+            case 0:
                 return NO_REPEAT;
-            case 2:
+            case 1:
                 return DAILY;
-            case 3:
+            case 2:
                 return WEEKLY;
-            case 4:
+            case 3:
                 return BI_WEEKLY;
-            case 5:
+            case 4:
                 return MONTHLY;
-            case 6:
+            case 5:
                 return YEARLY;
             default:
                 return null;

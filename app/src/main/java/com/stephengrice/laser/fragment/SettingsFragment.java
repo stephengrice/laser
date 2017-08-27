@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.stephengrice.laser.AlarmReceiver;
 import com.stephengrice.laser.MainActivity;
 import com.stephengrice.laser.R;
 import com.stephengrice.laser.db.DbContract;
@@ -83,6 +84,8 @@ public class SettingsFragment extends Fragment {
                 // Drop all tables via onUpgrade
                 dbHelper.onUpgrade(db, 1, 2);
                 db.close();
+                // Cancel all aarms
+                AlarmReceiver.cancelAllAlarms(getContext());
 
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);

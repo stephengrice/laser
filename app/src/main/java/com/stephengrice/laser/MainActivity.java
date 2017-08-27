@@ -272,7 +272,7 @@ public class MainActivity extends AppCompatActivity
 
     public static String getRepeatText(Context context, int repeat) {
         // REPEAT constants are 1-based, this array is 0-based
-        return context.getResources().getStringArray(R.array.spinner_repeat)[repeat - 1];
+        return context.getResources().getStringArray(R.array.spinner_repeat)[repeat];
     }
 
 //    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
