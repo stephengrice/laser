@@ -4,6 +4,7 @@ package com.stephengrice.laser.db;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -258,5 +259,26 @@ public class DbHelper extends SQLiteOpenHelper {
                 new String[]{ Long.toString(transaction.id) }
         );
         db.close();
+    }
+
+    public static long countTransactions(Context context) {
+        DbHelper dbHelper = new DbHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        long result = DatabaseUtils.queryNumEntries(
+                db,
+                DbContract.Transaction.TABLE_NAME
+        );
+        db.close();
+        return result;
+    }
+    public static long countScheduledTransactions(Context context) {
+        DbHelper dbHelper = new DbHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        long result = DatabaseUtils.queryNumEntries(
+                db,
+                DbContract.ScheduledTransaction.TABLE_NAME
+        );
+        db.close();
+        return result;
     }
 }

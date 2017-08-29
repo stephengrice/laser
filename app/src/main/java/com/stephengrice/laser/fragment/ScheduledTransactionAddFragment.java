@@ -25,6 +25,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.stephengrice.laser.AlarmReceiver;
+import com.stephengrice.laser.CategoryArrayAdapter;
 import com.stephengrice.laser.MainActivity;
 import com.stephengrice.laser.R;
 import com.stephengrice.laser.RepeatType;
@@ -112,6 +113,9 @@ public class ScheduledTransactionAddFragment extends Fragment {
         mDescriptionView = (EditText) mView.findViewById(R.id.txt_st_description);
         mCategoryView = (AutoCompleteTextView) mView.findViewById(R.id.txt_st_category_autocomplete);
         mRepeatView = (Spinner) mView.findViewById(R.id.spinner_repeat);
+
+        CategoryArrayAdapter adapter = new CategoryArrayAdapter(getContext(), DbHelper.getCategories(getContext()));
+        mCategoryView.setAdapter(adapter);
 
         mSt = new DbContract.ScheduledTransaction();
         mCalendar = Calendar.getInstance();

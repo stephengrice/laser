@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     tools:context="com.stephengrice.laser.fragment.DashFragment">
 
     <LinearLayout
@@ -43,19 +44,27 @@
             android:background="@drawable/background_rounded"/>
 
         <com.stephengrice.laser.DashDisplayView
+            android:id="@+id/dash_transactions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            custom:title="Transactions"
+            custom:amount="0"
             />
 
         <com.stephengrice.laser.DashDisplayView
+            android:id="@+id/dash_scheduled_transactions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            custom:title="Scheduled Transactions"
+            custom:amount="0"
             />
 
-        <com.stephengrice.laser.DashDisplayView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+        <!--<com.stephengrice.laser.DashDisplayView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--custom:title="Goals"-->
+            <!--custom:amount="0"-->
+            <!--/>-->
 
     </LinearLayout>
 

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.stephengrice.laser.DashDisplayView;
 import com.stephengrice.laser.MainActivity;
 import com.stephengrice.laser.R;
 import com.stephengrice.laser.db.DbHelper;
@@ -100,6 +101,32 @@ public class DashFragment extends Fragment {
         } else {
             gradientDrawable.setColor(ContextCompat.getColor(getActivity(), R.color.colorTintRed));
         }
+
+        DashDisplayView dashTransactions = (DashDisplayView) view.findViewById(R.id.dash_transactions);
+        dashTransactions.setAmount((int)DbHelper.countTransactions(getContext()));
+        dashTransactions.getButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_main, new TransactionAddFragment())
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
+        DashDisplayView dashScheduledTransactions = (DashDisplayView) view.findViewById(R.id.dash_scheduled_transactions);
+        dashScheduledTransactions.setAmount((int)DbHelper.countScheduledTransactions(getContext()));
+        dashScheduledTransactions.getButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_main, new ScheduledTransactionAddFragment())
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
 
         // Inflate the layout for this fragment
         return view;
