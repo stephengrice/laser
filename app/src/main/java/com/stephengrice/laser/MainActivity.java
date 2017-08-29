@@ -128,10 +128,10 @@ public class MainActivity extends AppCompatActivity
                             navigationView.getMenu().getItem(2).setChecked(true);
                         } else if (currentFragment instanceof ScheduledTransactionsFragment) {
                             navigationView.getMenu().getItem(3).setChecked(true);
-                        } else if (currentFragment instanceof GoalsFragment) {
-                            navigationView.getMenu().getItem(4).setChecked(true);
+//                        } else if (currentFragment instanceof GoalsFragment) {
+//                            navigationView.getMenu().getItem(4).setChecked(true);
                         } else if (currentFragment instanceof SettingsFragment) {
-                            navigationView.getMenu().getItem(5).setChecked(true);
+                            navigationView.getMenu().getItem(4).setChecked(true);
                         }
                     }
                 });
@@ -184,8 +184,8 @@ public class MainActivity extends AppCompatActivity
             fragment = new BudgetFragment();
         } else if (id == R.id.nav_transactions) {
             fragment = new TransactionsFragment();
-        } else if (id == R.id.nav_goals) {
-            fragment = new GoalsFragment();
+//        } else if (id == R.id.nav_goals) {
+//            fragment = new GoalsFragment();
 //        } else if (id == R.id.nav_add) {
 //            fragment = new TransactionAddFragment();
         } else if (id == R.id.nav_scheduled_transactions) {

@@ -21,10 +21,10 @@
             android:icon="@drawable/ic_date_range_24dp"
             android:title="@string/nav_scheduled_transactions"
             />
-        <item
-            android:id="@+id/nav_goals"
-            android:icon="@drawable/ic_flag_24dp"
-            android:title="@string/nav_goals" />
+        <!--<item-->
+            <!--android:id="@+id/nav_goals"-->
+            <!--android:icon="@drawable/ic_flag_24dp"-->
+            <!--android:title="@string/nav_goals" />-->
         <!--<item-->
             <!--android:id="@+id/nav_add"-->
             <!--android:icon="@drawable/ic_add_24dp"-->

@@ -10,6 +10,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="14dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_date_range_24dp"
+            android:scaleX="2"
+            android:scaleY="2"
+            android:scaleType="fitCenter"
+            />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

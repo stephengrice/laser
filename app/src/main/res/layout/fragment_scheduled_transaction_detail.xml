@@ -53,7 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:gravity="end"
-        android:orientation="hor">
+        android:orientation="horizontal">
 
 
         <android.support.design.widget.FloatingActionButton

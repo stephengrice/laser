@@ -10,9 +10,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <TextView
-            android:gravity="center_horizontal"
+        <ImageView
             android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="14dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_money_24dp"
+            android:scaleX="2"
+            android:scaleY="2"
+            android:scaleType="fitCenter"
+            />
+        <TextView
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/title_text_size"
             android:text="@string/title_transactions" />
