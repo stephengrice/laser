@@ -237,4 +237,26 @@ public class DbHelper extends SQLiteOpenHelper {
 
         return result;
     }
+
+    public static void deleteScheduledTransaction(Context context, DbContract.ScheduledTransaction scheduledTransaction) {
+        DbHelper dbHelper = new DbHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        int result = db.delete(
+                DbContract.ScheduledTransaction.TABLE_NAME,
+                DbContract.ScheduledTransaction._ID + "=?",
+                new String[]{ Long.toString(scheduledTransaction.id) }
+        );
+        db.close();
+    }
+
+    public static void deleteTransaction(Context context, DbContract.Transaction transaction) {
+        DbHelper dbHelper = new DbHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        int result = db.delete(
+                DbContract.Transaction.TABLE_NAME,
+                DbContract.Transaction._ID + "=?",
+                new String[]{ Long.toString(transaction.id) }
+        );
+        db.close();
+    }
 }

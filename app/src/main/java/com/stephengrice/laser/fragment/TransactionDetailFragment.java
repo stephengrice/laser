@@ -1,10 +1,12 @@
 package com.stephengrice.laser.fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 import com.stephengrice.laser.MainActivity;
 import com.stephengrice.laser.R;
 import com.stephengrice.laser.db.DbContract;
+import com.stephengrice.laser.db.DbHelper;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -80,6 +83,37 @@ public class TransactionDetailFragment extends Fragment {
                         .replace(R.id.content_main, TransactionEditFragment.newInstance(mTransaction))
                         .addToBackStack(null)
                         .commit();
+            }
+        });
+
+        FloatingActionButton fab2 = (FloatingActionButton) mView.findViewById(R.id.transaction_delete_fab);
+        fab2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which){
+                            case DialogInterface.BUTTON_POSITIVE:
+                                //Yes button clicked
+                                DbHelper.deleteTransaction(getContext(), mTransaction);
+                                getFragmentManager()
+                                        .beginTransaction()
+                                        .replace(R.id.content_main, new TransactionsFragment())
+                                        .addToBackStack(null)
+                                        .commit();
+                                break;
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                //No button clicked
+                                break;
+                        }
+                    }
+                };
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener).show();
             }
         });
 
