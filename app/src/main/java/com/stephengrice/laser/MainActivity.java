@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity
         ScheduledTransactionEditFragment.OnFragmentInteractionListener {
 
     public static final int SNACKBAR_TIME = 3000;
+    public static final String ARG_START_FRAGMENT = "startFragment";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,12 +108,23 @@ public class MainActivity extends AppCompatActivity
         final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        // Replace content_main with dash fragment
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.content_main, new DashFragment())
-                .commit();
-        // Select the dashboard menu item to start
-        navigationView.getMenu().getItem(0).setChecked(true);
+
+        String argStartFragment = getIntent().getStringExtra(ARG_START_FRAGMENT);
+        if (argStartFragment != null && argStartFragment.equals(TransactionAddFragment.class.getCanonicalName())) {
+            // Given TransactionAdd arg: start that
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.content_main, new TransactionAddFragment())
+                    .commit();
+            navigationView.getMenu().getItem(2).setChecked(true);
+        } else {
+            // Default: dash fragment
+            // Replace content_main with dash fragment
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.content_main, new DashFragment())
+                    .commit();
+            // Select the dashboard menu item to start
+            navigationView.getMenu().getItem(0).setChecked(true);
+        }
 
         // Set up back press for fragments
         getSupportFragmentManager().addOnBackStackChangedListener(

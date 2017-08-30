@@ -9,6 +9,7 @@ import android.widget.RemoteViews;
 
 import com.stephengrice.laser.MainActivity;
 import com.stephengrice.laser.R;
+import com.stephengrice.laser.fragment.TransactionAddFragment;
 
 /**
  * Implementation of App Widget functionality.
@@ -23,7 +24,8 @@ public class AddWidget extends AppWidgetProvider {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_add);
 //        views.setTextViewText(R.id.appwidget_text, widgetText);
         Intent intent = new Intent(context, MainActivity.class);
-        views.setOnClickPendingIntent(R.id.add_widget_btn, PendingIntent.getActivity(context, 0, intent, 0));
+        intent.putExtra(MainActivity.ARG_START_FRAGMENT, TransactionAddFragment.class.getCanonicalName());
+        views.setOnClickPendingIntent(R.id.widget_image, PendingIntent.getActivity(context, 0, intent, 0));
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
