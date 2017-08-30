@@ -128,6 +128,17 @@ public class DashFragment extends Fragment {
             }
         });
 
+        txtBalance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_main, new BudgetFragment())
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
         // Inflate the layout for this fragment
         return view;
     }
