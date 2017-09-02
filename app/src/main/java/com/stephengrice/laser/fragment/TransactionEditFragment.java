@@ -46,6 +46,7 @@ public class TransactionEditFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private View mView;
     private Cursor mCursor;
+    private ToggleButton mToggleEarned, mToggleSpent;
 
     public TransactionEditFragment() {
         // Required empty public constructor
@@ -73,6 +74,27 @@ public class TransactionEditFragment extends Fragment {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_transaction_edit, container, false);
 
+        mToggleEarned = (ToggleButton) mView.findViewById(R.id.btn_earned);
+        mToggleSpent = (ToggleButton) mView.findViewById(R.id.btn_spent);
+        mToggleEarned.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mToggleEarned.setChecked(true);
+                mToggleEarned.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintGreen));
+                mToggleSpent.setChecked(false);
+                mToggleSpent.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintGray));
+            }
+        });
+        mToggleSpent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mToggleEarned.setChecked(false);
+                mToggleEarned.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintGray));
+                mToggleSpent.setChecked(true);
+                mToggleSpent.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintRed));
+            }
+        });
+
         fillForm();
 
         Button btnEdit = (Button) mView.findViewById(R.id.btn_update_transaction);
@@ -92,23 +114,6 @@ public class TransactionEditFragment extends Fragment {
         AutoCompleteTextView autoComplete = (AutoCompleteTextView) mView.findViewById(R.id.transaction_category_autocomplete);
         autoComplete.setAdapter(adapter);
 
-        // Set onclick listener for spent/earned toggle to change bg color
-        final ToggleButton btnSpentEarned = (ToggleButton) mView.findViewById(R.id.btn_earned_spent);
-        if (btnSpentEarned.isChecked()) {
-            btnSpentEarned.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintGreen));
-        } else {
-            btnSpentEarned.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintRed));
-        }
-        btnSpentEarned.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (btnSpentEarned.isChecked()) {
-                    btnSpentEarned.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintGreen));
-                } else {
-                    btnSpentEarned.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintRed));
-                }
-            }
-        });
 
         return mView;
     }
@@ -156,12 +161,14 @@ public class TransactionEditFragment extends Fragment {
         EditText txtTransactionAmount = (EditText) mView.findViewById(R.id.txt_transaction_amount);
         EditText txtTransactionDescription = (EditText) mView.findViewById(R.id.txt_transaction_description);
         AutoCompleteTextView txtTransactionCategory = (AutoCompleteTextView) mView.findViewById(R.id.transaction_category_autocomplete);
-        ToggleButton btnEarned = (ToggleButton) mView.findViewById(R.id.btn_earned_spent);
+
+        mToggleEarned.setChecked(mTransaction.amount >= 0);
+        mToggleSpent.setChecked(!mToggleEarned.isChecked());
+        updateButtonColors();
 
         txtTransactionAmount.setText(Float.toString(Math.abs(mTransaction.amount)));
         txtTransactionDescription.setText(mTransaction.description);
         txtTransactionCategory.setText(mTransaction.category_title);
-        btnEarned.setChecked(mTransaction.amount >= 0);
     }
 
     private boolean updateTransaction() {
@@ -175,10 +182,9 @@ public class TransactionEditFragment extends Fragment {
         EditText txtTransactionAmount = (EditText) mView.findViewById(R.id.txt_transaction_amount);
         EditText txtTransactionDescription = (EditText) mView.findViewById(R.id.txt_transaction_description);
         AutoCompleteTextView txtTransactionCategory = (AutoCompleteTextView) mView.findViewById(R.id.transaction_category_autocomplete);
-        ToggleButton btnEarned = (ToggleButton) mView.findViewById(R.id.btn_earned_spent);
 
         // Populate mTransaction with new values
-        boolean positive = btnEarned.isChecked();
+        boolean positive = mToggleEarned.isChecked();
         try {
             mTransaction.amount = Float.parseFloat(txtTransactionAmount.getText().toString());
         } catch(NumberFormatException e) {
@@ -210,6 +216,18 @@ public class TransactionEditFragment extends Fragment {
                     .addToBackStack(null)
                     .commit();
             return true;
+        }
+    }
+
+    private void updateButtonColors() {
+        if (mToggleEarned.isChecked()) {
+            mToggleEarned.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintGreen));
+            mToggleSpent.setChecked(false);
+            mToggleSpent.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintGray));
+        } else {
+            mToggleEarned.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintGray));
+            mToggleSpent.setChecked(true);
+            mToggleSpent.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintRed));
         }
     }
 }

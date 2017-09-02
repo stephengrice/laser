@@ -59,4 +59,7 @@
     <string name="st_number">%d on schedule</string>
     <string name="st_enabled">Enabled</string>
     <string name="st_edit">Edit Scheduled Transaction</string>
+
+    <string name="btn_earned">Earned</string>
+    <string name="btn_spent">Spent</string>
 </resources>

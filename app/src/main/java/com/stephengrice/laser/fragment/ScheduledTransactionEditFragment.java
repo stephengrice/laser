@@ -55,6 +55,7 @@ public class ScheduledTransactionEditFragment extends Fragment {
     private View mView;
     private Calendar mCalendar;
     private TextView mDateView;
+    private ToggleButton mToggleEarned, mToggleSpent;
 
     public ScheduledTransactionEditFragment() {
         // Required empty public constructor
@@ -85,7 +86,34 @@ public class ScheduledTransactionEditFragment extends Fragment {
         mDateView = (TextView) mView.findViewById(R.id.txt_st_date);
         mCalendar = Calendar.getInstance();
 
+        mToggleEarned = (ToggleButton) mView.findViewById(R.id.btn_earned);
+        mToggleSpent = (ToggleButton) mView.findViewById(R.id.btn_spent);
+
+        mToggleEarned.setChecked(true);
+        mToggleSpent.setChecked(false);
+        mToggleSpent.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintGray));
+        mToggleEarned.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mToggleEarned.setChecked(true);
+                mToggleEarned.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintGreen));
+                mToggleSpent.setChecked(false);
+                mToggleSpent.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintGray));
+            }
+        });
+        mToggleSpent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mToggleEarned.setChecked(false);
+                mToggleEarned.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintGray));
+                mToggleSpent.setChecked(true);
+                mToggleSpent.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintRed));
+            }
+        });
+
         fillForm();
+
+
 
         Button btnEdit = (Button) mView.findViewById(R.id.btn_save_st);
         btnEdit.setOnClickListener(new View.OnClickListener() {
@@ -101,24 +129,6 @@ public class ScheduledTransactionEditFragment extends Fragment {
         // Set adapter
         AutoCompleteTextView autoComplete = (AutoCompleteTextView) mView.findViewById(R.id.txt_st_category_autocomplete);
         autoComplete.setAdapter(adapter);
-
-        // Set onclick listener for spent/earned toggle to change bg color
-        final ToggleButton btnSpentEarned = (ToggleButton) mView.findViewById(R.id.btn_earned_spent);
-        if (btnSpentEarned.isChecked()) {
-            btnSpentEarned.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintGreen));
-        } else {
-            btnSpentEarned.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintRed));
-        }
-        btnSpentEarned.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (btnSpentEarned.isChecked()) {
-                    btnSpentEarned.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintGreen));
-                } else {
-                    btnSpentEarned.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintRed));
-                }
-            }
-        });
 
         Button btnDate = (Button) mView.findViewById(R.id.btn_change_st_date);
         btnDate.setOnClickListener(new View.OnClickListener() {
@@ -188,14 +198,15 @@ public class ScheduledTransactionEditFragment extends Fragment {
         EditText txtTransactionAmount = (EditText) mView.findViewById(R.id.txt_st_amount);
         EditText txtTransactionDescription = (EditText) mView.findViewById(R.id.txt_st_description);
         AutoCompleteTextView txtTransactionCategory = (AutoCompleteTextView) mView.findViewById(R.id.txt_st_category_autocomplete);
-        ToggleButton btnEarned = (ToggleButton) mView.findViewById(R.id.btn_earned_spent);
         Spinner repeatSpinner = (Spinner) mView.findViewById(R.id.spinner_repeat);
         CheckBox chkEnabled = (CheckBox) mView.findViewById(R.id.chk_enabled);
 
         txtTransactionAmount.setText(Float.toString(Math.abs(mScheduledTransaction.amount)));
         txtTransactionDescription.setText(mScheduledTransaction.description);
         txtTransactionCategory.setText(mScheduledTransaction.category_title);
-        btnEarned.setChecked(mScheduledTransaction.amount >= 0);
+        mToggleEarned.setChecked(mScheduledTransaction.amount >= 0);
+        mToggleSpent.setChecked(!mToggleEarned.isChecked());
+        updateButtonColors();
         repeatSpinner.setSelection(mScheduledTransaction.repeat.getValue());
         mDateView.setText(MainActivity.formatDate(getContext(), mScheduledTransaction.date));
         chkEnabled.setChecked(mScheduledTransaction.enabled);
@@ -212,12 +223,11 @@ public class ScheduledTransactionEditFragment extends Fragment {
         EditText txtTransactionAmount = (EditText) mView.findViewById(R.id.txt_st_amount);
         EditText txtTransactionDescription = (EditText) mView.findViewById(R.id.txt_st_description);
         AutoCompleteTextView txtTransactionCategory = (AutoCompleteTextView) mView.findViewById(R.id.txt_st_category_autocomplete);
-        ToggleButton btnEarned = (ToggleButton) mView.findViewById(R.id.btn_earned_spent);
         Spinner repeatSpinner = (Spinner) mView.findViewById(R.id.spinner_repeat);
         CheckBox chkEnabled = (CheckBox) mView.findViewById(R.id.chk_enabled);
 
         // Populate mTransaction with new values
-        boolean positive = btnEarned.isChecked();
+        boolean positive = mToggleEarned.isChecked();
         try {
             mScheduledTransaction.amount = Float.parseFloat(txtTransactionAmount.getText().toString());
         } catch(NumberFormatException e) {
@@ -256,5 +266,17 @@ public class ScheduledTransactionEditFragment extends Fragment {
 
     private void updateTimeView() {
         mDateView.setText(MainActivity.formatDate(getActivity(), mScheduledTransaction.date));
+    }
+
+    private void updateButtonColors() {
+        if (mToggleEarned.isChecked()) {
+            mToggleEarned.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintGreen));
+            mToggleSpent.setChecked(false);
+            mToggleSpent.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintGray));
+        } else {
+            mToggleEarned.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintGray));
+            mToggleSpent.setChecked(true);
+            mToggleSpent.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintRed));
+        }
     }
 }

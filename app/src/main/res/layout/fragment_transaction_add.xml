@@ -21,14 +21,30 @@
         android:inputType="numberDecimal"
         android:hint="$0.00"/>
 
-    <ToggleButton
-        android:id="@+id/btn_earned_spent"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:checked="false"
-        android:background="@color/colorTintRed"
-        android:textOff="Spent"
-        android:textOn="Earned"/>
+        android:gravity="center"
+        android:orientation="horizontal">
+        <ToggleButton
+            android:id="@+id/btn_earned"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:background="@color/colorTintGreen"
+            android:textOn="@string/btn_earned"
+            android:textOff="@string/btn_earned"
+            />
+        <ToggleButton
+            android:id="@+id/btn_spent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:background="@color/colorTintRed"
+            android:textOn="@string/btn_spent"
+            android:textOff="@string/btn_spent"
+            />
+    </LinearLayout>
 
     <EditText
         android:id="@+id/txt_transaction_description"

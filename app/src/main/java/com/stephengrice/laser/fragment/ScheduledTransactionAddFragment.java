@@ -34,6 +34,7 @@ import com.stephengrice.laser.db.DbHelper;
 
 import org.w3c.dom.Text;
 
+import java.net.ConnectException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -64,7 +65,7 @@ public class ScheduledTransactionAddFragment extends Fragment {
     private Calendar mCalendar;
 
     private EditText mAmountView;
-    private ToggleButton mToggleView;
+    private ToggleButton mToggleEarned, mToggleSpent;
     private EditText mDescriptionView;
     private AutoCompleteTextView mCategoryView;
     private Spinner mRepeatView;
@@ -109,10 +110,33 @@ public class ScheduledTransactionAddFragment extends Fragment {
 
         mDateView = (TextView) mView.findViewById(R.id.txt_st_date);
         mAmountView = (EditText) mView.findViewById(R.id.txt_st_amount);
-        mToggleView = (ToggleButton) mView.findViewById(R.id.btn_earned_spent);
+        mToggleEarned = (ToggleButton) mView.findViewById(R.id.btn_earned);
+        mToggleSpent = (ToggleButton) mView.findViewById(R.id.btn_spent);
         mDescriptionView = (EditText) mView.findViewById(R.id.txt_st_description);
         mCategoryView = (AutoCompleteTextView) mView.findViewById(R.id.txt_st_category_autocomplete);
         mRepeatView = (Spinner) mView.findViewById(R.id.spinner_repeat);
+
+        mToggleEarned.setChecked(true);
+        mToggleSpent.setChecked(false);
+        mToggleSpent.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintGray));
+        mToggleEarned.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mToggleEarned.setChecked(true);
+                mToggleEarned.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintGreen));
+                mToggleSpent.setChecked(false);
+                mToggleSpent.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintGray));
+            }
+        });
+        mToggleSpent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mToggleEarned.setChecked(false);
+                mToggleEarned.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintGray));
+                mToggleSpent.setChecked(true);
+                mToggleSpent.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintRed));
+            }
+        });
 
         CategoryArrayAdapter adapter = new CategoryArrayAdapter(getContext(), DbHelper.getCategories(getContext()));
         mCategoryView.setAdapter(adapter);
@@ -122,19 +146,6 @@ public class ScheduledTransactionAddFragment extends Fragment {
         mCalendar.add(Calendar.DAY_OF_MONTH, 1);
         mSt.date = mCalendar.getTimeInMillis();
         updateTimeView();
-
-        // Set onclick listener for spent/earned toggle to change bg color
-        final ToggleButton btnSpentEarned = (ToggleButton) mView.findViewById(R.id.btn_earned_spent);
-        btnSpentEarned.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (btnSpentEarned.isChecked()) {
-                    btnSpentEarned.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintGreen));
-                } else {
-                    btnSpentEarned.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintRed));
-                }
-            }
-        });
 
         Button btnDate = (Button) mView.findViewById(R.id.btn_change_st_date);
         btnDate.setOnClickListener(new View.OnClickListener() {
@@ -221,7 +232,7 @@ public class ScheduledTransactionAddFragment extends Fragment {
             Snackbar.make(mView, getContext().getString(R.string.enter_an_amount), MainActivity.SNACKBAR_TIME).show();
             return;
         }
-        mSt.amount = (mToggleView.isChecked() ? amount : -amount);
+        mSt.amount = (mToggleEarned.isChecked() ? amount : -amount);
         mSt.date = mCalendar.getTimeInMillis();
         mSt.description = mDescriptionView.getText().toString();
         mSt.category_title = mCategoryView.getText().toString();

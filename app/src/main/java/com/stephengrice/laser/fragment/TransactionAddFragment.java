@@ -35,8 +35,10 @@ public class TransactionAddFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private View mView;
 
     private OnFragmentInteractionListener mListener;
+    private ToggleButton mToggleEarned, mToggleSpent;
 
     private Cursor mCursor;
 
@@ -75,14 +77,17 @@ public class TransactionAddFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        final View view = inflater.inflate(R.layout.fragment_transaction_add, container, false);
-        Button btnAdd = (Button) view.findViewById(R.id.btn_save_transaction);
+        mView = inflater.inflate(R.layout.fragment_transaction_add, container, false);
+        Button btnAdd = (Button) mView.findViewById(R.id.btn_save_transaction);
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addTransaction(view);
+                addTransaction(mView);
             }
         });
+
+        mToggleEarned = (ToggleButton) mView.findViewById(R.id.btn_earned);
+        mToggleSpent = (ToggleButton) mView.findViewById(R.id.btn_spent);
 
         // Create adapter for categories autocomplete
         DbHelper dbHelper = new DbHelper(getActivity());
@@ -90,23 +95,34 @@ public class TransactionAddFragment extends Fragment {
         mCursor = db.rawQuery(DbContract.Category.SQL_SELECT_ALL, null);
         CategoryCursorAdapter adapter = new CategoryCursorAdapter(getActivity(), mCursor);
         // Set adapter
-        AutoCompleteTextView autoComplete = (AutoCompleteTextView) view.findViewById(R.id.transaction_category_autocomplete);
+        AutoCompleteTextView autoComplete = (AutoCompleteTextView) mView.findViewById(R.id.transaction_category_autocomplete);
         autoComplete.setAdapter(adapter);
 
-        // Set onclick listener for spent/earned toggle to change bg color
-        final ToggleButton btnSpentEarned = (ToggleButton) view.findViewById(R.id.btn_earned_spent);
-        btnSpentEarned.setOnClickListener(new View.OnClickListener() {
+
+        mToggleEarned.setChecked(true);
+        mToggleSpent.setChecked(false);
+        mToggleSpent.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintGray));
+        mToggleEarned.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (btnSpentEarned.isChecked()) {
-                    btnSpentEarned.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintGreen));
-                } else {
-                    btnSpentEarned.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintRed));
-                }
+                mToggleEarned.setChecked(true);
+                mToggleEarned.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintGreen));
+                mToggleSpent.setChecked(false);
+                mToggleSpent.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintGray));
+            }
+        });
+        mToggleSpent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mToggleEarned.setChecked(false);
+                mToggleEarned.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintGray));
+                mToggleSpent.setChecked(true);
+                mToggleSpent.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintRed));
             }
         });
 
-        return view;
+
+        return mView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -160,9 +176,8 @@ public class TransactionAddFragment extends Fragment {
         EditText txtTransactionAmount = (EditText) view.findViewById(R.id.txt_transaction_amount);
         EditText txtTransactionDescription = (EditText) view.findViewById(R.id.txt_transaction_description);
         AutoCompleteTextView txtTransactionCategory = (AutoCompleteTextView) view.findViewById(R.id.transaction_category_autocomplete);
-        ToggleButton btnEarned = (ToggleButton) view.findViewById(R.id.btn_earned_spent);
         // Get values for input to DB
-        boolean positive = btnEarned.isChecked();
+        boolean positive = mToggleEarned.isChecked();
         float transactionAmount;
         try {
             transactionAmount = Float.parseFloat(txtTransactionAmount.getText().toString());
