@@ -11,9 +11,12 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -116,6 +119,10 @@ public class ScheduledTransactionAddFragment extends Fragment {
         mCategoryView = (AutoCompleteTextView) mView.findViewById(R.id.txt_st_category_autocomplete);
         mRepeatView = (Spinner) mView.findViewById(R.id.spinner_repeat);
 
+        mAmountView.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(mAmountView, InputMethodManager.SHOW_FORCED);
+
         mToggleEarned.setChecked(true);
         mToggleSpent.setChecked(false);
         mToggleSpent.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTintGray));
@@ -140,6 +147,14 @@ public class ScheduledTransactionAddFragment extends Fragment {
 
         CategoryArrayAdapter adapter = new CategoryArrayAdapter(getContext(), DbHelper.getCategories(getContext()));
         mCategoryView.setAdapter(adapter);
+        mCategoryView.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                InputMethodManager imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(mView.getWindowToken(), 0);
+                return false;
+            }
+        });
 
         mSt = new DbContract.ScheduledTransaction();
         mCalendar = Calendar.getInstance();

@@ -10,6 +10,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -111,8 +112,16 @@ public class TransactionEditFragment extends Fragment {
         mCursor = db.rawQuery(DbContract.Category.SQL_SELECT_ALL, null);
         CategoryCursorAdapter adapter = new CategoryCursorAdapter(getActivity(), mCursor);
         // Set adapter
-        AutoCompleteTextView autoComplete = (AutoCompleteTextView) mView.findViewById(R.id.txt_transaction_category_autocomplete);
-        autoComplete.setAdapter(adapter);
+        AutoCompleteTextView txtCategoryView = (AutoCompleteTextView) mView.findViewById(R.id.txt_transaction_category_autocomplete);
+        txtCategoryView.setAdapter(adapter);
+        txtCategoryView.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                InputMethodManager imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(mView.getWindowToken(), 0);
+                return false;
+            }
+        });
 
 
         return mView;

@@ -11,6 +11,7 @@ import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,6 +86,7 @@ public class ScheduledTransactionEditFragment extends Fragment {
 
         mDateView = (TextView) mView.findViewById(R.id.txt_st_date);
         mCalendar = Calendar.getInstance();
+        mCalendar.setTimeInMillis(mScheduledTransaction.date);
 
         mToggleEarned = (ToggleButton) mView.findViewById(R.id.btn_earned);
         mToggleSpent = (ToggleButton) mView.findViewById(R.id.btn_spent);
@@ -127,8 +129,16 @@ public class ScheduledTransactionEditFragment extends Fragment {
         ArrayList<DbContract.Category> categories = DbHelper.getCategories(getContext());
         CategoryArrayAdapter adapter = new CategoryArrayAdapter(getContext(), categories);
         // Set adapter
-        AutoCompleteTextView autoComplete = (AutoCompleteTextView) mView.findViewById(R.id.txt_st_category_autocomplete);
-        autoComplete.setAdapter(adapter);
+        AutoCompleteTextView txtCategories = (AutoCompleteTextView) mView.findViewById(R.id.txt_st_category_autocomplete);
+        txtCategories.setAdapter(adapter);
+        txtCategories.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                InputMethodManager imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(mView.getWindowToken(), 0);
+                return false;
+            }
+        });
 
         Button btnDate = (Button) mView.findViewById(R.id.btn_change_st_date);
         btnDate.setOnClickListener(new View.OnClickListener() {
@@ -152,6 +162,7 @@ public class ScheduledTransactionEditFragment extends Fragment {
                 datePicker.show();
             }
         });
+
 
         return mView;    }
 

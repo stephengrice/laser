@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +40,7 @@ public class TransactionAddFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private ToggleButton mToggleEarned, mToggleSpent;
+    EditText mTransactionAmount;
 
     private Cursor mCursor;
 
@@ -95,8 +97,21 @@ public class TransactionAddFragment extends Fragment {
         mCursor = db.rawQuery(DbContract.Category.SQL_SELECT_ALL, null);
         CategoryCursorAdapter adapter = new CategoryCursorAdapter(getActivity(), mCursor);
         // Set adapter
-        AutoCompleteTextView autoComplete = (AutoCompleteTextView) mView.findViewById(R.id.txt_transaction_category_autocomplete);
-        autoComplete.setAdapter(adapter);
+        AutoCompleteTextView txtCategories = (AutoCompleteTextView) mView.findViewById(R.id.txt_transaction_category_autocomplete);
+        txtCategories.setAdapter(adapter);
+        txtCategories.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                InputMethodManager imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(mView.getWindowToken(), 0);
+                return false;
+            }
+        });
+
+        mTransactionAmount = (EditText) mView.findViewById(R.id.txt_transaction_amount);
+        mTransactionAmount.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(mTransactionAmount, InputMethodManager.SHOW_FORCED);
 
 
         mToggleEarned.setChecked(true);
@@ -173,14 +188,13 @@ public class TransactionAddFragment extends Fragment {
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
         // Select elements containing user input
-        EditText txtTransactionAmount = (EditText) view.findViewById(R.id.txt_transaction_amount);
         EditText txtTransactionDescription = (EditText) view.findViewById(R.id.txt_transaction_description);
         AutoCompleteTextView txtTransactionCategory = (AutoCompleteTextView) view.findViewById(R.id.txt_transaction_category_autocomplete);
         // Get values for input to DB
         boolean positive = mToggleEarned.isChecked();
         float transactionAmount;
         try {
-            transactionAmount = Float.parseFloat(txtTransactionAmount.getText().toString());
+            transactionAmount = Float.parseFloat(mTransactionAmount.getText().toString());
         } catch(NumberFormatException e) {
             transactionAmount = 0;
         }
@@ -192,7 +206,7 @@ public class TransactionAddFragment extends Fragment {
         // Validate input - only transactionAmount is required and must be properly parsed
         if (transactionAmount == 0) {
             Snackbar.make(view, getContext().getString(R.string.enter_an_amount), MainActivity.SNACKBAR_TIME).show();
-            txtTransactionAmount.requestFocus();
+            mTransactionAmount.requestFocus();
             return;
         }
 
