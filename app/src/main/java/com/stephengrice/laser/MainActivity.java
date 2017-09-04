@@ -1,6 +1,7 @@
 package com.stephengrice.laser;
 
 import android.app.AlarmManager;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -62,6 +63,8 @@ public class MainActivity extends AppCompatActivity
         ScheduledTransactionDetailFragment.OnFragmentInteractionListener,
         ScheduledTransactionEditFragment.OnFragmentInteractionListener {
 
+
+    public static final String OPTION_ALLOW_NOTIFICATIONS = "allowNotifications";
     public static final int SNACKBAR_TIME = 3000;
     public static final String ARG_START_FRAGMENT = "startFragment";
 
@@ -72,7 +75,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        showIntro();
+        firstStart();
 
         // Make sure all alarms are up to date according to DB
         AlarmReceiver.cancelAllAlarms(this);
@@ -116,7 +119,16 @@ public class MainActivity extends AppCompatActivity
                     .replace(R.id.content_main, new TransactionAddFragment())
                     .commit();
             navigationView.getMenu().getItem(2).setChecked(true);
-        } else {
+        } else if (argStartFragment != null && argStartFragment.equals(TransactionsFragment.class.getCanonicalName())) {
+            // Used on notification click - so clear the notification
+            NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.cancelAll();
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.content_main, new TransactionsFragment())
+                    .commit();
+            navigationView.getMenu().getItem(2).setChecked(true);
+        }else {
             // Default: dash fragment
             // Replace content_main with dash fragment
             getSupportFragmentManager().beginTransaction()
@@ -222,20 +234,22 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private void showIntro() {
+    private void firstStart() {
         //  Declare a new thread to do a preference check
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 //  Initialize SharedPreferences
-                SharedPreferences getPrefs = PreferenceManager
+                SharedPreferences prefs = PreferenceManager
                         .getDefaultSharedPreferences(getBaseContext());
 
                 //  Create a new boolean and preference and set it to true
-                boolean isFirstStart = getPrefs.getBoolean("firstStart", true);
+                boolean isFirstStart = prefs.getBoolean("firstStart", true);
 
                 //  If the activity has never started before...
                 if (isFirstStart) {
+
+                    prefs.edit().putBoolean(OPTION_ALLOW_NOTIFICATIONS, true).apply();
 
                     //  Launch app intro
                     final Intent i = new Intent(MainActivity.this, IntroActivity.class);
@@ -247,7 +261,7 @@ public class MainActivity extends AppCompatActivity
                     });
 
                     //  Make a new preferences editor
-                    SharedPreferences.Editor e = getPrefs.edit();
+                    SharedPreferences.Editor e = prefs.edit();
 
                     //  Edit preference to make it false because we don't want this to run again
                     e.putBoolean("firstStart", false);

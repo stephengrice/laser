@@ -3,15 +3,19 @@ package com.stephengrice.laser.fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Switch;
+import android.widget.Toast;
 
 import com.stephengrice.laser.AlarmReceiver;
 import com.stephengrice.laser.MainActivity;
@@ -111,6 +115,16 @@ public class SettingsFragment extends Fragment {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 builder.setMessage("This will erase all of your data. Are you sure?").setPositiveButton("Yes", dialogClickListener)
                         .setNegativeButton("No", dialogClickListener).show();
+            }
+        });
+
+        final Switch notificationsSwitch = (Switch) mView.findViewById(R.id.settings_notifications);
+        final SharedPreferences prefs = (SharedPreferences) PreferenceManager.getDefaultSharedPreferences(getContext());
+        notificationsSwitch.setChecked(prefs.getBoolean(MainActivity.OPTION_ALLOW_NOTIFICATIONS, true));
+        notificationsSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                prefs.edit().putBoolean(MainActivity.OPTION_ALLOW_NOTIFICATIONS, notificationsSwitch.isChecked()).apply();
             }
         });
 
