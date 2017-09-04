@@ -75,31 +75,20 @@ public class DashFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dash, container, false);
 
-        // Floating Action Button code
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Navigate to TransactionAddFragment
-                getFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content_main, new TransactionAddFragment())
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
 
         // Query DB and determine total balance
         float balance = DbHelper.getBalance(getActivity());
         // Fill view
         TextView txtBalance = (TextView) view.findViewById(R.id.txt_balance);
         txtBalance.setText(MainActivity.formatCurrency(balance));
-        GradientDrawable gradientDrawable = (GradientDrawable) txtBalance.getBackground();
+//        GradientDrawable gradientDrawable = (GradientDrawable) txtBalance.getBackground();
 
         if (balance >= 0) {
-            gradientDrawable.setColor(ContextCompat.getColor(getActivity(), R.color.colorTintGreen));
+//            gradientDrawable.setColor(ContextCompat.getColor(getActivity(), R.color.colorTintGreen));
+            txtBalance.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorTintGreen));
         } else {
-            gradientDrawable.setColor(ContextCompat.getColor(getActivity(), R.color.colorTintRed));
+//            gradientDrawable.setColor(ContextCompat.getColor(getActivity(), R.color.colorTintRed));
+            txtBalance.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorTintRed));
         }
 
         DashDisplayView dashTransactions = (DashDisplayView) view.findViewById(R.id.dash_transactions);
