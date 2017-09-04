@@ -22,4 +22,12 @@
         android:layout_height="wrap_content"
         android:text="@string/settings_btn_clear"
         />
+
+    <Switch
+        android:id="@+id/settings_notifications"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/settings_notifications" />
+
+
 </LinearLayout>

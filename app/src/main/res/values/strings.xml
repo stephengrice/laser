@@ -77,4 +77,5 @@
     <string name="label_category">Category</string>
     <string name="label_repeat">Repeat</string>
     <string name="label_enabled">Enabled</string>
+    <string name="settings_notifications">Allow notifications</string>
 </resources>
