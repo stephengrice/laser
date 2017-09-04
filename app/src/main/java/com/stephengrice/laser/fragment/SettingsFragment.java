@@ -1,11 +1,13 @@
 package com.stephengrice.laser.fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,18 +81,36 @@ public class SettingsFragment extends Fragment {
         btnClearDb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DbHelper dbHelper = new DbHelper(getActivity());
-                SQLiteDatabase db = dbHelper.getWritableDatabase();
-                // Drop all tables via onUpgrade
-                dbHelper.onUpgrade(db, 1, 2);
-                db.close();
-                // Cancel all aarms
-                AlarmReceiver.cancelAllAlarms(getContext());
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which){
+                            case DialogInterface.BUTTON_POSITIVE:
+                                //Yes button clicked
+                                DbHelper dbHelper = new DbHelper(getActivity());
+                                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                                // Drop all tables via onUpgrade
+                                dbHelper.onUpgrade(db, 1, 2);
+                                db.close();
+                                // Cancel all aarms
+                                AlarmReceiver.cancelAllAlarms(getContext());
 
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                getActivity().startActivity(intent);
-                getActivity().finish();
+                                Intent intent = new Intent(getActivity(), MainActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                getActivity().startActivity(intent);
+                                getActivity().finish();
+                                break;
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                //No button clicked
+                                break;
+                        }
+                    }
+                };
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setMessage("This will erase all of your data. Are you sure?").setPositiveButton("Yes", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener).show();
             }
         });
 
