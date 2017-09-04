@@ -55,4 +55,8 @@
         <item>@color/chartGreen4</item>
         <item>@color/chartGreen5</item>
     </array>
+
+    <!-- Extra colors from material kit -->
+    <color name="blue500">#2196F3</color>
+    <color name="blueA100">#82B1FF</color>
 </resources>

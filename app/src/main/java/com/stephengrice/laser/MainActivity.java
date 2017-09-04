@@ -290,14 +290,4 @@ public class MainActivity extends AppCompatActivity
         return context.getResources().getStringArray(R.array.spinner_repeat)[repeat];
     }
 
-//    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-//    public void setAlarm(Context context, DbContract.ScheduledTransaction scheduledTransaction) {
-//        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-//        // TODO detect and change repeat time
-//        Intent intent = new Intent(getBaseContext(), AlarmReceiver.class);
-//        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
-//        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, System.currentTimeMillis() + 5000, AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
-//        Log.d("mytag", "alarm set");
-//        Log.d("mytag", new Date(alarmManager.getNextAlarmClock().getTriggerTime()).toString());
-//    }
 }

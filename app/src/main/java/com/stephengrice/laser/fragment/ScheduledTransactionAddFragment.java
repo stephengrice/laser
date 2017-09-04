@@ -143,7 +143,7 @@ public class ScheduledTransactionAddFragment extends Fragment {
 
         mSt = new DbContract.ScheduledTransaction();
         mCalendar = Calendar.getInstance();
-        mCalendar.add(Calendar.DAY_OF_MONTH, 1);
+        mCalendar.add(Calendar.MINUTE, 1);
         mSt.date = mCalendar.getTimeInMillis();
         updateTimeView();
 
@@ -162,7 +162,7 @@ public class ScheduledTransactionAddFragment extends Fragment {
                                 mSt.date = mCalendar.getTimeInMillis();
                                 updateTimeView();
                             }
-                        }, mCalendar.get(Calendar.HOUR), mCalendar.get(Calendar.MINUTE), false);
+                        }, mCalendar.get(Calendar.HOUR_OF_DAY), mCalendar.get(Calendar.MINUTE), false);
                         timePicker.show();
                     }
                 }, mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH));
