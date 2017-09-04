@@ -19,10 +19,10 @@ public class IntroActivity extends AppIntro {
 
         // Add your slide fragments here.
         // AppIntro will automatically generate the dots indicator and buttons.
-        addSlide(AppIntroFragment.newInstance("Welcome to Laser", "Laser is the Precision Budgeting app that allows you to quickly and easily track your personal cash flow.", R.drawable.ic_add_24dp, ContextCompat.getColor(this, R.color.colorPrimary)));
-        addSlide(AppIntroFragment.newInstance("Add transactions", "Transactions are the core of Laser. Every time you spend or earn money, track it easily by adding a Transaction.", R.drawable.example_appwidget_preview, ContextCompat.getColor(this, R.color.colorPrimary)));
-        addSlide(AppIntroFragment.newInstance("Schedule transactions", "Tired of adding that paycheck every week? How about your bills? Add them all as Scheduled Transactions, and they'll be tracked automatically, whether they occur daily, weekly, bi-weekly, or even monthly.", R.drawable.ic_arrow_back_white, ContextCompat.getColor(this, R.color.colorPrimary)));
-        addSlide(AppIntroFragment.newInstance("Track income and expenses", "Spending is fun, and so is saving! See the best of both worlds with your Earned and Spent charts, found under the My Budget tab.", R.drawable.ic_money_24dp, ContextCompat.getColor(this, R.color.colorPrimary)));
+        addSlide(AppIntroFragment.newInstance("Welcome to Laser", "Laser is the Precision Budgeting app that allows you to quickly and easily track your personal cash flow.", R.drawable.device_art_1, ContextCompat.getColor(this, R.color.colorPrimary)));
+        addSlide(AppIntroFragment.newInstance("Add transactions", "Transactions are the core of Laser. Every time you spend or earn money, track it easily by adding a Transaction.", R.drawable.device_art_6, ContextCompat.getColor(this, R.color.colorPrimary)));
+        addSlide(AppIntroFragment.newInstance("Schedule transactions", "Tired of adding that paycheck every week? How about your bills? Add them all as Scheduled Transactions, and they'll be tracked automatically, whether they occur daily, weekly, bi-weekly, or even monthly.", R.drawable.device_art_5, ContextCompat.getColor(this, R.color.colorPrimary)));
+        addSlide(AppIntroFragment.newInstance("Track income and expenses", "Spending is fun, and so is saving! See the best of both worlds with your Earned and Spent charts, found under the My Budget tab.", R.drawable.device_art_3, ContextCompat.getColor(this, R.color.colorPrimary)));
 
 //        addSlide(secondFragment);
 //        addSlide(thirdFragment);
