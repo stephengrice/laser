@@ -2,10 +2,12 @@ package com.stephengrice.laser.fragment;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,12 +68,16 @@ public class ScheduledTransactionDetailFragment extends Fragment {
         TextView txtRepeat = (TextView) mView.findViewById(R.id.txt_repeat);
         TextView txtEnabled = (TextView) mView.findViewById(R.id.txt_enabled);
 
-        txtAmount.setText("Amount: " + MainActivity.formatCurrency(mScheduledTransaction.amount));
+        txtAmount.setText(MainActivity.formatCurrency(mScheduledTransaction.amount));
         txtDate.setText(MainActivity.formatDate(getActivity(), mScheduledTransaction.date));
-        txtDescription.setText("Description: " + mScheduledTransaction.description);
-        txtCategoryTitle.setText("Category: " + (mScheduledTransaction.category_title == null ? mView.getResources().getString(R.string.no_category) : mScheduledTransaction.category_title));
-        txtRepeat.setText("Repeat: " + MainActivity.getRepeatText(getContext(), mScheduledTransaction.repeat.getValue()));
-        txtEnabled.setText("Enabled: " + Boolean.toString(mScheduledTransaction.enabled));
+        txtDescription.setText(mScheduledTransaction.description);
+        txtCategoryTitle.setText((mScheduledTransaction.category_title == null ? mView.getResources().getString(R.string.no_category) : mScheduledTransaction.category_title));
+        txtRepeat.setText(MainActivity.getRepeatText(getContext(), mScheduledTransaction.repeat.getValue()));
+        txtEnabled.setText(mScheduledTransaction.enabled ? "Yes" : "No");
+
+        GradientDrawable gradientDrawable = (GradientDrawable) txtAmount.getBackground();
+        gradientDrawable.setColor(ContextCompat.getColor(getContext(), (mScheduledTransaction.amount > 0 ? R.color.colorTintGreen : R.color.colorTintRed)));
+
 
         // Floating Action Button code
         FloatingActionButton fab = (FloatingActionButton) mView.findViewById(R.id.transaction_edit_fab);

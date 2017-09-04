@@ -145,7 +145,7 @@ public class ScheduledTransactionEditFragment extends Fragment {
                                 mScheduledTransaction.date = mCalendar.getTimeInMillis();
                                 updateTimeView();
                             }
-                        }, mCalendar.get(Calendar.HOUR), mCalendar.get(Calendar.MINUTE), false);
+                        }, mCalendar.get(Calendar.HOUR_OF_DAY), mCalendar.get(Calendar.MINUTE), false);
                         timePicker.show();
                     }
                 }, mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH));

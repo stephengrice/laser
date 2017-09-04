@@ -111,7 +111,7 @@ public class TransactionEditFragment extends Fragment {
         mCursor = db.rawQuery(DbContract.Category.SQL_SELECT_ALL, null);
         CategoryCursorAdapter adapter = new CategoryCursorAdapter(getActivity(), mCursor);
         // Set adapter
-        AutoCompleteTextView autoComplete = (AutoCompleteTextView) mView.findViewById(R.id.transaction_category_autocomplete);
+        AutoCompleteTextView autoComplete = (AutoCompleteTextView) mView.findViewById(R.id.txt_transaction_category_autocomplete);
         autoComplete.setAdapter(adapter);
 
 
@@ -160,7 +160,7 @@ public class TransactionEditFragment extends Fragment {
     private void fillForm() {
         EditText txtTransactionAmount = (EditText) mView.findViewById(R.id.txt_transaction_amount);
         EditText txtTransactionDescription = (EditText) mView.findViewById(R.id.txt_transaction_description);
-        AutoCompleteTextView txtTransactionCategory = (AutoCompleteTextView) mView.findViewById(R.id.transaction_category_autocomplete);
+        AutoCompleteTextView txtTransactionCategory = (AutoCompleteTextView) mView.findViewById(R.id.txt_transaction_category_autocomplete);
 
         mToggleEarned.setChecked(mTransaction.amount >= 0);
         mToggleSpent.setChecked(!mToggleEarned.isChecked());
@@ -181,7 +181,7 @@ public class TransactionEditFragment extends Fragment {
         // Select elements containing user input
         EditText txtTransactionAmount = (EditText) mView.findViewById(R.id.txt_transaction_amount);
         EditText txtTransactionDescription = (EditText) mView.findViewById(R.id.txt_transaction_description);
-        AutoCompleteTextView txtTransactionCategory = (AutoCompleteTextView) mView.findViewById(R.id.transaction_category_autocomplete);
+        AutoCompleteTextView txtTransactionCategory = (AutoCompleteTextView) mView.findViewById(R.id.txt_transaction_category_autocomplete);
 
         // Populate mTransaction with new values
         boolean positive = mToggleEarned.isChecked();

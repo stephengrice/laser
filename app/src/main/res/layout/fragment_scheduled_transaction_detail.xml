@@ -8,43 +8,109 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="@dimen/common_padding"
         android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/title_text_size"
+            android:text="@string/title_st_detail"
+            android:layout_gravity="center"
+            />
+        <!-- Amount -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/subtitle_text_size"
+            android:text="@string/label_amount"
+            android:layout_gravity="left"
+            />
         <TextView
             android:id="@+id/txt_amount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="txt_amount"/>
+            android:padding="@dimen/common_padding"
+            android:background="@drawable/background_rounded"
+            android:gravity="center"
+            android:textSize="@dimen/title_text_size"
+            />
 
+        <!-- Date -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/subtitle_text_size"
+            android:text="@string/label_date"
+            android:layout_gravity="left"
+            />
         <TextView
             android:id="@+id/txt_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="txt_date"/>
-
+            android:textSize="@dimen/title_text_size"
+            android:gravity="center"
+            />
+        <!-- Description -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/subtitle_text_size"
+            android:text="@string/label_description"
+            android:layout_gravity="left"
+            />
         <TextView
             android:id="@+id/txt_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="txt_description"/>
-
+            android:textSize="@dimen/title_text_size"
+            android:gravity="center"
+            />
+        <!-- Category -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/subtitle_text_size"
+            android:text="@string/label_category"
+            android:layout_gravity="left"
+            />
         <TextView
             android:id="@+id/txt_category_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="txt_category_title" />
+            android:textSize="@dimen/title_text_size"
+            android:gravity="center"
+            />
 
+        <!-- Repeat -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/subtitle_text_size"
+            android:text="@string/label_repeat"
+            android:layout_gravity="left"
+            />
         <TextView
             android:id="@+id/txt_repeat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="txt_repeat" />
-
+            android:textSize="@dimen/title_text_size"
+            android:gravity="center"
+            />
+        <!-- Enabled -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/subtitle_text_size"
+            android:text="@string/label_enabled"
+            android:layout_gravity="left"
+            />
         <TextView
             android:id="@+id/txt_enabled"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="txt_enabled" />
-
+            android:textSize="@dimen/title_text_size"
+            android:gravity="center"
+            />
 
     </LinearLayout>
 

@@ -68,4 +68,13 @@
     <string name="st_first_occurence">First occurence</string>
     <string name="description_hint">Description</string>
     <string name="category_hint">Category</string>
+    <string name="transaction_add">Add transaction</string>
+    <string name="title_transaction_detail">Transaction Details</string>
+    <string name="title_st_detail">Scheduled Transaction Details</string>
+    <string name="label_amount">Amount</string>
+    <string name="label_date">Date</string>
+    <string name="label_description">Description</string>
+    <string name="label_category">Category</string>
+    <string name="label_repeat">Repeat</string>
+    <string name="label_enabled">Enabled</string>
 </resources>

@@ -95,7 +95,7 @@ public class TransactionAddFragment extends Fragment {
         mCursor = db.rawQuery(DbContract.Category.SQL_SELECT_ALL, null);
         CategoryCursorAdapter adapter = new CategoryCursorAdapter(getActivity(), mCursor);
         // Set adapter
-        AutoCompleteTextView autoComplete = (AutoCompleteTextView) mView.findViewById(R.id.transaction_category_autocomplete);
+        AutoCompleteTextView autoComplete = (AutoCompleteTextView) mView.findViewById(R.id.txt_transaction_category_autocomplete);
         autoComplete.setAdapter(adapter);
 
 
@@ -175,7 +175,7 @@ public class TransactionAddFragment extends Fragment {
         // Select elements containing user input
         EditText txtTransactionAmount = (EditText) view.findViewById(R.id.txt_transaction_amount);
         EditText txtTransactionDescription = (EditText) view.findViewById(R.id.txt_transaction_description);
-        AutoCompleteTextView txtTransactionCategory = (AutoCompleteTextView) view.findViewById(R.id.transaction_category_autocomplete);
+        AutoCompleteTextView txtTransactionCategory = (AutoCompleteTextView) view.findViewById(R.id.txt_transaction_category_autocomplete);
         // Get values for input to DB
         boolean positive = mToggleEarned.isChecked();
         float transactionAmount;

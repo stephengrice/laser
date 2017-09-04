@@ -48,8 +48,8 @@ public class ScheduledTransactionArrayAdapter extends ArrayAdapter<DbContract.Sc
         itemDate.setText(formattedDate);
         itemDescription.setText(st.description);
         // If category_id is 0, it is not set, so display the no_category string. Otherwise, display the category title
-        itemCategory.setText("Category: " + (st.category_id < 1 ? convertView.getResources().getString(R.string.no_category) : st.category_title));
-        itemRepeat.setText("Repeat: " + MainActivity.getRepeatText(getContext(), st.repeat.getValue()));
+        itemCategory.setText((st.category_id < 1 ? convertView.getResources().getString(R.string.no_category) : st.category_title));
+        itemRepeat.setText(MainActivity.getRepeatText(getContext(), st.repeat.getValue()));
 
         ImageView imgIcon = (ImageView) convertView.findViewById(R.id.item_st_img);
         // Conditional formatting - change from negative-appearing item to positive appearance

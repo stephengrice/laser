@@ -70,6 +70,9 @@ public class DashDisplayView extends LinearLayout {
     public Button getButton() {
         return mButton;
     }
+    public TextView getAmountTextView() {
+        return mAmount;
+    }
 
     public void setTitle(String title) {
         mTitleText = title;
@@ -88,4 +91,5 @@ public class DashDisplayView extends LinearLayout {
     public int getAmount() {
         return mAmountValue;
     }
+
 }

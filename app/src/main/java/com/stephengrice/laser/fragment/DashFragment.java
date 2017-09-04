@@ -93,6 +93,16 @@ public class DashFragment extends Fragment {
 
         DashDisplayView dashTransactions = (DashDisplayView) view.findViewById(R.id.dash_transactions);
         dashTransactions.setAmount((int)DbHelper.countTransactions(getContext()));
+        dashTransactions.getAmountTextView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_main, new TransactionsFragment())
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
         dashTransactions.getButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,6 +116,16 @@ public class DashFragment extends Fragment {
 
         DashDisplayView dashScheduledTransactions = (DashDisplayView) view.findViewById(R.id.dash_scheduled_transactions);
         dashScheduledTransactions.setAmount((int)DbHelper.countScheduledTransactions(getContext()));
+        dashScheduledTransactions.getAmountTextView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_main, new ScheduledTransactionsFragment())
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
         dashScheduledTransactions.getButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

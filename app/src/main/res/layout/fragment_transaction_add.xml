@@ -3,29 +3,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.stephengrice.laser.fragment.TransactionAddFragment">
+    tools:context="com.stephengrice.laser.fragment.ScheduledTransactionAddFragment"
+    android:padding="@dimen/common_padding">
 
     <TextView
-        android:gravity="center_horizontal"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center_vertical"
         android:textSize="@dimen/title_text_size"
-        android:text="@string/title_add" />
+        android:text="@string/transaction_add"
+        android:layout_weight="1"
+        />
 
     <EditText
         android:id="@+id/txt_transaction_amount"
+        android:drawableLeft="@drawable/ic_money_24dp"
+        android:drawablePadding="-24dp"
+        android:textSize="@dimen/money_text_size"
         android:layout_width="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:textAlignment="center"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="numberDecimal"
-        android:hint="$0.00"/>
+        android:hint="@string/hint_money"
+        android:layout_weight="1"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_weight="1"
+        >
         <ToggleButton
             android:id="@+id/btn_earned"
             android:layout_width="wrap_content"
@@ -34,6 +46,7 @@
             android:background="@color/colorTintGreen"
             android:textOn="@string/btn_earned"
             android:textOff="@string/btn_earned"
+            android:layout_weight="1"
             />
         <ToggleButton
             android:id="@+id/btn_spent"
@@ -43,8 +56,10 @@
             android:background="@color/colorTintRed"
             android:textOn="@string/btn_spent"
             android:textOff="@string/btn_spent"
+            android:layout_weight="1"
             />
     </LinearLayout>
+
 
     <EditText
         android:id="@+id/txt_transaction_description"
@@ -52,14 +67,17 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textCapSentences"
-        android:hint="Description (optional)" />
+        android:hint="@string/description_hint"
+        android:layout_weight="1"
+        />
 
     <AutoCompleteTextView
-        android:id="@+id/transaction_category_autocomplete"
+        android:id="@+id/txt_transaction_category_autocomplete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textCapWords"
-        android:hint="Category (optional)"
+        android:hint="@string/category_hint"
+        android:layout_weight="1"
         />
 
 
@@ -67,7 +85,10 @@
         android:id="@+id/btn_save_transaction"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Save" />
+        android:background="@color/blueA100"
+        android:text="@string/btn_save"
+        android:layout_weight="1"
+        />
 
 
 </LinearLayout>

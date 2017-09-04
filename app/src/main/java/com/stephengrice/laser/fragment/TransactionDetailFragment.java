@@ -2,10 +2,12 @@ package com.stephengrice.laser.fragment;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,10 +69,13 @@ public class TransactionDetailFragment extends Fragment {
         TextView txtDescription = (TextView) mView.findViewById(R.id.txt_description);
         TextView txtCategoryTitle = (TextView) mView.findViewById(R.id.txt_category_title);
 
-        txtAmount.setText("Amount: " + MainActivity.formatCurrency(mTransaction.amount));
+        txtAmount.setText(MainActivity.formatCurrency(mTransaction.amount));
         txtDate.setText(MainActivity.formatDate(getActivity(), mTransaction.date));
-        txtDescription.setText("Description: " + mTransaction.description);
-        txtCategoryTitle.setText("Category: " + (mTransaction.category_title == null ? mView.getResources().getString(R.string.no_category) : mTransaction.category_title));
+        txtDescription.setText(mTransaction.description);
+        txtCategoryTitle.setText((mTransaction.category_title == null ? mView.getResources().getString(R.string.no_category) : mTransaction.category_title));
+
+        GradientDrawable gradientDrawable = (GradientDrawable) txtAmount.getBackground();
+        gradientDrawable.setColor(ContextCompat.getColor(getContext(), (mTransaction.amount > 0 ? R.color.colorTintGreen : R.color.colorTintRed)));
 
         // Floating Action Button code
         FloatingActionButton fab = (FloatingActionButton) mView.findViewById(R.id.transaction_edit_fab);
