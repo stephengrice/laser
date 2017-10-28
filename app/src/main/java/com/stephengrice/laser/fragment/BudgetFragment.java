@@ -11,27 +11,16 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TableLayout;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 
-import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.IValueFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.stephengrice.laser.BudgetTabsPagerAdapter;
 import com.stephengrice.laser.R;
 import com.stephengrice.laser.db.DbHelper;
-
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -55,6 +44,8 @@ public class BudgetFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private ViewPager mViewPager;
     private PagerAdapter mPagerAdapter;
+    private Spinner mSpinner;
+    private BudgetChartFragment mChartFragmentSpent, mChartFragmentEarned;
 
     public BudgetFragment() {
         // Required empty public constructor
@@ -93,12 +84,31 @@ public class BudgetFragment extends Fragment {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_budget, container, false);
 
+        mChartFragmentSpent = BudgetChartFragment.newInstance(DbHelper.CountMode.NEGATIVE);
+        mChartFragmentEarned = BudgetChartFragment.newInstance(DbHelper.CountMode.POSITIVE);
+
         // Setup tabs
-        mPagerAdapter = new BudgetTabsPagerAdapter(getFragmentManager(), getActivity());
+        mPagerAdapter = new BudgetTabsPagerAdapter(this, getFragmentManager(), getActivity());
         mViewPager = (ViewPager) mView.findViewById(R.id.budget_view_pager);
         mViewPager.setAdapter(mPagerAdapter);
         TabLayout tabLayout = (TabLayout) mView.findViewById(R.id.budget_tab_layout);
         tabLayout.setupWithViewPager(mViewPager);
+
+        mSpinner = (Spinner)mView.findViewById(R.id.spinner_budget);
+
+        // Spinner listener
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mChartFragmentEarned.updateTimeframe();
+                mChartFragmentSpent.updateTimeframe();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         return mView;
     }
@@ -149,6 +159,14 @@ public class BudgetFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    // This is the worst thing ever
+    public BudgetChartFragment getChartFragmentSpent() {
+        return mChartFragmentSpent;
+    }
+    public BudgetChartFragment getChartFragmentEarned() {
+        return mChartFragmentEarned;
     }
 }
 

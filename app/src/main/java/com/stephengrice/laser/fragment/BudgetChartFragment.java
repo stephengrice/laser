@@ -51,6 +51,8 @@ public class BudgetChartFragment extends Fragment {
     private PieChart mChart;
     private Spinner mSpinner;
     private DbHelper.TimeFrame mTimeFrame;
+    private PieDataSet mDataSet;
+    private PieData mChartData;
 
     public BudgetChartFragment() {
 
@@ -78,27 +80,11 @@ public class BudgetChartFragment extends Fragment {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_budget_chart, container, false);
 
+        mChartData = new PieData();
+
+        mChart = (PieChart) mView.findViewById(R.id.fragment_chart);
         mSpinner = (Spinner)getActivity().findViewById(R.id.spinner_budget);
 
-        updateTimeframe();
-
-        // Spinner listener
-        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                updateTimeframe();
-                if (fillChart()) {
-                    Log.d("mytag", "Chart refilled");
-                } else {
-                    Log.d("mytag", "No data for chart");
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
 
         return mView;
     }
@@ -107,11 +93,7 @@ public class BudgetChartFragment extends Fragment {
         super.onResume();
 
         if (mView != null) {
-            mChart = (PieChart) mView.findViewById(R.id.fragment_chart);
-            if (!fillChart()) {
-                // No data for chart
-                //Snackbar.make(mView, "No data found for this chart. Add a transaction!", MainActivity.SNACKBAR_TIME).show();
-            }
+            updateTimeframe(); // includes call to fillChart. So ugly
         }
     }
 
@@ -159,6 +141,8 @@ public class BudgetChartFragment extends Fragment {
         HashMap<String, Float> categories = DbHelper.countByCategory(getActivity(), mMode, mTimeFrame);
 
         if (categories.size() < 1) {
+            // Clear the chart out
+            mChart.clear();
             return false;
         }
 
@@ -170,9 +154,8 @@ public class BudgetChartFragment extends Fragment {
             entries.add(new PieEntry(Math.abs(categoryEntry.getValue()), categoryEntry.getKey()));
         }
 
-        PieDataSet dataSet = new PieDataSet(entries, "");
-        PieData data = new PieData();
-        data.setDataSet(dataSet);
+        mDataSet = new PieDataSet(entries, "");
+        mChartData.setDataSet(mDataSet);
 
         // add a lot of colors
 
@@ -191,22 +174,23 @@ public class BudgetChartFragment extends Fragment {
         }
 
 
-        dataSet.setColors(colors);
-        dataSet.setValueFormatter(new IValueFormatter() {
+        mDataSet.setColors(colors);
+        mDataSet.setValueFormatter(new IValueFormatter() {
             @Override
             public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
                 return MainActivity.formatPercent(value);
             }
         });
-        dataSet.setValueTextSize(15f);
+        mDataSet.setValueTextSize(15f);
 
-        mChart.setData(data);
+        mChart.setData(mChartData);
         mChart.setEntryLabelColor(Color.BLACK);
         mChart.getDescription().setEnabled(false);
         mChart.setUsePercentValues(true);
         mChart.setEntryLabelTextSize(20f);
 //        mChart.setHoleRadius(0f);
         mChart.setDrawHoleEnabled(false);
+        mChart.notifyDataSetChanged();
         mChart.invalidate();
 
         return true;
@@ -227,5 +211,6 @@ public class BudgetChartFragment extends Fragment {
         } else { // All
             mTimeFrame = DbHelper.TimeFrame.ALL;
         }
+        fillChart();
     }
 }

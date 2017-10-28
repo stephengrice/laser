@@ -8,25 +8,28 @@ import android.support.v4.content.ContextCompat;
 
 import com.stephengrice.laser.db.DbHelper;
 import com.stephengrice.laser.fragment.BudgetChartFragment;
+import com.stephengrice.laser.fragment.BudgetFragment;
 
 public class BudgetTabsPagerAdapter extends FragmentPagerAdapter {
 
+    private BudgetFragment mBudgetFragment;
     private FragmentManager mFragmentManager;
     private Context mContext;
 
-    public BudgetTabsPagerAdapter(FragmentManager fm, Context context) {
+    public BudgetTabsPagerAdapter(BudgetFragment budgetFragment, FragmentManager fm, Context context) {
         super(fm);
         mFragmentManager = fm;
+        mBudgetFragment = budgetFragment;
         mContext = context;
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position) {
-            case 1:
-                return BudgetChartFragment.newInstance(DbHelper.CountMode.POSITIVE);
             case 0:
-                return BudgetChartFragment.newInstance(DbHelper.CountMode.NEGATIVE);
+                return mBudgetFragment.getChartFragmentSpent();
+            case 1:
+                return mBudgetFragment.getChartFragmentEarned();
             default:
                 return null;
         }
