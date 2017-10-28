@@ -6,9 +6,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
@@ -22,6 +25,7 @@ import com.stephengrice.laser.MainActivity;
 import com.stephengrice.laser.R;
 import com.stephengrice.laser.db.DbHelper;
 
+import java.sql.Time;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,6 +39,7 @@ import java.util.HashMap;
  * create an instance of this fragment.
  */
 public class BudgetChartFragment extends Fragment {
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_MODE = "mode";
@@ -44,6 +49,8 @@ public class BudgetChartFragment extends Fragment {
     private View mView;
     private DbHelper.CountMode mMode;
     private PieChart mChart;
+    private Spinner mSpinner;
+    private DbHelper.TimeFrame mTimeFrame;
 
     public BudgetChartFragment() {
 
@@ -71,6 +78,27 @@ public class BudgetChartFragment extends Fragment {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_budget_chart, container, false);
 
+        mSpinner = (Spinner)getActivity().findViewById(R.id.spinner_budget);
+
+        updateTimeframe();
+
+        // Spinner listener
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                updateTimeframe();
+                if (fillChart()) {
+                    Log.d("mytag", "Chart refilled");
+                } else {
+                    Log.d("mytag", "No data for chart");
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         return mView;
     }
@@ -80,7 +108,7 @@ public class BudgetChartFragment extends Fragment {
 
         if (mView != null) {
             mChart = (PieChart) mView.findViewById(R.id.fragment_chart);
-            if (!fillChart(mChart, mMode)) {
+            if (!fillChart()) {
                 // No data for chart
                 //Snackbar.make(mView, "No data found for this chart. Add a transaction!", MainActivity.SNACKBAR_TIME).show();
             }
@@ -126,9 +154,9 @@ public class BudgetChartFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    private boolean fillChart(PieChart chart, DbHelper.CountMode mode) {
+    private boolean fillChart() {
         // Get category counts
-        HashMap<String, Float> categories = DbHelper.countByCategory(getActivity(), mode);
+        HashMap<String, Float> categories = DbHelper.countByCategory(getActivity(), mMode, mTimeFrame);
 
         if (categories.size() < 1) {
             return false;
@@ -152,7 +180,7 @@ public class BudgetChartFragment extends Fragment {
 
 
         int[] resource;
-        if (mode == DbHelper.CountMode.POSITIVE) {
+        if (mMode == DbHelper.CountMode.POSITIVE) {
             resource = getContext().getResources().getIntArray(R.array.chartGreen);
         } else {
             resource = getContext().getResources().getIntArray(R.array.chartRed);
@@ -172,15 +200,32 @@ public class BudgetChartFragment extends Fragment {
         });
         dataSet.setValueTextSize(15f);
 
-        chart.setData(data);
-        chart.setEntryLabelColor(Color.BLACK);
-        chart.getDescription().setEnabled(false);
-        chart.setUsePercentValues(true);
-        chart.setEntryLabelTextSize(20f);
-//        chart.setHoleRadius(0f);
-        chart.setDrawHoleEnabled(false);
-        chart.invalidate();
+        mChart.setData(data);
+        mChart.setEntryLabelColor(Color.BLACK);
+        mChart.getDescription().setEnabled(false);
+        mChart.setUsePercentValues(true);
+        mChart.setEntryLabelTextSize(20f);
+//        mChart.setHoleRadius(0f);
+        mChart.setDrawHoleEnabled(false);
+        mChart.invalidate();
 
         return true;
+    }
+
+    public void updateTimeframe() {
+        String spinnerString = mSpinner.getSelectedItem().toString();
+        Log.d("mytag", "Current timeframe is " + spinnerString);
+        String[] spinnerValues = getContext().getResources().getStringArray(R.array.spinner_dates);
+        if (spinnerString.equals(spinnerValues[0])) { // Today
+            mTimeFrame = DbHelper.TimeFrame.DAY;
+        } else if (spinnerString.equals(spinnerValues[1])) { // This week
+            mTimeFrame = DbHelper.TimeFrame.WEEK;
+        } else if (spinnerString.equals(spinnerValues[2])) { // This month
+            mTimeFrame = DbHelper.TimeFrame.MONTH;
+        } else if (spinnerString.equals(spinnerValues[3])) { // This year
+            mTimeFrame = DbHelper.TimeFrame.YEAR;
+        } else { // All
+            mTimeFrame = DbHelper.TimeFrame.ALL;
+        }
     }
 }

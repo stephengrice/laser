@@ -7,16 +7,22 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.stephengrice.laser.R;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 public class DbHelper extends SQLiteOpenHelper {
 
     public enum CountMode {
         ALL, POSITIVE, NEGATIVE
+    }
+    public enum TimeFrame {
+        DAY, WEEK, MONTH, YEAR, ALL
     }
 
     public DbHelper(Context context) {
@@ -136,7 +142,7 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
 
-    public static HashMap<String, Float> countByCategory(Context context, CountMode mode) {
+    public static HashMap<String, Float> countByCategory(Context context, CountMode mode, TimeFrame timeFrame) {
         // Create result object (to be returned)
         HashMap<String, Float> result = new HashMap<String, Float>();
         // Get arraylist of all transactions
@@ -158,6 +164,44 @@ public class DbHelper extends SQLiteOpenHelper {
                     break;
             }
 
+            // TODO make this a lot more efficient (I am ashamed
+            // Discard elements outside of given timeframe
+            Calendar calendar = Calendar.getInstance();
+//            Log.d("mytag", "Comparing times: " + transaction.date + " to " + calendar.getTimeInMillis());
+            switch (timeFrame) {
+                case DAY:
+                    calendar.add(Calendar.DAY_OF_YEAR, -1);
+                    if (transaction.date < calendar.getTimeInMillis()) {
+                        Log.d("mytag", "Skipping because not within last day: " + transaction.description);
+                        continue;
+                    }
+                    break;
+                case WEEK:
+                    calendar.add(Calendar.DAY_OF_YEAR, -7);
+                    if (transaction.date < calendar.getTimeInMillis()) {
+                        Log.d("mytag", "Skipping because not within last week: " + transaction.description);
+                        continue;
+                    }
+                    break;
+                case MONTH:
+                    calendar.add(Calendar.MONTH, -1);
+                    if (transaction.date < calendar.getTimeInMillis()){
+                        Log.d("mytag", "Skipping because not within last month: " + transaction.description);
+                        continue;
+                    }
+                    break;
+                case YEAR:
+                    calendar.add(Calendar.YEAR, -1);
+                    if (transaction.date < calendar.getTimeInMillis()){
+                        Log.d("mytag", "Skipping because not within last year: " + transaction.description);
+                        continue;
+                    }
+                    break;
+                default:
+                case ALL:
+                    break;
+            }
+
             // Replace no_category entries with proper string resource
             if (transaction.category_title == null || transaction.category_title.length() < 1) {
                 transaction.category_title = context.getResources().getString(R.string.no_category);
@@ -171,6 +215,7 @@ public class DbHelper extends SQLiteOpenHelper {
             }
         }
 
+        Log.d("mytag", "Returning " + result.size() + " rows");
         return result;
     }
 

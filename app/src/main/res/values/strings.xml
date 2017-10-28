@@ -16,11 +16,14 @@
     <string name="title_settings">Settings</string>
     <string name="settings_btn_clear">Clear Database</string>
 
+    <!-- ORDER/indexes of this string array referenced in BudgetChartFragment.java
+    Changing the order will change behavior of spinner -->
     <string-array name="spinner_dates">
+        <item>Today</item>
+        <item>This Week</item>
+        <item>This Month</item>
+        <item>This Year</item>
         <item>All</item>
-        <item>Week</item>
-        <item>Month</item>
-        <item>Year</item>
     </string-array>
 
     <string-array name="spinner_repeat">
